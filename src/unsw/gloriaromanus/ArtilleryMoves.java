@@ -31,7 +31,7 @@ public class ArtilleryMoves implements MoveType {
      * 
      * @return Overspent move points, negative if underspent
      */
-    public int exhaustMove(int exhaust) {
+    public int exhaustMoves(int exhaust) {
         this.moves -= exhaust;
         if (this.moves < 0)
             this.moves = 0;
