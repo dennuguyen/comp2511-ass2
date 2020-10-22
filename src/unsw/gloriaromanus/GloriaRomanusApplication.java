@@ -10,40 +10,42 @@ import javafx.stage.Stage;
 
 public class GloriaRomanusApplication extends Application {
 
-  private static GloriaRomanusController controller;
+    private static GloriaRomanusController controller;
 
-  @Override
-  public void start(Stage stage) throws IOException {
-    // set up the scene
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
-    Parent root = loader.load();
-    controller = loader.getController();
-    Scene scene = new Scene(root);
+    @Override
+    public void start(Stage stage) throws IOException {
+        // set up the scene
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+        Parent root = loader.load();
+        controller = loader.getController();
+        Scene scene = new Scene(root);
 
-    // set up the stage
-    stage.setTitle("Gloria Romanus");
-    stage.setWidth(800);
-    stage.setHeight(700);
-    stage.setScene(scene);
-    stage.show();
+        // set up the stage
+        stage.setTitle("Gloria Romanus");
+        stage.setWidth(800);
+        stage.setHeight(700);
+        stage.setScene(scene);
+        stage.show();
 
-  }
+    }
 
-  /**
-   * Stops and releases all resources used in application.
-   */
-  @Override
-  public void stop() {
-    controller.terminate();
-  }
+    /**
+     * Stops and releases all resources used in application.
+     */
+    @Override
+    public void stop() {
+        controller.terminate();
+    }
 
-  /**
-   * Opens and runs application.
-   *
-   * @param args arguments passed to this application
-   */
-  public static void main(String[] args) {
+    /**
+     * Opens and runs application.
+     *
+     * @param args arguments passed to this application
+     */
+    public static void main(String[] args) {
 
-    Application.launch(args);
-  }
+        RomanLegionary roman = new RomanLegionary();
+        System.out.println(roman.getMoves());
+        // Application.launch(args);
+    }
 }
