@@ -2,7 +2,7 @@
  * Observer interface of observer pattern
  */
 
-package unsw.gloriaromanus.observer;
+package unsw.gloriaromanus.util;
 
 public interface Observer {
     /**
