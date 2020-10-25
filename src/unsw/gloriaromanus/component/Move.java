@@ -2,7 +2,7 @@
  * Implementation of Moveable
  */
 
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.component;
 
 public class Move implements Moveable {
 
