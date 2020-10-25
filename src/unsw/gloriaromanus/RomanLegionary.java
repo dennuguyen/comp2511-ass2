@@ -4,19 +4,32 @@
 
 package unsw.gloriaromanus;
 
-public class RomanLegionary extends Unit implements MoveType {
+public class RomanLegionary extends Unit implements Moveable, Locable {
 
-    private final InfantryMoves moveType;
+    private final Locale locale;
+    private final Move move;
 
     /**
-     * Roman Legionary has: infantry moves as movement type
+     * Roman Legionary
      */
-    public RomanLegionary() {
-        this.moveType = new InfantryMoves();
+    public RomanLegionary(String spawn) {
+        this.locale = new Locale(spawn);
+        this.move = new Move(Move.infantryMoveCapacity);
     }
 
     @Override
-    public int getMoves() {
-        return this.moveType.getMoves();
+    public String getLocation() {
+        return this.locale.getLocation();
+    }
+
+    @Override
+    public String setLocation(String location) {
+        return this.locale.setLocation(location);
+    }
+
+    @Override
+    public String moveTo(String destination) {
+        return this.locale
+                .setLocation(this.move.moveToImple(this.locale.getLocation(), destination));
     }
 }

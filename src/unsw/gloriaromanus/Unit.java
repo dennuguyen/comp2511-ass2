@@ -4,5 +4,8 @@
 
 package unsw.gloriaromanus;
 
-public class Unit {
+public class Unit implements Entity {
+
+    public Unit() {
+    }
 }
