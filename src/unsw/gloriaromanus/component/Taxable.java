@@ -8,7 +8,7 @@ public interface Taxable {
 
     public int getTaxRate();
 
-    public void setTaxRate(Taxable rate);
+    public void setTaxRate(int rate);
 
     public void collectTax();
 }
