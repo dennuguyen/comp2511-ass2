@@ -4,7 +4,7 @@
 
 package unsw.gloriaromanus.component;
 
-public abstract class Tax implements Taxable {
+public class Tax implements Taxable {
 
     public static final int lowTax = 10;
     public static final int normalTax = 15;
