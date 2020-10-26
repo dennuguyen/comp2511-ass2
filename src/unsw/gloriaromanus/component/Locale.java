@@ -1,5 +1,5 @@
 /**
- * Moveable interface
+ * Implementation of Locable interface
  */
 
 package unsw.gloriaromanus.component;
