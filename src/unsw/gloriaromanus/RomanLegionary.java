@@ -4,6 +4,11 @@
 
 package unsw.gloriaromanus;
 
+import unsw.gloriaromanus.component.Locable;
+import unsw.gloriaromanus.component.Locale;
+import unsw.gloriaromanus.component.Move;
+import unsw.gloriaromanus.component.Moveable;
+
 public class RomanLegionary extends Unit implements Moveable, Locable {
 
     private final Locale locale;
