@@ -33,6 +33,15 @@ public class Wealth implements Wealthable {
     }
 
     /**
+     * Subtracts an amount from town wealth
+     * @param amount amount to subtract from town wealth
+     */
+    @Override
+    public void subtractWealth(int amount) {
+        this.amount -= amount;
+    }
+
+    /**
      * Adds an amount to town wealth
      * @param amount amount to add to town wealth
      */
