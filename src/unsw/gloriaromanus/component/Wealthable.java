@@ -12,11 +12,11 @@ public interface Wealthable {
      */
     public int getWealth();
 
-    // /**
-    //  * T from town wealth
-    //  * @
-    //  */
-    // public int takeWealth(int amount);
+    /**
+     * Subtract from town wealth
+     * @param amount to subtract
+     */
+    public void subtractWealth(int amount);
 
     /**
      * Add amount to town wealth
