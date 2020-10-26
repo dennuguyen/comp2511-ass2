@@ -27,12 +27,12 @@ public class Tax implements Taxable {
         this.rate = rate;
     }
 
-    public void collectTaxImple() {
-
+    public int collectTaxImple(int wealth) {
+        return wealth * (rate / 100);
     }
 
     @Override
     public void collectTax() {
-
+        return;
     }
 }
