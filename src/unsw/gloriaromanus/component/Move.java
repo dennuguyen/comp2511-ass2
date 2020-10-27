@@ -4,7 +4,10 @@
 
 package unsw.gloriaromanus.component;
 
-public class Move implements Moveable {
+import unsw.gloriaromanus.util.Observer;
+import unsw.gloriaromanus.util.Subject;
+
+public class Move implements Moveable, Turnable, Observer {
 
     public static enum Type {
         ARTILLERY(4), CAVALRY(15), INFANTRY(10);
@@ -19,15 +22,6 @@ public class Move implements Moveable {
         Type(int moveCapacity) {
             this.moveCapacity = moveCapacity;
         }
-
-        /**
-         * Gets the move capacity associated with the enum
-         * 
-         * @return Move capacity
-         */
-        public int getMoveCapacity() {
-            return this.moveCapacity;
-        }
     };
 
     private Move.Type moveType;
@@ -39,8 +33,9 @@ public class Move implements Moveable {
      */
     public Move(Move.Type moveType) {
         this.moveType = moveType;
-        this.movesLeft = moveType.getMoveCapacity();
+        this.movesLeft = moveType.moveCapacity;
     }
+
 
     /**
      * Subtracts the number of moves left with move points spent
@@ -73,5 +68,16 @@ public class Move implements Moveable {
     @Override
     public String moveTo(String destination) {
         return null;
+    }
+
+    @Override
+    public void nextTurn() {
+        this.movesLeft = moveType.moveCapacity;
+    }
+
+    @Override
+    public void update(Subject subject) {
+        if (subject instanceof Turn)
+            this.nextTurn();
     }
 }

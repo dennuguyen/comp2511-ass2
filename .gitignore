@@ -7,4 +7,5 @@ hs_err_pid*
 /.gradle/
 /resources/
 /jniLibs/
-src/gloriaromanus.sh
+**/gloriaromanus.sh
+.vscode
