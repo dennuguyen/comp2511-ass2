@@ -1,5 +1,5 @@
 /**
- * Stats interface
+ * Statable interface
  */
 
 package unsw.gloriaromanus.component;
@@ -18,7 +18,7 @@ public interface Statable {
      * Set a stat to its new value
      * 
      * @param type  Type of stat
-     * @param value New Value of stat
+     * @param value New value of stat
      */
     public void setStat(Stats.Type type, int value);
 }

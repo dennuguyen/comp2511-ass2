@@ -7,7 +7,7 @@ package unsw.gloriaromanus.component;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Stats implements Statable {
+public class Stats implements Statable, Turnable {
 
     public static enum Type {
         ARMOUR, // physical armour rating
@@ -17,10 +17,10 @@ public class Stats implements Statable {
         STRENGTH, // number of troops
         FLANKING, // range of unit
         SHIELD, // physical shield rating
-        TACTICS, // ability to disengage
+        TACTICS; // ability to disengage
     };
 
-    private Map<Stats.Type, Integer> stats;
+    private Map<Stats.Type, Stat> stats;
 
     /**
      * Stats default constructor
@@ -35,23 +35,23 @@ public class Stats implements Statable {
      * @param armour     base armour
      * @param discipline base discipline
      * @param fire       base fire
-     * @param morale     base morale
-     * @param strength   base strength
      * @param flanking   base flanking
+     * @param morale     base morale
      * @param shield     base shield
+     * @param strength   base strength
      * @param tactics    base tactics
      */
     public Stats(int armour, int discipline, int fire, int morale, int strength, int flanking,
             int shield, int tactics) {
-        this.stats = new HashMap<Stats.Type, Integer>();
-        this.stats.put(Stats.Type.ARMOUR, armour);
-        this.stats.put(Stats.Type.DISCIPLINE, discipline);
-        this.stats.put(Stats.Type.FIRE, fire);
-        this.stats.put(Stats.Type.MORALE, morale);
-        this.stats.put(Stats.Type.STRENGTH, strength);
-        this.stats.put(Stats.Type.FLANKING, flanking);
-        this.stats.put(Stats.Type.SHIELD, shield);
-        this.stats.put(Stats.Type.TACTICS, tactics);
+        this.stats = new HashMap<Stats.Type, Stat>();
+        this.stats.put(Stats.Type.ARMOUR, new Armour(armour));
+        this.stats.put(Stats.Type.DISCIPLINE, new Discipline(discipline));
+        this.stats.put(Stats.Type.FIRE, new Fire(fire));
+        this.stats.put(Stats.Type.FLANKING, new Flanking(flanking));
+        this.stats.put(Stats.Type.MORALE, new Morale(morale));
+        this.stats.put(Stats.Type.SHIELD, new Shield(shield));
+        this.stats.put(Stats.Type.STRENGTH, new Strength(strength));
+        this.stats.put(Stats.Type.TACTICS, new Tactics(tactics));
     }
 
     /**
@@ -65,11 +65,16 @@ public class Stats implements Statable {
 
     @Override
     public int getStat(Stats.Type type) {
-        return this.stats.get(type);
+        return this.stats.get(type).getStat();
     }
 
     @Override
     public void setStat(Stats.Type type, int value) {
-        this.stats.put(type, value);
+        this.stats.get(type).setStat(value);
+    }
+
+    @Override
+    public void nextTurn() {
+
     }
 }
