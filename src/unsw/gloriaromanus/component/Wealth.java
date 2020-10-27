@@ -71,7 +71,7 @@ public class Wealth implements Wealthable, Turnable, Observer {
 
     @Override
     public void update(Subject subject) {
-        if (subject instanceof Turn) // observed new turn
+        if (subject instanceof Turn) // next turn notified
             this.nextTurn();
         if (subject instanceof Tax) // observed changed in tax level
             this.addWealthGrowth(((Tax) subject).getWealthGrowthChange());

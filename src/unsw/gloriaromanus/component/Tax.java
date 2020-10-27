@@ -36,7 +36,7 @@ public class Tax implements Taxable, Subject {
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
         this.taxLevel = taxLevel;
-        tell();
+        tell(); // affect town wealth growth
     }
 
     /**
