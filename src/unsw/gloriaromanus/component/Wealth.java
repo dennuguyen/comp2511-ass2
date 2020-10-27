@@ -1,6 +1,9 @@
 package unsw.gloriaromanus.component;
 
-public class Wealth implements Wealthable {
+import unsw.gloriaromanus.util.Observer;
+import unsw.gloriaromanus.util.Subject;
+
+public class Wealth implements Wealthable, Observer {
     
     int amount;
     int rate;
@@ -23,39 +26,36 @@ public class Wealth implements Wealthable {
         this.rate = 0;
     }
 
-    /**
-     * Returns value of town wealth 
-     * @return town wealth amount
-     */
     @Override
     public int getWealth() {
         return amount;
     }
 
-    /**
-     * Subtracts an amount from town wealth
-     * @param amount amount to subtract from town wealth
-     */
+    @Override
+    public int getWealthGrowth() {
+        return rate;
+    }
+
     @Override
     public void subtractWealth(int amount) {
         this.amount -= amount;
     }
 
-    /**
-     * Adds an amount to town wealth
-     * @param amount amount to add to town wealth
-     */
     @Override
     public void addWealth(int amount) {
         this.amount += amount;
     }
 
-     /**
-     * Adds an amount to town wealth
-     * @param amount amount to add to town wealth
-     */
     @Override
     public void addWealthGrowth(int rate) {
         this.rate += rate;
+    }
+
+    @Override
+    public void update(Subject obj) {
+        if(obj instanceof Tax) {
+            int rate = ((Tax)obj).getWealthGrowthChange();
+            addWealthGrowth(rate);
+        }
     }
 }
