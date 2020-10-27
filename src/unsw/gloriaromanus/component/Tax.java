@@ -4,35 +4,61 @@
 
 package unsw.gloriaromanus.component;
 
-public class Tax implements Taxable {
+import java.util.ArrayList;
 
-    public static final int lowTax = 10;
-    public static final int normalTax = 15;
-    public static final int highTax = 20;
-    public static final int veryHighTax = 25;
+import unsw.gloriaromanus.util.Observer;
+import unsw.gloriaromanus.util.Subject;
 
-    private int rate; // Tax rate
+public class Tax implements Taxable, Subject {
+
+    ArrayList<Observer> listObservers = new ArrayList<Observer>();
+
+    TaxLevel taxLevel;
 
     public Tax() {
-        this.rate = 0;
+        taxLevel = new NormalTax();
     }
 
     @Override
-    public int getTaxRate() {
-        return this.rate;
+    public float getTaxRate() {
+        return taxLevel.getTaxRate();
     }
 
     @Override
-    public void setTaxRate(int rate) {
-        this.rate = rate;
+    public int getWealthGrowthChange() {
+        return taxLevel.getWealthGrowthChange();
+    }
+
+    @Override
+    public void setTaxLevel(TaxLevel taxLevel) {
+        this.taxLevel = taxLevel;
+        tell();
     }
 
     public int collectTaxImple(int wealth) {
-        return wealth * (rate / 100);
+        float percentage = taxLevel.getTaxRate() / 100; 
+        return (int) (wealth * percentage);
     }
 
     @Override
-    public void collectTax() {
-        return;
+    public int collectTax () {
+        return 0;
+    }
+
+    @Override
+	public void attach(Observer o) {
+		if(! listObservers.contains(o)) { listObservers.add(o); }
+	}
+
+	@Override
+	public void detach(Observer o) {
+		listObservers.remove(o);
+	}
+
+    @Override
+    public void tell() {
+        for( Observer obs : listObservers) {
+			obs.update(this);
+		}
     }
 }

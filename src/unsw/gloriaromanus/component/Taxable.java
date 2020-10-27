@@ -6,9 +6,11 @@ package unsw.gloriaromanus.component;
 
 public interface Taxable {
 
-    public int getTaxRate();
+    public void setTaxLevel(TaxLevel taxLevel);
 
-    public void setTaxRate(int rate);
+    public float getTaxRate();
 
-    public void collectTax();
+    public int collectTax();
+
+    public int getWealthGrowthChange();
 }
