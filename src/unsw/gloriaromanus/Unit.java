@@ -10,8 +10,9 @@ import unsw.gloriaromanus.component.Move;
 import unsw.gloriaromanus.component.Moveable;
 import unsw.gloriaromanus.component.Statable;
 import unsw.gloriaromanus.component.Stats;
+import unsw.gloriaromanus.util.ComponentArmy;
 
-public class Unit implements Entity, Locable, Moveable, Statable {
+public class Unit implements Entity, Locable, Moveable, Statable, ComponentArmy {
 
     private final Locale locale;
     private final Move move;
