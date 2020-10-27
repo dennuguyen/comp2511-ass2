@@ -1,5 +1,5 @@
 /**
- * Turnable interface
+ * Turnable interface must be used in an observer pattern
  */
 
 package unsw.gloriaromanus.component;
