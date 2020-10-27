@@ -7,21 +7,23 @@ package unsw.gloriaromanus.component;
 public interface Taxable {
 
     /**
+     * Set the tax level
+     * 
+     * @param taxLevel New tax level
+     */
+    public void setTaxLevel(TaxLevel taxLevel);
+
+    /**
      * Gets the current tax rate
      * 
      * @return Tax rate
      */
-    public int getTaxRate();
-
-    /**
-     * Set the tax rate
-     * 
-     * @param rate New tax rate
-     */
-    public void setTaxRate(int rate);
+    public float getTaxRate();
 
     /**
      * Collects the tax and notifies the province subject of tax returns
      */
     public void collectTax();
+
+    public int getWealthGrowthChange();
 }
