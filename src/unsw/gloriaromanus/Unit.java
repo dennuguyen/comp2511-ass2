@@ -17,13 +17,9 @@ public class Unit implements Entity, Locable, Moveable, Statable {
     private final Move move;
     private final Stats stats;
 
-    public Unit(String spawn) {
-        this(spawn, new Stats());
-    }
-
-    public Unit(String spawn, Stats stats) {
+    public Unit(String spawn, Move.Type movementType, Stats stats) {
         this.locale = new Locale(spawn);
-        this.move = new Move(Move.infantryMoveCapacity);
+        this.move = new Move(movementType);
         this.stats = stats;
     }
 
