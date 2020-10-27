@@ -22,10 +22,25 @@ public class Stats implements Statable {
 
     private Map<Stats.Type, Integer> stats;
 
+    /**
+     * Stats default constructor
+     */
     public Stats() {
         this(0, 0, 0, 0, 0, 0, 0, 0);
     }
 
+    /**
+     * Stats constructor
+     * 
+     * @param armour     base armour
+     * @param discipline base discipline
+     * @param fire       base fire
+     * @param morale     base morale
+     * @param strength   base strength
+     * @param flanking   base flanking
+     * @param shield     base shield
+     * @param tactics    base tactics
+     */
     public Stats(int armour, int discipline, int fire, int morale, int strength, int flanking,
             int shield, int tactics) {
         this.stats = new HashMap<Stats.Type, Integer>();

@@ -11,10 +11,20 @@ public class Move implements Moveable {
 
         private int moveCapacity;
 
+        /**
+         * Move type constructor
+         * 
+         * @param moveCapacity Move capacity
+         */
         Type(int moveCapacity) {
             this.moveCapacity = moveCapacity;
         }
 
+        /**
+         * Gets the move capacity associated with the enum
+         * 
+         * @return Move capacity
+         */
         public int getMoveCapacity() {
             return this.moveCapacity;
         }
