@@ -7,13 +7,14 @@ import unsw.gloriaromanus.component.Locale;
 import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
+import unsw.gloriaromanus.component.Turn;
 import unsw.gloriaromanus.component.Turnable;
 import unsw.gloriaromanus.component.Wealthable;
 import unsw.gloriaromanus.util.Observer;
 import unsw.gloriaromanus.util.Subject;
 import unsw.gloriaromanus.component.Wealth;
 
-public class Province implements Locable, Taxable, Wealthable, Turnable, Subject {
+public class Province implements Locable, Taxable, Wealthable, Turnable, Subject, Observer {
 
     private final Locale locale;
     private final Tax tax;
@@ -45,7 +46,7 @@ public class Province implements Locable, Taxable, Wealthable, Turnable, Subject
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
         tax.setTaxLevel(taxLevel);
-        tell();
+        tell(); // -1 morale for all soldiers in province
     }
 
     @Override
@@ -93,5 +94,11 @@ public class Province implements Locable, Taxable, Wealthable, Turnable, Subject
     public void tell() {
         for (Observer observer : observers)
             observer.update(this);
+    }
+
+    @Override
+    public void update(Subject subject) {
+        if (subject instanceof Turn) // next turn notified
+            this.nextTurn();
     }
 }
