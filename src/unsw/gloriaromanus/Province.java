@@ -1,5 +1,8 @@
 package unsw.gloriaromanus;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
 import unsw.gloriaromanus.component.Tax;
@@ -15,11 +18,13 @@ public class Province implements Locable, Taxable, Wealthable, ObserverTax {
     private final Locale locale;
     private final Tax tax;
     private final Wealth wealth;
+    private final List<Unit> units;
 
     public Province(String name) {
         this.locale = new Locale(name);
         this.tax = new Tax();
         this.wealth = new Wealth();
+        this.units = new ArrayList<Unit>();
     }
 
     @Override
@@ -86,7 +91,7 @@ public class Province implements Locable, Taxable, Wealthable, ObserverTax {
     }
 
     @Override
-    public void update() {
+    public void update(new turn) {
         collectTax();
         addWealth(getWealthGrowth());     
     }
