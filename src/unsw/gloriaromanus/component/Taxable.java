@@ -10,7 +10,7 @@ public interface Taxable {
 
     public float getTaxRate();
 
-    public int collectTax();
+    public void collectTax();
 
     public int getWealthGrowthChange();
 }
