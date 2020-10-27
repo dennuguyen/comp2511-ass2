@@ -6,8 +6,8 @@ package unsw.gloriaromanus.util;
 
 public class Pair<K, V> {
 
-    public final K first;
-    public final V second;
+    public K first;
+    public V second;
 
     /**
      * Pair constructor
