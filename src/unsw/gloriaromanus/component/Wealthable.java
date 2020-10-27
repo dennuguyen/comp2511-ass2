@@ -21,13 +21,6 @@ public interface Wealthable {
     public int getWealthGrowth();
 
     /**
-     * Subtract from town wealth
-     * 
-     * @param amount to subtract
-     */
-    public void subtractWealth(int amount);
-
-    /**
      * Add amount to town wealth
      * 
      * @param amount amount to add

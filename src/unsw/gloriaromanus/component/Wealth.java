@@ -1,3 +1,7 @@
+/**
+ * Wealth implementation of wealthable
+ */
+
 package unsw.gloriaromanus.component;
 
 import unsw.gloriaromanus.util.Observer;
@@ -11,10 +15,9 @@ public class Wealth implements Wealthable, Turnable, Observer {
     /**
      * Simple constructor
      */
-
     public Wealth() {
-        amount = 0;
-        rate = 0;
+        this.amount = 0;
+        this.rate = 0;
     }
 
     /**
@@ -27,6 +30,12 @@ public class Wealth implements Wealthable, Turnable, Observer {
         this.rate = 0;
     }
 
+    /**
+     * Limit wealth values to be non-negative
+     * 
+     * @param value Value to limit
+     * @return Limited value
+     */
     private int limit(int value) {
         if (value < 0)
             value = 0;
@@ -35,18 +44,12 @@ public class Wealth implements Wealthable, Turnable, Observer {
 
     @Override
     public int getWealth() {
-        return amount;
+        return this.amount;
     }
 
     @Override
     public int getWealthGrowth() {
-        return rate;
-    }
-
-    @Override
-    public void subtractWealth(int amount) {
-        this.amount -= amount;
-        this.amount = limit(this.amount);
+        return this.rate;
     }
 
     @Override
@@ -63,12 +66,14 @@ public class Wealth implements Wealthable, Turnable, Observer {
 
     @Override
     public void nextTurn() {
-        this.amount += this.rate;
+        this.amount += this.rate; // generate wealth on a turnly basis
     }
 
     @Override
     public void update(Subject subject) {
-        if (subject instanceof Turn)
+        if (subject instanceof Turn) // observed new turn
             this.nextTurn();
+        if (subject instanceof Tax) // observed changed in tax level
+            this.addWealthGrowth(((Tax) subject).getWealthGrowthChange());
     }
 }

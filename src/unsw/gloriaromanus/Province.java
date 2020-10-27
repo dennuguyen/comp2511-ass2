@@ -1,6 +1,5 @@
 package unsw.gloriaromanus;
 
-import java.util.List;
 import java.util.ArrayList;
 
 import unsw.gloriaromanus.component.Locable;
@@ -8,23 +7,24 @@ import unsw.gloriaromanus.component.Locale;
 import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
+import unsw.gloriaromanus.component.Turnable;
 import unsw.gloriaromanus.component.Wealthable;
-import unsw.gloriaromanus.util.ObserverTax;
-import unsw.gloriaromanus.util.SubjectTax;
+import unsw.gloriaromanus.util.Observer;
+import unsw.gloriaromanus.util.Subject;
 import unsw.gloriaromanus.component.Wealth;
 
-public class Province implements Locable, Taxable, Wealthable, ObserverTax {
+public class Province implements Locable, Taxable, Wealthable, Turnable, Subject {
 
     private final Locale locale;
     private final Tax tax;
     private final Wealth wealth;
-    private final List<Unit> units;
+
+    private ArrayList<Observer> observers; // unit observers
 
     public Province(String name) {
         this.locale = new Locale(name);
         this.tax = new Tax();
         this.wealth = new Wealth();
-        this.units = new ArrayList<Unit>();
     }
 
     @Override
@@ -38,20 +38,19 @@ public class Province implements Locable, Taxable, Wealthable, ObserverTax {
     }
 
     @Override
-    public float getTaxRate() {
+    public int getTaxRate() {
         return this.tax.getTaxRate();
     }
 
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
         tax.setTaxLevel(taxLevel);
+        tell();
     }
 
     @Override
     public void collectTax() {
-        int taxRevenue = tax.collectTaxImple(wealth.getWealth());
-        subtractWealth(taxRevenue);
-        // notify faction to add tax to treasury
+        // Notify faction to add tax to treasury
     }
 
     @Override
@@ -65,17 +64,7 @@ public class Province implements Locable, Taxable, Wealthable, ObserverTax {
     }
 
     @Override
-    public int getWealthGrowthChange() {
-        return this.tax.getWealthGrowthChange();
-    }
-
-    @Override
-    public void subtractWealth(int amount){
-        this.wealth.subtractWealth(amount);
-    }
-
-    @Override
-    public void addWealth(int amount){
+    public void addWealth(int amount) {
         this.wealth.addWealth(amount);
     }
 
@@ -85,14 +74,24 @@ public class Province implements Locable, Taxable, Wealthable, ObserverTax {
     }
 
     @Override
-    public void update(SubjectTax obj) {
-        int rate = ((Tax)obj).getWealthGrowthChange();
-        addWealthGrowth(rate);
+    public void nextTurn() {
+        this.collectTax();
     }
 
     @Override
-    public void update(new turn) {
-        collectTax();
-        addWealth(getWealthGrowth());     
+    public void attach(Observer observer) {
+        if (!this.observers.contains(observer))
+            this.observers.add(observer);
+    }
+
+    @Override
+    public void detach(Observer observer) {
+        this.observers.remove(observer);
+    }
+
+    @Override
+    public void tell() {
+        for (Observer observer : observers)
+            observer.update(this);
     }
 }
