@@ -22,10 +22,46 @@ public class UnitTest{
     // }
 
     @Test
-    public void testSetWealth() {
+    public void testSetTaxRate() {
         Province p = new Province("Britannia");
-        p.setTaxRate(Tax.lowTax);
-        assertEquals(p.getTaxRate(), 10);
+        p.setTaxLevel(new LowTax());
+        assertEquals(p.getTaxRate(), 10.0);
+        assertEquals(p.getWealthGrowthChange(), 10);
+
+        p.setTaxLevel(new NormalTax());
+        assertEquals(p.getTaxRate(), 15.0);
+        assertEquals(p.getWealthGrowthChange(), 0);
+        
+        p.setTaxLevel(new HighTax());
+        assertEquals(p.getTaxRate(), 20.0);
+        assertEquals(p.getWealthGrowthChange(), -10);
+        
+        p.setTaxLevel(new VeryHighTax());
+        assertEquals(p.getTaxRate(), 25.0);
+        assertEquals(p.getWealthGrowthChange(), -30);
+    }
+
+    @Test
+    public void testAddSubtractWealth() {
+        Province p = new Province("Britannia");
+        p.addWealth(100);
+        assertEquals(p.getWealth(), 100);
+        p.subtractWealth(50);
+        assertEquals(p.getWealth(), 50);
+    }
+
+    @Test
+    public void testCollectTax() {
+        Province p = new Province("Britannia");
+        p.addWealth(100);
+        p.setTaxLevel(new LowTax());
+        assertEquals(p.collectTax(), 10);
+        assertEquals(p.getWealth(), 90);
+
+        p.addWealth(10);
+        p.setTaxLevel(new VeryHighTax());
+        assertEquals(p.collectTax(), 25);
+        assertEquals(p.getWealth(), 75);
     }
 }
 
