@@ -11,15 +11,20 @@ import unsw.gloriaromanus.util.Subject;
 
 public class Turn implements Turnable, Subject {
 
-    private static final Turn turnSingleton = new Turn();
-
     private int turn = 0;
     private ArrayList<Observer> observers;
 
     /**
      * Turn constructor
      */
-    public Turn() {
+    private Turn() {
+    }
+
+    /**
+     * Bill Pugh singleton
+     */
+    private static class BillPughTurn {
+        private static final Turn turnSingleton = new Turn();
     }
 
     /**
@@ -28,7 +33,7 @@ public class Turn implements Turnable, Subject {
      * @return Turn singleton
      */
     public static Turn getInstance() {
-        return Turn.turnSingleton;
+        return BillPughTurn.turnSingleton;
     }
 
     /**
