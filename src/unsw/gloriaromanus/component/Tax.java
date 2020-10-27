@@ -6,17 +6,17 @@ package unsw.gloriaromanus.component;
 
 import java.util.ArrayList;
 
-import unsw.gloriaromanus.util.Observer;
-import unsw.gloriaromanus.util.Subject;
+import unsw.gloriaromanus.util.ObserverTax;
+import unsw.gloriaromanus.util.SubjectTax;
 
-public class Tax implements Taxable, Subject {
+public class Tax implements Taxable, SubjectTax {
 
-    ArrayList<Observer> listObservers = new ArrayList<Observer>();
+    ArrayList<ObserverTax> listObservers = new ArrayList<ObserverTax>();
 
     TaxLevel taxLevel;
 
     public Tax() {
-        taxLevel = new NormalTax();
+        taxLevel = new LowTax();
     }
 
     @Override
@@ -41,23 +41,23 @@ public class Tax implements Taxable, Subject {
     }
 
     @Override
-    public int collectTax () {
-        return 0;
+    public void collectTax () {
+        return;
     }
 
     @Override
-	public void attach(Observer o) {
+	public void attach(ObserverTax o) {
 		if(! listObservers.contains(o)) { listObservers.add(o); }
 	}
 
 	@Override
-	public void detach(Observer o) {
+	public void detach(ObserverTax o) {
 		listObservers.remove(o);
 	}
 
     @Override
     public void tell() {
-        for( Observer obs : listObservers) {
+        for( ObserverTax obs : listObservers) {
 			obs.update(this);
 		}
     }

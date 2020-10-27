@@ -6,9 +6,11 @@ import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
 import unsw.gloriaromanus.component.Wealthable;
+import unsw.gloriaromanus.util.ObserverTax;
+import unsw.gloriaromanus.util.SubjectTax;
 import unsw.gloriaromanus.component.Wealth;
 
-public class Province implements Locable, Taxable, Wealthable {
+public class Province implements Locable, Taxable, Wealthable, ObserverTax {
 
     private final Locale locale;
     private final Tax tax;
@@ -41,10 +43,10 @@ public class Province implements Locable, Taxable, Wealthable {
     }
 
     @Override
-    public int collectTax() {
-        int tax = this.tax.collectTaxImple(wealth.getWealth());
-        subtractWealth(tax);
-        return tax;
+    public void collectTax() {
+        int taxRevenue = tax.collectTaxImple(wealth.getWealth());
+        subtractWealth(taxRevenue);
+        // notify faction to add tax to treasury
     }
 
     @Override
@@ -75,5 +77,17 @@ public class Province implements Locable, Taxable, Wealthable {
     @Override
     public void addWealthGrowth(int rate) {
         this.wealth.addWealthGrowth(rate);
+    }
+
+    @Override
+    public void update(SubjectTax obj) {
+        int rate = ((Tax)obj).getWealthGrowthChange();
+        addWealthGrowth(rate);
+    }
+
+    @Override
+    public void update() {
+        collectTax();
+        addWealth(getWealthGrowth());     
     }
 }

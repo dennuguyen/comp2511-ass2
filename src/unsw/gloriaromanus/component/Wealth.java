@@ -3,7 +3,7 @@ package unsw.gloriaromanus.component;
 import unsw.gloriaromanus.util.Observer;
 import unsw.gloriaromanus.util.Subject;
 
-public class Wealth implements Wealthable, Observer {
+public class Wealth implements Wealthable {
     
     int amount;
     int rate;
@@ -36,9 +36,11 @@ public class Wealth implements Wealthable, Observer {
         return rate;
     }
 
+
     @Override
     public void subtractWealth(int amount) {
         this.amount -= amount;
+        if (this.amount < 0) this.amount = 0;
     }
 
     @Override
@@ -49,13 +51,5 @@ public class Wealth implements Wealthable, Observer {
     @Override
     public void addWealthGrowth(int rate) {
         this.rate += rate;
-    }
-
-    @Override
-    public void update(Subject obj) {
-        if(obj instanceof Tax) {
-            int rate = ((Tax)obj).getWealthGrowthChange();
-            addWealthGrowth(rate);
-        }
     }
 }
