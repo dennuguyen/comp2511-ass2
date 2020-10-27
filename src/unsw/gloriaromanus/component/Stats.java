@@ -63,10 +63,12 @@ public class Stats implements Statable {
         this.stats = stats.stats;
     }
 
+    @Override
     public int getStat(Stats.Type type) {
         return this.stats.get(type);
     }
 
+    @Override
     public void setStat(Stats.Type type, int value) {
         this.stats.put(type, value);
     }
