@@ -1,21 +1,45 @@
 /**
- * Implementation of Moveable
+ * Implementation of Moveable interface
  */
 
 package unsw.gloriaromanus.component;
 
 public class Move implements Moveable {
 
-    public static final int artilleryMoveCapacity = 4;
-    public static final int cavalryMoveCapacity = 15;
-    public static final int infantryMoveCapacity = 10;
+    public static enum Type {
+        ARTILLERY(4), CAVALRY(15), INFANTRY(10);
 
+        private int moveCapacity;
+
+        /**
+         * Move type constructor
+         * 
+         * @param moveCapacity Move capacity
+         */
+        Type(int moveCapacity) {
+            this.moveCapacity = moveCapacity;
+        }
+
+        /**
+         * Gets the move capacity associated with the enum
+         * 
+         * @return Move capacity
+         */
+        public int getMoveCapacity() {
+            return this.moveCapacity;
+        }
+    };
+
+    private Move.Type moveType;
     private int movesLeft;
-    private int moveType;
 
-    public Move(int moveType) {
-        this.movesLeft = moveType;
+    /**
+     * 
+     * @param moveType
+     */
+    public Move(Move.Type moveType) {
         this.moveType = moveType;
+        this.movesLeft = moveType.getMoveCapacity();
     }
 
     /**
@@ -30,6 +54,10 @@ public class Move implements Moveable {
         if (this.movesLeft < 0)
             this.movesLeft = 0;
         return exhaust - this.movesLeft;
+    }
+
+    private int dijkstra() {
+        return 0;
     }
 
     /**

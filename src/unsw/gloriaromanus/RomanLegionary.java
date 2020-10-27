@@ -4,37 +4,15 @@
 
 package unsw.gloriaromanus;
 
-import unsw.gloriaromanus.component.Locable;
-import unsw.gloriaromanus.component.Locale;
+import unsw.gloriaromanus.component.Stats;
 import unsw.gloriaromanus.component.Move;
-import unsw.gloriaromanus.component.Moveable;
 
-public class RomanLegionary extends Unit implements Moveable, Locable {
-
-    private final Locale locale;
-    private final Move move;
+public class RomanLegionary extends Unit {
 
     /**
-     * Roman Legionary
+     * Roman Legionary constructor
      */
     public RomanLegionary(String spawn) {
-        this.locale = new Locale(spawn);
-        this.move = new Move(Move.infantryMoveCapacity);
-    }
-
-    @Override
-    public String getLocation() {
-        return this.locale.getLocation();
-    }
-
-    @Override
-    public String setLocation(String location) {
-        return this.locale.setLocation(location);
-    }
-
-    @Override
-    public String moveTo(String destination) {
-        return this.locale
-                .setLocation(this.move.moveToImple(this.locale.getLocation(), destination));
+        super(spawn, Move.Type.INFANTRY, new Stats(80, 90, 60, 50, 1000, 40, 10, 40));
     }
 }
