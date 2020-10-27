@@ -10,8 +10,10 @@ import unsw.gloriaromanus.component.Move;
 import unsw.gloriaromanus.component.Moveable;
 import unsw.gloriaromanus.component.Statable;
 import unsw.gloriaromanus.component.Stats;
+import unsw.gloriaromanus.util.Observer;
+import unsw.gloriaromanus.util.Subject;
 
-public class Unit implements Entity, Locable, Moveable, Statable {
+public class Unit implements Entity, Locable, Moveable, Statable, Observer {
 
     private final Locale locale;
     private final Move move;
@@ -47,5 +49,11 @@ public class Unit implements Entity, Locable, Moveable, Statable {
     @Override
     public void setStat(Stats.Type type, int value) {
         this.stats.setStat(type, value);
+    }
+
+    @Override
+    public void update(Subject subject) {
+        if (subject instanceof Province) // -1 morale
+            this.setStat(Stats.Type.MORALE, this.getStat(Stats.Type.MORALE) - 1);
     }
 }
