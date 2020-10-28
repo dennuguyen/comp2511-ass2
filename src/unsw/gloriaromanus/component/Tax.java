@@ -15,6 +15,9 @@ public class Tax implements Taxable, PubSubable {
 
     public Tax() {
         this.taxLevel = new LowTax();
+        this.addPublisher(Topic.WEALTH_GROWTH_DUE_TO_TAX);
+        this.addPublisher(Topic.MORALE_DUE_TO_TAX);
+        this.addSubscriber(Topic.NEXT_TURN);
     }
 
     @Override
@@ -25,10 +28,8 @@ public class Tax implements Taxable, PubSubable {
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
         this.taxLevel = taxLevel;
-        this.publish(Topic.WEALTH_DUE_TO_TAX, Message.of(this.taxLevel.getWealthGrowthChange())); // affect
-                                                                                                  // town
-                                                                                                  // wealth
-                                                                                                  // growth
+        this.publish(Topic.WEALTH_GROWTH_DUE_TO_TAX,
+                Message.of(this.taxLevel.getWealthGrowthChange())); // affect town wealth growth
         if (taxLevel instanceof VeryHighTax)
             this.publish(Topic.MORALE_DUE_TO_TAX, Message.of(-1)); // -1 morale
     }
@@ -65,9 +66,9 @@ public class Tax implements Taxable, PubSubable {
     @Override
     public void listen(Topic topic, Message<Object> message) {
         switch (topic) {
-            case WEALTH_DUE_TO_TAX:
-                break;
-            case MORALE_DUE_TO_TAX:
+            case NEXT_TURN:
+                this.collectTax();
+                this.publish(Topic.TAX_COLLECTION, message);
                 break;
             default:
                 break;

@@ -5,5 +5,5 @@
 package unsw.gloriaromanus.util;
 
 public enum Topic {
-    NEXT_TURN, WEALTH_DUE_TO_TAX, MORALE_DUE_TO_TAX;
+    NEXT_TURN, WEALTH_GROWTH_DUE_TO_TAX, MORALE_DUE_TO_TAX, TAX_COLLECTION;
 }

@@ -4,10 +4,12 @@
 
 package unsw.gloriaromanus.component;
 
-import unsw.gloriaromanus.util.Observer;
-import unsw.gloriaromanus.util.Subject;
+import unsw.gloriaromanus.util.Message;
+import unsw.gloriaromanus.util.PubSub;
+import unsw.gloriaromanus.util.PubSubable;
+import unsw.gloriaromanus.util.Topic;
 
-public class Wealth implements Wealthable, Turnable, Observer {
+public class Wealth implements Wealthable, PubSubable {
 
     int amount;
     int rate;
@@ -16,8 +18,7 @@ public class Wealth implements Wealthable, Turnable, Observer {
      * Simple constructor
      */
     public Wealth() {
-        this.amount = 0;
-        this.rate = 0;
+        this(0);
     }
 
     /**
@@ -65,15 +66,42 @@ public class Wealth implements Wealthable, Turnable, Observer {
     }
 
     @Override
-    public void nextTurn() {
-        this.amount += this.rate; // generate wealth on a turnly basis
+    public void addPublisher(Topic topic) {
+        PubSub.getInstance().addPublisher(this, topic);
     }
 
     @Override
-    public void update(Subject subject) {
-        if (subject instanceof Turn) // next turn notified
-            this.nextTurn();
-        if (subject instanceof Tax) // observed changed in tax level
-            this.addWealthGrowth(((Tax) subject).getWealthGrowthChange());
+    public void addSubscriber(Topic topic) {
+        PubSub.getInstance().addSubscriber(this, topic);
+    }
+
+    @Override
+    public void publish(Topic topic, Message<Object> message) {
+        PubSub.getInstance().publish(topic, message);
+    }
+
+    @Override
+    public void listen(Topic topic, Message<Object> message) {
+        switch (topic) {
+            case NEXT_TURN:
+                this.addWealth(this.rate);
+            case WEALTH_GROWTH_DUE_TO_TAX:
+                this.addWealthGrowth((Integer) message.getMessage());
+                break;
+            case TAX_COLLECTION:
+                this.addWealth((Integer) message.getMessage());
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void unpublish(Topic topic) {
+        PubSub.getInstance().unpublish(this, topic);
+    }
+
+    @Override
+    public void unsubscribe(Topic topic) {
+        PubSub.getInstance().unsubscribe(this, topic);
     }
 }
