@@ -19,7 +19,7 @@ public class Move implements Moveable, Turnable, Observer {
          * 
          * @param moveCapacity Move capacity
          */
-        Type(int moveCapacity) {
+        private Type(int moveCapacity) {
             this.moveCapacity = moveCapacity;
         }
     };
