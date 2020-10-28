@@ -12,7 +12,8 @@ util="src/unsw/gloriaromanus/util/"
 javac $modules $test*.java $gloria*.java $component*.java $util*.java -cp "./lib/*"
 
 # Run java main
-if [ "$1" == "-test" ]; then
+if [ "$1" == "--test" ]; then
+    echo ""
     echo "======== TEST MODE ========"
     main="test.GloriaRomanusTest"
 else
