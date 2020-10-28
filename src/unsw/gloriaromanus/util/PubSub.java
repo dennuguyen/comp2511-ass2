@@ -26,7 +26,7 @@ public class PubSub implements PubSubable {
     /**
      * Bill Pugh singleton
      */
-    private static class BillPughTopicServer {
+    private static class BillPughPubSub {
         private static final PubSub pubSubSingleton = new PubSub();
     }
 
@@ -36,7 +36,7 @@ public class PubSub implements PubSubable {
      * @return Topic server singleton
      */
     public static PubSub getInstance() {
-        return BillPughTopicServer.pubSubSingleton;
+        return BillPughPubSub.pubSubSingleton;
     }
 
     /**
