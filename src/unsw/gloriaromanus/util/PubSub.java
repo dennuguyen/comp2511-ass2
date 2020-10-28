@@ -14,9 +14,9 @@ import java.util.Map;
 
 public class PubSub implements PubSubable {
 
-    private Map<String, PubSubable> publishers = new HashMap<String, PubSubable>();
-    private Map<String, ArrayList<PubSubable>> subscribers =
-            new HashMap<String, ArrayList<PubSubable>>();
+    private Map<Topic, PubSubable> publishers = new HashMap<Topic, PubSubable>();
+    private Map<Topic, ArrayList<PubSubable>> subscribers =
+            new HashMap<Topic, ArrayList<PubSubable>>();
 
     /**
      * Topic server constructor
@@ -45,14 +45,14 @@ public class PubSub implements PubSubable {
      * 
      * @return List of topics
      */
-    public ArrayList<String> getTopics() {
-        ArrayList<String> topics = new ArrayList<String>(this.publishers.keySet());
+    public ArrayList<Topic> getTopics() {
+        ArrayList<Topic> topics = new ArrayList<Topic>(this.publishers.keySet());
         topics.addAll(this.subscribers.keySet());
         return topics;
     }
 
     @Override
-    public void addPublisher(PubSubable publisher, String topic) {
+    public void addPublisher(PubSubable publisher, Topic topic) {
 
         // if topic does not exist, create a new entry for publishers
         if (!this.publishers.containsKey(topic))
@@ -60,7 +60,7 @@ public class PubSub implements PubSubable {
     }
 
     @Override
-    public void addSubscriber(PubSubable subscriber, String topic) {
+    public void addSubscriber(PubSubable subscriber, Topic topic) {
 
         ArrayList<PubSubable> temp = null; // temp list
 
@@ -74,24 +74,24 @@ public class PubSub implements PubSubable {
     }
 
     @Override
-    public void publish(String topic, Message message) {
+    public void publish(Topic topic, Message<Object> message) {
         for (PubSubable subscriber : this.subscribers.get(topic))
             subscriber.listen(topic, message);
     }
 
     @Override
-    public void listen(String topic, Message message) {
+    public void listen(Topic topic, Message<Object> message) {
         // Listeners implement this function
     }
 
     @Override
-    public void unpublish(PubSubable publisher, String topic) {
+    public void unpublish(PubSubable publisher, Topic topic) {
         if (this.publishers.containsKey(topic))
             this.publishers.put(topic, null);
     }
 
     @Override
-    public void unsubscribe(PubSubable subscriber, String topic) {
+    public void unsubscribe(PubSubable subscriber, Topic topic) {
         if (this.subscribers.containsKey(topic)) {
             ArrayList<PubSubable> temp = this.subscribers.get(topic);
             if (temp == null)

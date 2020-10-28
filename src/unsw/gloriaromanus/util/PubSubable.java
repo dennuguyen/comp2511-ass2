@@ -12,7 +12,7 @@ public interface PubSubable {
      * @param publisher Object implementing PubSubable
      * @param topic     Name of topic
      */
-    public void addPublisher(PubSubable publisher, String topic);
+    public void addPublisher(PubSubable publisher, Topic topic);
 
     /**
      * Add subscriber to topic server
@@ -20,7 +20,7 @@ public interface PubSubable {
      * @param publisher Object implementing PubSubable
      * @param topic     Name of topic
      */
-    public void addSubscriber(PubSubable subscriber, String topic);
+    public void addSubscriber(PubSubable subscriber, Topic topic);
 
     /**
      * Publish message to topic
@@ -28,7 +28,7 @@ public interface PubSubable {
      * @param topic   Published topic
      * @param message Message to send
      */
-    public void publish(String topic, Message message);
+    public void publish(Topic topic, Message<Object> message);
 
     /**
      * Listen to topic for message
@@ -36,7 +36,7 @@ public interface PubSubable {
      * @param topic   Subscribed topic
      * @param message Message to receive
      */
-    public void listen(String topic, Message message);
+    public void listen(Topic topic, Message<Object> message);
 
     /**
      * Remove publisher from topic server
@@ -44,7 +44,7 @@ public interface PubSubable {
      * @param publisher Publisher object
      * @param topic     Topic to remove publisher from
      */
-    public void unpublish(PubSubable publisher, String topic);
+    public void unpublish(PubSubable publisher, Topic topic);
 
     /**
      * Remove subscriber from topic server
@@ -52,5 +52,5 @@ public interface PubSubable {
      * @param subscriber Subscriber object
      * @param topic      Topic to remove subscriber from
      */
-    public void unsubscribe(PubSubable subscriber, String topic);
+    public void unsubscribe(PubSubable subscriber, Topic topic);
 }
