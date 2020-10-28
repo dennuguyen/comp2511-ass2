@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TopicServer implements PubSubable {
+public class PubSub implements PubSubable {
 
     private Map<String, PubSubable> publishers = new HashMap<String, PubSubable>();
     private Map<String, ArrayList<PubSubable>> subscribers =
@@ -21,14 +21,14 @@ public class TopicServer implements PubSubable {
     /**
      * Topic server constructor
      */
-    private TopicServer() {
+    private PubSub() {
     }
 
     /**
      * Bill Pugh singleton
      */
     private static class BillPughTopicServer {
-        private static final TopicServer topicServerSingleton = new TopicServer();
+        private static final PubSub pubSubSingleton = new PubSub();
     }
 
     /**
@@ -36,8 +36,8 @@ public class TopicServer implements PubSubable {
      * 
      * @return Topic server singleton
      */
-    public static TopicServer getInstance() {
-        return BillPughTopicServer.topicServerSingleton;
+    public static PubSub getInstance() {
+        return BillPughTopicServer.pubSubSingleton;
     }
 
     /**
