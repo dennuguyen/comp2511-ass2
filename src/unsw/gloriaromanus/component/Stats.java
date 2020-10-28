@@ -7,7 +7,7 @@ package unsw.gloriaromanus.component;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Stats implements Statable, Turnable {
+public class Stats implements Statable {
 
     public static enum Type {
         ARMOUR, // physical armour rating
@@ -71,10 +71,5 @@ public class Stats implements Statable, Turnable {
     @Override
     public void setStat(Stats.Type type, int value) {
         this.stats.get(type).setStat(value);
-    }
-
-    @Override
-    public void nextTurn() {
-
     }
 }
