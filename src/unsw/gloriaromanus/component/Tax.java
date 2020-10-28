@@ -15,9 +15,9 @@ public class Tax implements Taxable, PubSubable {
 
     public Tax() {
         this.taxLevel = new LowTax();
-        this.addPublisher(Topic.WEALTH_GROWTH_DUE_TO_TAX);
-        this.addPublisher(Topic.MORALE_DUE_TO_TAX);
-        this.addSubscriber(Topic.NEXT_TURN);
+        this.publishTo(Topic.WEALTH_GROWTH_DUE_TO_TAX);
+        this.publishTo(Topic.MORALE_DUE_TO_TAX);
+        this.subscribeTo(Topic.NEXT_TURN);
     }
 
     @Override
@@ -49,13 +49,13 @@ public class Tax implements Taxable, PubSubable {
     }
 
     @Override
-    public void addPublisher(Topic topic) {
-        PubSub.getInstance().addPublisher(this, topic);
+    public void publishTo(Topic topic) {
+        PubSub.getInstance().publishTo(this, topic);
     }
 
     @Override
-    public void addSubscriber(Topic topic) {
-        PubSub.getInstance().addSubscriber(this, topic);
+    public void subscribeTo(Topic topic) {
+        PubSub.getInstance().subscribeTo(this, topic);
     }
 
     @Override

@@ -11,14 +11,14 @@ public interface PubSubable {
      * 
      * @param topic Name of topic
      */
-    public void addPublisher(Topic topic);
+    public void publishTo(Topic topic);
 
     /**
      * Add subscriber to topic server
      * 
      * @param topic Name of topic
      */
-    public void addSubscriber(Topic topic);
+    public void subscribeTo(Topic topic);
 
     /**
      * Publish message to topic

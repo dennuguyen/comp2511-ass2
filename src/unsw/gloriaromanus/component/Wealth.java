@@ -15,20 +15,23 @@ public class Wealth implements Wealthable, PubSubable {
     int rate;
 
     /**
-     * Simple constructor
+     * Default constructor
      */
     public Wealth() {
         this(0);
     }
 
     /**
-     * Constructor using given starting amount for town wealth
+     * Base constructor for Wealth using given starting amount for town wealth
      * 
      * @param amount starting amount of wealth
      */
     public Wealth(int amount) {
         this.amount = amount;
         this.rate = 0;
+        this.subscribeTo(Topic.NEXT_TURN);
+        this.subscribeTo(Topic.WEALTH_GROWTH_DUE_TO_TAX);
+        this.subscribeTo(Topic.TAX_COLLECTION);
     }
 
     /**
@@ -66,13 +69,13 @@ public class Wealth implements Wealthable, PubSubable {
     }
 
     @Override
-    public void addPublisher(Topic topic) {
-        PubSub.getInstance().addPublisher(this, topic);
+    public void publishTo(Topic topic) {
+        PubSub.getInstance().publishTo(this, topic);
     }
 
     @Override
-    public void addSubscriber(Topic topic) {
-        PubSub.getInstance().addSubscriber(this, topic);
+    public void subscribeTo(Topic topic) {
+        PubSub.getInstance().subscribeTo(this, topic);
     }
 
     @Override

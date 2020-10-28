@@ -51,7 +51,7 @@ public class PubSub implements PubSubable {
     }
 
     @Override
-    public void addPublisher(Topic topic) {
+    public void publishTo(Topic topic) {
     }
 
     /**
@@ -60,14 +60,14 @@ public class PubSub implements PubSubable {
      * @param publisher Object implementing PubSubable
      * @param topic     Name of topic
      */
-    public void addPublisher(PubSubable publisher, Topic topic) {
+    public void publishTo(PubSubable publisher, Topic topic) {
         // if topic does not exist, create a new entry for publishers
         if (!this.publishers.containsKey(topic))
             this.publishers.put(topic, publisher);
     }
 
     @Override
-    public void addSubscriber(Topic topic) {
+    public void subscribeTo(Topic topic) {
     }
 
     /**
@@ -76,7 +76,7 @@ public class PubSub implements PubSubable {
      * @param publisher Object implementing PubSubable
      * @param topic     Name of topic
      */
-    public void addSubscriber(PubSubable subscriber, Topic topic) {
+    public void subscribeTo(PubSubable subscriber, Topic topic) {
         ArrayList<PubSubable> temp = null; // temp list
 
         if (this.subscribers.containsKey(topic))
