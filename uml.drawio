@@ -1,6 +1,6 @@
-<mxfile host="65bd71144e" modified="2020-10-28T06:02:59.315Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.50.1 Chrome/83.0.4103.122 Electron/9.2.1 Safari/537.36" etag="TOQt8umQINvJHzZxd1eN" version="13.6.5">
+<mxfile host="65bd71144e" modified="2020-10-28T08:53:57.758Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.50.1 Chrome/83.0.4103.122 Electron/9.2.1 Safari/537.36" etag="c__ssAznF5eG9y5PaDxQ" version="13.6.5">
     <diagram id="6988qr3DfwMfVrB6cIxQ" name="Page-1">
-        <mxGraphModel dx="8612" dy="5591" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
+        <mxGraphModel dx="5828" dy="3968" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -325,32 +325,32 @@
                         <mxPoint x="-1820" y="-784" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="261" value="&lt;&lt;Interface&gt;&gt;&#10;PubSubable" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
-                    <mxGeometry x="-1750" y="-790" width="345" height="170" as="geometry"/>
-                </mxCell>
-                <mxCell id="262" value=" " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="261">
-                    <mxGeometry y="40" width="345" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="263" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="261">
-                    <mxGeometry y="66" width="345" height="8" as="geometry"/>
-                </mxCell>
-                <mxCell id="264" value="+ addPublisher(publisher: PubSubable, topic: String): void&#10;+ addSubscriber(subscriber: PubSubable, topic: String): void&#10;+ publish(topic: String, message: Message): void&#10;+ listen(topic: String, message: Message): void&#10;+ unpublish(publisher: PubSubable, topic: String): void&#10;+ unsubscribe(subscriber: PubSubable, topic: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="261">
-                    <mxGeometry y="74" width="345" height="96" as="geometry"/>
-                </mxCell>
                 <mxCell id="265" value="PubSub" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
-                    <mxGeometry x="-1782.5" y="-574" width="410" height="210" as="geometry"/>
+                    <mxGeometry x="-1782.5" y="-574" width="392.5" height="260" as="geometry"/>
                 </mxCell>
                 <mxCell id="266" value="- publishers: Map&lt;String, PubSubable&gt;&#10;- subscribers: Map&lt;String, ArrayList&lt;PubSubable&gt;&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="265">
-                    <mxGeometry y="26" width="410" height="44" as="geometry"/>
+                    <mxGeometry y="26" width="392.5" height="44" as="geometry"/>
                 </mxCell>
                 <mxCell id="267" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="265">
-                    <mxGeometry y="70" width="410" height="8" as="geometry"/>
+                    <mxGeometry y="70" width="392.5" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="268" value="- &lt;&lt;Create&gt;&gt; PubSub()&#10;+ &lt;&lt;Static&gt;&gt; getInstance(): PubSub&#10;+ &lt;&lt;Override&gt;&gt; addPublisher(publisher: PubSubable, topic: String): void&#10;+ &lt;&lt;Override&gt;&gt; addSubscriber(subscriber: PubSubable, topic: String): void&#10;+ &lt;&lt;Override&gt;&gt; publish(topic: String, message: Message): void&#10;+ &lt;&lt;Override&gt;&gt; listen(topic: String, message: Message): void&#10;+ &lt;&lt;Override&gt;&gt; unpublish(publisher: PubSubable, topic: String): void&#10;+ &lt;&lt;Override&gt;&gt; unsubscribe(subscriber: PubSubable, topic: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="265">
-                    <mxGeometry y="78" width="410" height="132" as="geometry"/>
+                <mxCell id="268" value="- &lt;&lt;Create&gt;&gt; PubSub()&#10;+ &lt;&lt;Static&gt;&gt; getInstance(): PubSub&#10;+ &lt;&lt;Override&gt;&gt; publishTo(topic: Topic): void&#10;+ publishTo(publisher: PubSubable, topic: Topic): void&#10;+ &lt;&lt;Override&gt;&gt; subscribeTo(topic: Topic): void&#10;+ subscribeTo(subscriber: PubSubable, topic: Topic): void&#10;+ &lt;&lt;Override&gt;&gt; publish(topic: Topic, message: Message&lt;Object&gt;): void&#10;+ &lt;&lt;Override&gt;&gt; listen(topic: Topic, message: Message&lt;Object&gt;): void&#10;+ &lt;&lt;Override&gt;&gt; unpublish(topic: Topic): void&#10;+ unpublish(publisher: PubSubable, topic: Topic): void&#10;+ &lt;&lt;Override&gt;&gt; unsubscribe(topic: Topic): void&#10;+ unsubscribe(subscriber: PubSubable, topic: Topic): void&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="265">
+                    <mxGeometry y="78" width="392.5" height="182" as="geometry"/>
+                </mxCell>
+                <mxCell id="261" value="&lt;&lt;Interface&gt;&gt;&#10;PubSubable" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="-1747.5" y="-793" width="322.5" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="262" value=" " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="261">
+                    <mxGeometry y="40" width="322.5" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="263" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="261">
+                    <mxGeometry y="66" width="322.5" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="264" value="+ publishTo(topic: Topic): void&#10;+ subscribeTo(topic: Topic): void&#10;+ publish(topic: Topic, message: Message&lt;Object&gt;): void&#10;+ listen(topic: Topic, message: Message&lt;Object&gt;): void&#10;+ unpublish(topic: Topic): void&#10;+ unsubscribe(topic: Topic): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="261">
+                    <mxGeometry y="74" width="322.5" height="96" as="geometry"/>
                 </mxCell>
                 <mxCell id="283" value="PubSub" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
-                    <mxGeometry x="-2090" y="-509" width="220" height="80" as="geometry"/>
+                    <mxGeometry x="-2090" y="-484" width="220" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="284" value="- &lt;&lt;Static&gt;&gt; pubSubSingleton: PubSub" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=4" vertex="1" parent="283">
                     <mxGeometry y="26" width="220" height="24" as="geometry"/>
@@ -360,6 +360,18 @@
                 </mxCell>
                 <mxCell id="286" value=" " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="283">
                     <mxGeometry y="58" width="220" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="291" value="&lt;&lt;Enumeration&gt;&gt;&#10;Topic" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="-2010" y="-740" width="160" height="144" as="geometry"/>
+                </mxCell>
+                <mxCell id="292" value="NEXT_TURN&#10;WEALTH_DUE_TO_TAX&#10;MORALE_DUE_TO_TAX&#10;TAX_COLLECTION" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="291">
+                    <mxGeometry y="40" width="160" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="293" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" vertex="1" parent="291">
+                    <mxGeometry y="110" width="160" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="294" value=" " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="291">
+                    <mxGeometry y="118" width="160" height="26" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
