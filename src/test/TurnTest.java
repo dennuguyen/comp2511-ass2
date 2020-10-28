@@ -2,31 +2,36 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import unsw.gloriaromanus.RomanLegionary;
-import unsw.gloriaromanus.Unit;
-import unsw.gloriaromanus.component.Move;
-import unsw.gloriaromanus.component.Stats;
+import org.junit.Test;
+import unsw.gloriaromanus.Turn;
 
 public class TurnTest {
 
+    Turn turn = null;
+
     @BeforeEach
     public void setUp() {
+        this.turn = Turn.getInstance();
     }
 
     @Test
-    public void unitShouldSpawnWithCorrectStats() {
-        Unit unit = new Unit("location1", Move.Type.CAVALRY, new Stats());
-
-        assertEquals(unit.getLocation(), "Rome");
-        assertEquals(unit.getStat(Stats.Type.STRENGTH), 1000);
+    public void turnInitialisationShouldHaveTurn0() throws Exception {
+        assertEquals(turn.getTurn(), 0);
     }
 
     @Test
-    public void romanLegionaryShouldHaveDefaultStats() {
-        RomanLegionary legionary = new RomanLegionary("Rome");
+    public void turnShouldIncrement() throws Exception {
+        assertEquals(turn.getTurn(), 0);
+        turn.incrementTurn();
+        assertEquals(turn.getTurn(), 1);
+    }
 
-        assertEquals(legionary.getLocation(), "Rome");
-        assertEquals(legionary.getStat(Stats.Type.STRENGTH), 1000);
+    @Test
+    public void onlyOneTurnInstanceShouldEverExist() throws Exception {
+        turn.incrementTurn();
+        Turn turning = Turn.getInstance();
+        assertEquals(turn.getTurn(), 1);
+        assertEquals(turning.getTurn(), 1);
+        assertEquals(turn, turning);
     }
 }
