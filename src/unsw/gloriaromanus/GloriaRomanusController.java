@@ -1,7 +1,7 @@
 package unsw.gloriaromanus;
 
 import unsw.gloriaromanus.util.ArrayUtil;
-
+import unsw.gloriaromanus.util.PubSub;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -81,23 +81,34 @@ public class GloriaRomanusController {
 
     @FXML
     private void initialize() throws JsonParseException, JsonMappingException, IOException {
-        // TODO = you should rely on an object oriented design to determine ownership
-        provinceToOwningFactionMap = getProvinceToOwningFactionMap();
 
-        provinceToNumberTroopsMap = new HashMap<String, Integer>();
-        Random r = new Random();
-        for (String provinceName : provinceToOwningFactionMap.keySet()) {
-            provinceToNumberTroopsMap.put(provinceName, r.nextInt(500));
-        }
+        PubSub pubSub = PubSub.getInstance();
 
-        // TODO = load this from a configuration file you create (user should be able to
-        // select in loading screen)
-        humanFaction = "Rome";
+        Turn turn1 = Turn.getInstance();
+        System.out.println(turn1.getTurn());
+        turn1.incrementTurn();
+        System.out.println(turn1.getTurn());
+        // Turn turn2 = Turn.getInstance();
+        // System.out.println(turn2);
+        // World world = new World("src/unsw/gloriaromanus/province_adjacency_matrix.json");
 
-        currentlySelectedHumanProvince = null;
-        currentlySelectedEnemyProvince = null;
 
-        initializeProvinceLayers();
+        // provinceToOwningFactionMap = getProvinceToOwningFactionMap();
+
+        // provinceToNumberTroopsMap = new HashMap<String, Integer>();
+        // Random r = new Random();
+        // for (String provinceName : provinceToOwningFactionMap.keySet()) {
+        // provinceToNumberTroopsMap.put(provinceName, r.nextInt(500));
+        // }
+
+        // // TODO = load this from a configuration file you create (user should be able to
+        // // select in loading screen)
+        // humanFaction = "Rome";
+
+        // currentlySelectedHumanProvince = null;
+        // currentlySelectedEnemyProvince = null;
+
+        // initializeProvinceLayers();
     }
 
     @FXML
