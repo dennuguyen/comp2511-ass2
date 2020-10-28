@@ -4,28 +4,17 @@
 
 package unsw.gloriaromanus.component;
 
-import java.util.ArrayList;
-import unsw.gloriaromanus.util.Observer;
-import unsw.gloriaromanus.util.Subject;
+import unsw.gloriaromanus.util.Topic;
+import unsw.gloriaromanus.util.Message;
+import unsw.gloriaromanus.util.PubSubable;
+import unsw.gloriaromanus.util.PubSub;
 
-public class Tax implements Taxable, Subject {
-
-    private ArrayList<Observer> observers; // wealth observer
+public class Tax implements Taxable, PubSubable {
 
     TaxLevel taxLevel;
 
     public Tax() {
-        this.observers = new ArrayList<Observer>();
         this.taxLevel = new LowTax();
-    }
-
-    /**
-     * Gets the wealth growth change from the tax level
-     * 
-     * @return Wealth growth change
-     */
-    public int getWealthGrowthChange() {
-        return this.taxLevel.getWealthGrowthChange();
     }
 
     @Override
@@ -36,7 +25,12 @@ public class Tax implements Taxable, Subject {
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
         this.taxLevel = taxLevel;
-        tell(); // affect town wealth growth
+        this.publish(Topic.WEALTH_DUE_TO_TAX, Message.of(this.taxLevel.getWealthGrowthChange())); // affect
+                                                                                                  // town
+                                                                                                  // wealth
+                                                                                                  // growth
+        if (taxLevel instanceof VeryHighTax)
+            this.publish(Topic.MORALE_DUE_TO_TAX, Message.of(-1)); // -1 morale
     }
 
     /**
@@ -54,19 +48,39 @@ public class Tax implements Taxable, Subject {
     }
 
     @Override
-    public void attach(Observer observer) {
-        if (!this.observers.contains(observer))
-            this.observers.add(observer);
+    public void addPublisher(Topic topic) {
+        PubSub.getInstance().addPublisher(this, topic);
     }
 
     @Override
-    public void detach(Observer observer) {
-        this.observers.remove(observer);
+    public void addSubscriber(Topic topic) {
+        PubSub.getInstance().addSubscriber(this, topic);
     }
 
     @Override
-    public void tell() {
-        for (Observer observer : observers)
-            observer.update(this);
+    public void publish(Topic topic, Message<Object> message) {
+        PubSub.getInstance().publish(topic, message);
+    }
+
+    @Override
+    public void listen(Topic topic, Message<Object> message) {
+        switch (topic) {
+            case WEALTH_DUE_TO_TAX:
+                break;
+            case MORALE_DUE_TO_TAX:
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void unpublish(Topic topic) {
+        PubSub.getInstance().unpublish(this, topic);
+    }
+
+    @Override
+    public void unsubscribe(Topic topic) {
+        PubSub.getInstance().unsubscribe(this, topic);
     }
 }

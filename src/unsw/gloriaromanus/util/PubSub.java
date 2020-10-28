@@ -1,9 +1,8 @@
 /**
- * Naive topic server and publisher-subscriber pattern handler.
+ * Naive publisher-subscriber pattern handler.
  * 
- * Topics are mapped to a single publisher and can be mapped to many subscribers.
- * 
- * Topics once created are created forever...
+ * Topics are mapped to a single publisher and can be mapped to many subscribers. Topics are created
+ * and kept forever.
  */
 
 package unsw.gloriaromanus.util;
@@ -52,16 +51,32 @@ public class PubSub implements PubSubable {
     }
 
     @Override
-    public void addPublisher(PubSubable publisher, Topic topic) {
+    public void addPublisher(Topic topic) {
+    }
 
+    /**
+     * Add publisher to topic server
+     * 
+     * @param publisher Object implementing PubSubable
+     * @param topic     Name of topic
+     */
+    public void addPublisher(PubSubable publisher, Topic topic) {
         // if topic does not exist, create a new entry for publishers
         if (!this.publishers.containsKey(topic))
             this.publishers.put(topic, publisher);
     }
 
     @Override
-    public void addSubscriber(PubSubable subscriber, Topic topic) {
+    public void addSubscriber(Topic topic) {
+    }
 
+    /**
+     * Add subscriber to topic server
+     * 
+     * @param publisher Object implementing PubSubable
+     * @param topic     Name of topic
+     */
+    public void addSubscriber(PubSubable subscriber, Topic topic) {
         ArrayList<PubSubable> temp = null; // temp list
 
         if (this.subscribers.containsKey(topic))
@@ -85,12 +100,30 @@ public class PubSub implements PubSubable {
     }
 
     @Override
+    public void unpublish(Topic topic) {
+    }
+
+    /**
+     * Remove publisher from topic server
+     * 
+     * @param publisher Publisher object
+     * @param topic     Topic to remove publisher from
+     */
     public void unpublish(PubSubable publisher, Topic topic) {
         if (this.publishers.containsKey(topic))
             this.publishers.put(topic, null);
     }
 
     @Override
+    public void unsubscribe(Topic topic) {
+    }
+
+    /**
+     * Remove subscriber from topic server
+     * 
+     * @param subscriber Subscriber object
+     * @param topic      Topic to remove subscriber from
+     */
     public void unsubscribe(PubSubable subscriber, Topic topic) {
         if (this.subscribers.containsKey(topic)) {
             ArrayList<PubSubable> temp = this.subscribers.get(topic);

@@ -9,18 +9,16 @@ public interface PubSubable {
     /**
      * Add publisher to topic server
      * 
-     * @param publisher Object implementing PubSubable
-     * @param topic     Name of topic
+     * @param topic Name of topic
      */
-    public void addPublisher(PubSubable publisher, Topic topic);
+    public void addPublisher(Topic topic);
 
     /**
      * Add subscriber to topic server
      * 
-     * @param publisher Object implementing PubSubable
-     * @param topic     Name of topic
+     * @param topic Name of topic
      */
-    public void addSubscriber(PubSubable subscriber, Topic topic);
+    public void addSubscriber(Topic topic);
 
     /**
      * Publish message to topic
@@ -41,16 +39,14 @@ public interface PubSubable {
     /**
      * Remove publisher from topic server
      * 
-     * @param publisher Publisher object
-     * @param topic     Topic to remove publisher from
+     * @param topic Topic to remove publisher from
      */
-    public void unpublish(PubSubable publisher, Topic topic);
+    public void unpublish(Topic topic);
 
     /**
      * Remove subscriber from topic server
      * 
-     * @param subscriber Subscriber object
-     * @param topic      Topic to remove subscriber from
+     * @param topic Topic to remove subscriber from
      */
-    public void unsubscribe(PubSubable subscriber, Topic topic);
+    public void unsubscribe(Topic topic);
 }
