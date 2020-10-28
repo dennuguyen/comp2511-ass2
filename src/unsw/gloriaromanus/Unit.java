@@ -19,6 +19,13 @@ public class Unit implements Entity, Locable, Moveable, Statable, Observer {
     private final Move move;
     private final Stats stats;
 
+    /**
+     * Unit constructor
+     * 
+     * @param spawn        Initial location
+     * @param movementType Unit's movement type
+     * @param stats        Base stats
+     */
     public Unit(String spawn, Move.Type movementType, Stats stats) {
         this.locale = new Locale(spawn);
         this.move = new Move(movementType);
