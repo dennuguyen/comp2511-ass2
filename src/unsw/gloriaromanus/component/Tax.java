@@ -68,7 +68,7 @@ public class Tax implements Taxable, PubSubable {
         switch (topic) {
             case NEXT_TURN:
                 this.collectTax();
-                this.publish(Topic.TAX_COLLECTION, message);
+                this.publish(Topic.COLLECT_TAX_FROM_WEALTH, message);
                 break;
             default:
                 break;

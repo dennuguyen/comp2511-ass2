@@ -31,7 +31,7 @@ public class Wealth implements Wealthable, PubSubable {
         this.rate = 0;
         this.subscribeTo(Topic.NEXT_TURN);
         this.subscribeTo(Topic.WEALTH_GROWTH_DUE_TO_TAX);
-        this.subscribeTo(Topic.TAX_COLLECTION);
+        this.subscribeTo(Topic.COLLECT_TAX_FROM_WEALTH);
     }
 
     /**
@@ -96,7 +96,7 @@ public class Wealth implements Wealthable, PubSubable {
             case WEALTH_GROWTH_DUE_TO_TAX:
                 this.setWealthGrowth((Integer) message.getMessage());
                 break;
-            case TAX_COLLECTION:
+            case COLLECT_TAX_FROM_WEALTH:
                 this.addWealth((Integer) message.getMessage());
             default:
                 break;
