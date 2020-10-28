@@ -57,6 +57,11 @@ public class Wealth implements Wealthable, PubSubable {
     }
 
     @Override
+    public void setWealthGrowth(int rate) {
+        this.rate = rate;
+    }
+
+    @Override
     public void addWealth(int amount) {
         this.amount += amount;
         this.amount = limit(this.amount);
@@ -89,7 +94,7 @@ public class Wealth implements Wealthable, PubSubable {
             case NEXT_TURN:
                 this.addWealth(this.rate);
             case WEALTH_GROWTH_DUE_TO_TAX:
-                this.addWealthGrowth((Integer) message.getMessage());
+                this.setWealthGrowth((Integer) message.getMessage());
                 break;
             case TAX_COLLECTION:
                 this.addWealth((Integer) message.getMessage());

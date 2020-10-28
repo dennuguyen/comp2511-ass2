@@ -14,6 +14,13 @@ public interface Wealthable {
     public int getWealth();
 
     /**
+     * Set the town wealth growth rate of a province
+     * 
+     * @param rate New growth rate
+     */
+    public void setWealthGrowth(int rate);
+
+    /**
      * Returns the town wealth growth rate of a province
      * 
      * @return town wealth growth rate
