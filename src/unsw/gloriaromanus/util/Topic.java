@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Topic {
 
-    public static final Topic NEXT_TURN = Topic.of("NEXT_TURN");
+    public static final Topic NEXT_TURN = Topic.of("/NEXT_TURN");
 
     private String topic;
 

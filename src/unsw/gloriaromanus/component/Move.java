@@ -4,10 +4,12 @@
 
 package unsw.gloriaromanus.component;
 
-import unsw.gloriaromanus.util.Observer;
-import unsw.gloriaromanus.util.Subject;
+import unsw.gloriaromanus.util.Message;
+import unsw.gloriaromanus.util.PubSub;
+import unsw.gloriaromanus.util.PubSubable;
+import unsw.gloriaromanus.util.Topic;
 
-public class Move implements Moveable, Turnable, Observer {
+public class Move implements Moveable, PubSubable {
 
     public static enum Type {
         ARTILLERY(4), CAVALRY(15), INFANTRY(10);
@@ -55,29 +57,51 @@ public class Move implements Moveable, Turnable, Observer {
         return 0;
     }
 
-    /**
-     * 
-     * @param start
-     * @param end
-     * @return
-     */
-    public String moveToImple(String start, String end) {
-        return null;
-    }
-
     @Override
     public String moveTo(String destination) {
         return null;
     }
 
-    @Override
-    public void nextTurn() {
-        this.movesLeft = moveType.moveCapacity;
+    /**
+     * 
+     * @param start
+     * @param destination
+     * @return
+     */
+    public String moveTo(String start, String destination) {
+        return null;
     }
 
     @Override
-    public void update(Subject subject) {
-        if (subject instanceof Turn)
-            this.nextTurn();
+    public void publishTo(Topic topic) {
+        PubSub.getInstance().publishTo(this, topic);
+    }
+
+    @Override
+    public void subscribeTo(Topic topic) {
+        PubSub.getInstance().subscribeTo(this, topic);
+    }
+
+    @Override
+    public void publish(Topic topic, Message<Object> message) {
+        PubSub.getInstance().publish(topic, message);
+    }
+
+    @Override
+    public void listen(Topic topic, Message<Object> message) {
+
+        if (topic.equals(Topic.NEXT_TURN)) {
+            this.movesLeft = moveType.moveCapacity;
+        }
+    }
+
+    @Override
+    public void unpublish(Topic topic) {
+        PubSub.getInstance().unpublish(this, topic);
+    }
+
+    @Override
+    public void unsubscribe(Topic topic) {
+        PubSub.getInstance().unsubscribe(this, topic);
     }
 }

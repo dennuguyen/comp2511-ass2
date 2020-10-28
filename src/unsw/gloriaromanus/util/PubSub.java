@@ -90,8 +90,9 @@ public class PubSub implements PubSubable {
 
     @Override
     public void publish(Topic topic, Message<Object> message) {
-        for (PubSubable subscriber : this.subscribers.get(topic))
-            subscriber.listen(topic, message);
+        if (this.subscribers.containsKey(topic))
+            for (PubSubable subscriber : this.subscribers.get(topic))
+                subscriber.listen(topic, message);
     }
 
     @Override
