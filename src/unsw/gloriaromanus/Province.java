@@ -33,9 +33,9 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
         this.wealth = new Wealth();
 
         // Prepare topics
-        this.WEALTH_GROWTH_DUE_TO_TAX = Topic.of(name + "_WEALTH_GROWTH");
-        this.MORALE_DUE_TO_TAX = Topic.of(name + "_MORALE");
-        this.COLLECT_TAX_FROM_WEALTH = Topic.of(name + "_TAX_COLLECT");
+        this.WEALTH_GROWTH_DUE_TO_TAX = Topic.of(name + "/WEALTH_GROWTH");
+        this.MORALE_DUE_TO_TAX = Topic.of(name + "/MORALE");
+        this.COLLECT_TAX_FROM_WEALTH = Topic.of(name + "/TAX_COLLECT");
 
         // Set topics for delegated objects
         this.tax.setTopics(this.WEALTH_GROWTH_DUE_TO_TAX, this.MORALE_DUE_TO_TAX);
