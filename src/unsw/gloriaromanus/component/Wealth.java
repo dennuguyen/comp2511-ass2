@@ -1,24 +1,32 @@
+/**
+ * Wealth implementation of wealthable
+ */
+
 package unsw.gloriaromanus.component;
 
-import unsw.gloriaromanus.util.Observer;
-import unsw.gloriaromanus.util.Subject;
+import unsw.gloriaromanus.util.Message;
+import unsw.gloriaromanus.util.PubSub;
+import unsw.gloriaromanus.util.PubSubable;
+import unsw.gloriaromanus.util.Topic;
+import unsw.gloriaromanus.util.Util;
 
-public class Wealth implements Wealthable, Turnable, Observer {
+public class Wealth implements Wealthable, PubSubable {
+
+    private Topic WEALTH_GROWTH_DUE_TO_TAX = null;
+    private Topic COLLECT_TAX_FROM_WEALTH = null;
 
     int amount;
     int rate;
 
     /**
-     * Simple constructor
+     * Default constructor
      */
-
     public Wealth() {
-        amount = 0;
-        rate = 0;
+        this(0);
     }
 
     /**
-     * Constructor using given starting amount for town wealth
+     * Base constructor for Wealth using given starting amount for town wealth
      * 
      * @param amount starting amount of wealth
      */
@@ -27,6 +35,22 @@ public class Wealth implements Wealthable, Turnable, Observer {
         this.rate = 0;
     }
 
+    /**
+     * Set topics once and only once
+     * 
+     * @param wealthGrowthTopic Wealth growth topic
+     */
+    public void setTopics(Topic wealthGrowthTopic, Topic taxCollectionTopic) {
+        Util.setOnce(this.WEALTH_GROWTH_DUE_TO_TAX, wealthGrowthTopic);
+        Util.setOnce(this.COLLECT_TAX_FROM_WEALTH, taxCollectionTopic);
+    }
+
+    /**
+     * Limit wealth values to be non-negative
+     * 
+     * @param value Value to limit
+     * @return Limited value
+     */
     private int limit(int value) {
         if (value < 0)
             value = 0;
@@ -35,18 +59,17 @@ public class Wealth implements Wealthable, Turnable, Observer {
 
     @Override
     public int getWealth() {
-        return amount;
+        return this.amount;
     }
 
     @Override
     public int getWealthGrowth() {
-        return rate;
+        return this.rate;
     }
 
     @Override
-    public void subtractWealth(int amount) {
-        this.amount -= amount;
-        this.amount = limit(this.amount);
+    public void setWealthGrowth(int rate) {
+        this.rate = rate;
     }
 
     @Override
@@ -62,13 +85,43 @@ public class Wealth implements Wealthable, Turnable, Observer {
     }
 
     @Override
-    public void nextTurn() {
-        this.amount += this.rate;
+    public void publishTo(Topic topic) {
+        PubSub.getInstance().publishTo(this, topic);
     }
 
     @Override
-    public void update(Subject subject) {
-        if (subject instanceof Turn)
-            this.nextTurn();
+    public void subscribeTo(Topic topic) {
+        PubSub.getInstance().subscribeTo(this, topic);
+    }
+
+    @Override
+    public void publish(Topic topic, Message<Object> message) {
+        PubSub.getInstance().publish(topic, message);
+    }
+
+    @Override
+    public void listen(Topic topic, Message<Object> message) {
+
+        if (topic.equals(this.WEALTH_GROWTH_DUE_TO_TAX)) {
+            this.setWealthGrowth((Integer) message.getMessage());
+        }
+
+        else if (topic.equals(Topic.NEXT_TURN)) {
+            this.addWealth(this.rate);
+        }
+
+        else if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {
+            this.addWealth((Integer) message.getMessage());
+        }
+    }
+
+    @Override
+    public void unpublish(Topic topic) {
+        PubSub.getInstance().unpublish(this, topic);
+    }
+
+    @Override
+    public void unsubscribe(Topic topic) {
+        PubSub.getInstance().unsubscribe(this, topic);
     }
 }

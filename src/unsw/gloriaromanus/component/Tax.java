@@ -4,40 +4,56 @@
 
 package unsw.gloriaromanus.component;
 
-import java.util.ArrayList;
+import unsw.gloriaromanus.util.Topic;
+import unsw.gloriaromanus.util.Util;
+import unsw.gloriaromanus.util.Message;
+import unsw.gloriaromanus.util.PubSubable;
+import unsw.gloriaromanus.util.PubSub;
 
-import unsw.gloriaromanus.util.Observer;
-import unsw.gloriaromanus.util.Subject;
+public class Tax implements Taxable, PubSubable {
 
-public class Tax implements Taxable, Subject {
+    private Topic WEALTH_GROWTH_DUE_TO_TAX = null;
+    private Topic MORALE_DUE_TO_TAX = null;
+    private Topic collectTaxTopic = null;
 
-    ArrayList<Observer> observers = new ArrayList<Observer>();
-
-    TaxLevel taxLevel;
+    private TaxLevel taxLevel;
 
     public Tax() {
-        taxLevel = new LowTax();
+        this.taxLevel = new LowTax();
+    }
+
+    /**
+     * Set topics once and only once
+     * 
+     * @param wealthGrowthTopic Wealth growth topic
+     * @param moraleTopic       Morale topic
+     */
+    public void setTopics(Topic wealthGrowthTopic, Topic moraleTopic) {
+        Util.setOnce(this.WEALTH_GROWTH_DUE_TO_TAX, wealthGrowthTopic);
+        Util.setOnce(this.MORALE_DUE_TO_TAX, moraleTopic);
     }
 
     @Override
-    public float getTaxRate() {
-        return taxLevel.getTaxRate();
-    }
-
-    @Override
-    public int getWealthGrowthChange() {
-        return taxLevel.getWealthGrowthChange();
+    public int getTaxRate() {
+        return this.taxLevel.getTaxRate();
     }
 
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
         this.taxLevel = taxLevel;
-        tell();
+        this.publish(this.WEALTH_GROWTH_DUE_TO_TAX,
+                Message.of(this.taxLevel.getWealthGrowthChange())); // wealth growth
+        if (taxLevel instanceof VeryHighTax)
+            this.publish(this.MORALE_DUE_TO_TAX, Message.of(-1)); // -1 morale
     }
 
+    /**
+     * 
+     * @param wealth
+     * @return
+     */
     public int collectTaxImple(int wealth) {
-        float percentage = taxLevel.getTaxRate() / 100;
-        return (int) (wealth * percentage);
+        return wealth * (taxLevel.getTaxRate() / 100); // tax rate formula
     }
 
     @Override
@@ -46,21 +62,31 @@ public class Tax implements Taxable, Subject {
     }
 
     @Override
-    public void attach(Observer observer) {
-        if (!this.observers.contains(observer)) {
-            this.observers.add(observer);
-        }
+    public void publishTo(Topic topic) {
+        PubSub.getInstance().publishTo(this, topic);
     }
 
     @Override
-    public void detach(Observer observer) {
-        this.observers.remove(observer);
+    public void subscribeTo(Topic topic) {
+        PubSub.getInstance().subscribeTo(this, topic);
     }
 
     @Override
-    public void tell() {
-        for (Observer observer : observers) {
-            observer.update(this);
-        }
+    public void publish(Topic topic, Message<Object> message) {
+        PubSub.getInstance().publish(topic, message);
+    }
+
+    @Override
+    public void listen(Topic topic, Message<Object> message) {
+    }
+
+    @Override
+    public void unpublish(Topic topic) {
+        PubSub.getInstance().unpublish(this, topic);
+    }
+
+    @Override
+    public void unsubscribe(Topic topic) {
+        PubSub.getInstance().unsubscribe(this, topic);
     }
 }

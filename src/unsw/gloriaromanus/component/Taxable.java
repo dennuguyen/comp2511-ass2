@@ -18,12 +18,10 @@ public interface Taxable {
      * 
      * @return Tax rate
      */
-    public float getTaxRate();
+    public int getTaxRate();
 
     /**
-     * Collects the tax and notifies the province subject of tax returns
+     * Collects the tax and notifies the relevant subjects of tax returns
      */
     public void collectTax();
-
-    public int getWealthGrowthChange();
 }

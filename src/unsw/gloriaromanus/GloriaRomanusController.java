@@ -1,5 +1,7 @@
 package unsw.gloriaromanus;
 
+import unsw.gloriaromanus.util.ArrayUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
