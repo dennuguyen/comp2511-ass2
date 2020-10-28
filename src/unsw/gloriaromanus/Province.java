@@ -1,31 +1,56 @@
 package unsw.gloriaromanus;
 
-import java.util.ArrayList;
-
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
 import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
-import unsw.gloriaromanus.component.Turn;
-import unsw.gloriaromanus.component.Turnable;
 import unsw.gloriaromanus.component.Wealthable;
-import unsw.gloriaromanus.util.Observer;
-import unsw.gloriaromanus.util.Subject;
+import unsw.gloriaromanus.util.Message;
+import unsw.gloriaromanus.util.PubSub;
+import unsw.gloriaromanus.util.PubSubable;
+import unsw.gloriaromanus.util.Topic;
 import unsw.gloriaromanus.component.Wealth;
 
-public class Province implements Locable, Taxable, Wealthable, Turnable, Subject, Observer {
+public class Province implements Locable, Taxable, Wealthable, PubSubable {
+
+    private final Topic WEALTH_GROWTH_DUE_TO_TAX;
+    private final Topic MORALE_DUE_TO_TAX;
+    private final Topic COLLECT_TAX_FROM_WEALTH;
 
     private final Locale locale;
     private final Tax tax;
     private final Wealth wealth;
 
-    private ArrayList<Observer> observers; // unit observers
-
+    /**
+     * Base constructor for province
+     * 
+     * @param name Name of province
+     */
     public Province(String name) {
         this.locale = new Locale(name);
         this.tax = new Tax();
         this.wealth = new Wealth();
+
+        // Prepare topics
+        this.WEALTH_GROWTH_DUE_TO_TAX = Topic.of(name + "_WEALTH_GROWTH");
+        this.MORALE_DUE_TO_TAX = Topic.of(name + "_MORALE");
+        this.COLLECT_TAX_FROM_WEALTH = Topic.of(name + "_TAX_COLLECT");
+
+        // Set topics for delegated objects
+        this.tax.setTopics(this.WEALTH_GROWTH_DUE_TO_TAX, this.MORALE_DUE_TO_TAX);
+        this.wealth.setTopics(this.WEALTH_GROWTH_DUE_TO_TAX, this.COLLECT_TAX_FROM_WEALTH);
+
+        // Subscribe to turn events
+        this.subscribeTo(Topic.NEXT_TURN);
+
+        // Publish-subscribe wealth growth change event due to tax changes
+        this.tax.publishTo(this.WEALTH_GROWTH_DUE_TO_TAX);
+        this.wealth.subscribeTo(this.WEALTH_GROWTH_DUE_TO_TAX);
+
+        // Publish-subscribe morale change event due to tax changes
+        this.tax.publishTo(this.MORALE_DUE_TO_TAX);
+        // this.wealth.subscribeTo(Topic.of(name + Topic.MORALE_DUE_TO_TAX));
     }
 
     @Override
@@ -46,7 +71,6 @@ public class Province implements Locable, Taxable, Wealthable, Turnable, Subject
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
         tax.setTaxLevel(taxLevel);
-        tell(); // -1 morale for all soldiers in province
     }
 
     @Override
@@ -65,6 +89,11 @@ public class Province implements Locable, Taxable, Wealthable, Turnable, Subject
     }
 
     @Override
+    public void setWealthGrowth(int rate) {
+        this.wealth.setWealthGrowth(rate);
+    }
+
+    @Override
     public void addWealth(int amount) {
         this.wealth.addWealth(amount);
     }
@@ -75,30 +104,31 @@ public class Province implements Locable, Taxable, Wealthable, Turnable, Subject
     }
 
     @Override
-    public void nextTurn() {
-        this.collectTax();
+    public void publishTo(Topic topic) {
+        PubSub.getInstance().publishTo(this, topic);
     }
 
     @Override
-    public void attach(Observer observer) {
-        if (!this.observers.contains(observer))
-            this.observers.add(observer);
+    public void subscribeTo(Topic topic) {
+        PubSub.getInstance().subscribeTo(this, topic);
     }
 
     @Override
-    public void detach(Observer observer) {
-        this.observers.remove(observer);
+    public void publish(Topic topic, Message<Object> message) {
+        PubSub.getInstance().publish(topic, message);
     }
 
     @Override
-    public void tell() {
-        for (Observer observer : observers)
-            observer.update(this);
+    public void listen(Topic topic, Message<Object> message) {
     }
 
     @Override
-    public void update(Subject subject) {
-        if (subject instanceof Turn) // next turn notified
-            this.nextTurn();
+    public void unpublish(Topic topic) {
+        PubSub.getInstance().unpublish(this, topic);
+    }
+
+    @Override
+    public void unsubscribe(Topic topic) {
+        PubSub.getInstance().unsubscribe(this, topic);
     }
 }

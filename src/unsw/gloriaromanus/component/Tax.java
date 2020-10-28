@@ -5,19 +5,32 @@
 package unsw.gloriaromanus.component;
 
 import unsw.gloriaromanus.util.Topic;
+import unsw.gloriaromanus.util.Util;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSubable;
 import unsw.gloriaromanus.util.PubSub;
 
 public class Tax implements Taxable, PubSubable {
 
-    TaxLevel taxLevel;
+    private Topic WEALTH_GROWTH_DUE_TO_TAX = null;
+    private Topic MORALE_DUE_TO_TAX = null;
+    private Topic collectTaxTopic = null;
+
+    private TaxLevel taxLevel;
 
     public Tax() {
         this.taxLevel = new LowTax();
-        this.publishTo(Topic.WEALTH_GROWTH_DUE_TO_TAX);
-        this.publishTo(Topic.MORALE_DUE_TO_TAX);
-        this.subscribeTo(Topic.NEXT_TURN);
+    }
+
+    /**
+     * Set topics once and only once
+     * 
+     * @param wealthGrowthTopic Wealth growth topic
+     * @param moraleTopic       Morale topic
+     */
+    public void setTopics(Topic wealthGrowthTopic, Topic moraleTopic) {
+        Util.setOnce(this.WEALTH_GROWTH_DUE_TO_TAX, wealthGrowthTopic);
+        Util.setOnce(this.MORALE_DUE_TO_TAX, moraleTopic);
     }
 
     @Override
@@ -28,10 +41,10 @@ public class Tax implements Taxable, PubSubable {
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
         this.taxLevel = taxLevel;
-        this.publish(Topic.WEALTH_GROWTH_DUE_TO_TAX,
-                Message.of(this.taxLevel.getWealthGrowthChange())); // affect town wealth growth
+        this.publish(this.WEALTH_GROWTH_DUE_TO_TAX,
+                Message.of(this.taxLevel.getWealthGrowthChange())); // wealth growth
         if (taxLevel instanceof VeryHighTax)
-            this.publish(Topic.MORALE_DUE_TO_TAX, Message.of(-1)); // -1 morale
+            this.publish(this.MORALE_DUE_TO_TAX, Message.of(-1)); // -1 morale
     }
 
     /**
@@ -65,14 +78,6 @@ public class Tax implements Taxable, PubSubable {
 
     @Override
     public void listen(Topic topic, Message<Object> message) {
-        switch (topic) {
-            case NEXT_TURN:
-                this.collectTax();
-                this.publish(Topic.COLLECT_TAX_FROM_WEALTH, message);
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
