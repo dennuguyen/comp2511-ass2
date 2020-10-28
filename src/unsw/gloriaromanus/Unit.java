@@ -42,8 +42,7 @@ public class Unit implements Entity, Locable, Moveable, Statable {
 
     @Override
     public String moveTo(String destination) {
-        return this.locale
-                .setLocation(this.move.moveToImple(this.locale.getLocation(), destination));
+        return this.locale.setLocation(this.move.moveTo(this.locale.getLocation(), destination));
     }
 
     @Override
