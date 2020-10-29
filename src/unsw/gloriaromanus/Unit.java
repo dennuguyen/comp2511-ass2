@@ -18,6 +18,13 @@ public class Unit implements Entity, Locable, Moveable, Statable, ComponentArmy 
     private final Move move;
     private final Stats stats;
 
+    /**
+     * Unit constructor
+     * 
+     * @param spawn        Initial location
+     * @param movementType Unit's movement type
+     * @param stats        Base stats
+     */
     public Unit(String spawn, Move.Type movementType, Stats stats) {
         this.locale = new Locale(spawn);
         this.move = new Move(movementType);
@@ -36,8 +43,7 @@ public class Unit implements Entity, Locable, Moveable, Statable, ComponentArmy 
 
     @Override
     public String moveTo(String destination) {
-        return this.locale
-                .setLocation(this.move.moveToImple(this.locale.getLocation(), destination));
+        return this.locale.setLocation(this.move.moveTo(this.locale.getLocation(), destination));
     }
 
     @Override

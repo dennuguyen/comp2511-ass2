@@ -18,18 +18,12 @@ public interface Taxable {
      * Gets the current tax rate
      * 
      * @return Tax rate
-     */   
-    public float getTaxRate();
+     */
+    public int getTaxRate();
 
 
     /**
-     * Collects the tax and notifies the province subject of tax returns
+     * Collects the tax and notifies the relevant subjects of tax returns
      */
     public void collectTax();
-
-    /**
-     * Returns the change in wealth growth rate related to tax level
-     * @return wealth growth rate chagne
-     */
-    public int getWealthGrowthChange();
 }

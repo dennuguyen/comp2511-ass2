@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import unsw.gloriaromanus.RomanLegionary;
@@ -8,10 +9,14 @@ import unsw.gloriaromanus.Unit;
 import unsw.gloriaromanus.component.Move;
 import unsw.gloriaromanus.component.Stats;
 
-public class UnitTest {
+public class MoveTest {
 
     @Before
     public void setUp() {
+    }
+
+    @After
+    public void tearDown() {
     }
 
     @Test

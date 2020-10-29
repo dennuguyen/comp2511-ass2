@@ -3,7 +3,7 @@ package unsw.gloriaromanus.component;
 public class NormalTax implements TaxLevel {
 
     @Override
-    public float getTaxRate() {
+    public int getTaxRate() {
         return 15;
     }
 

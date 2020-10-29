@@ -1,9 +1,9 @@
 package unsw.gloriaromanus.component;
 
 public class LowTax implements TaxLevel {
-    
+
     @Override
-    public float getTaxRate() {
+    public int getTaxRate() {
         return 10;
     }
 
