@@ -82,6 +82,6 @@ public abstract class Stat {
      * @param change value of stat multiplier
      */
     public void multiplyStat(int change) {
-        this.modifiedValue = limit(this.modifiedValue * change);
+        this.modifiedValue = limit((int)(this.modifiedValue * change / 100));
     }
 }

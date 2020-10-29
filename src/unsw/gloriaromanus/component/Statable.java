@@ -34,7 +34,7 @@ public interface Statable {
      * Multiply a stat by a specific value
      * 
      * @param type  Type of stat
-     * @param change value of stat multiplier
+     * @param change value of stat multiplier, as a percentage e.g. change = 10 means 10%
      */
     public void multiplyStat(Stats.Type type, int change);
 }

@@ -38,7 +38,7 @@ public class Army {
      * @param unit unit to be added
      */
     public void add(Unit unit) {
-		army.add(unit);
+        army.add(unit);
 	}
     
     /**
@@ -48,4 +48,18 @@ public class Army {
 	public void remove(Unit unit) {
 		army.remove(unit);
     }
+
+    /*
+    public void druidBonus() {
+        int druidCount = 0;
+        for (Unit u : army) {
+            if (u instanceof Druid)
+                druidCount++;
+        }
+        int bonus = (druidCount > 5) ? 50 : druidCount * 10;
+        for (Unit u : army)  {
+            u.multiplyStat(Stats.Type.MORALE, bonus);
+        }
+    }
+    */
 }
