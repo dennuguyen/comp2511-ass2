@@ -21,4 +21,20 @@ public interface Statable {
      * @param value New value of stat
      */
     public void setStat(Stats.Type type, int value);
+
+    /**
+     * Change a stat by a specific value
+     * 
+     * @param type  Type of stat
+     * @param change value of stat change
+     */
+    public void addToStat(Stats.Type type, int change);
+
+    /**
+     * Multiply a stat by a specific value
+     * 
+     * @param type  Type of stat
+     * @param change value of stat multiplier, as a percentage e.g. change = 10 means 10%
+     */
+    public void multiplyStat(Stats.Type type, int change);
 }

@@ -71,4 +71,24 @@ public abstract class Stat implements Statable {
     public void setStat(int value) {
         this.baseValue = limit(value);
     }
+
+    /**
+     * Add a specific value to a stat
+     * 
+     * @param type  Type of stat
+     * @param change value of stat addition
+     */
+    public void addToStat(int change) {
+        this.modifiedValue = limit(this.modifiedValue + change);
+    }
+
+    /**
+     * Multiply a stat by a specific value
+     * 
+     * @param type  Type of stat
+     * @param change value of stat multiplier
+     */
+    public void multiplyStat(int change) {
+        this.modifiedValue = limit((int)(this.modifiedValue * change / 100));
+    }
 }
