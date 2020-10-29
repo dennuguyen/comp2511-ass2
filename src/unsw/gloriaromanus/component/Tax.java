@@ -5,7 +5,6 @@
 package unsw.gloriaromanus.component;
 
 import unsw.gloriaromanus.util.Topic;
-import unsw.gloriaromanus.util.Util;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSubable;
 import unsw.gloriaromanus.util.PubSub;
@@ -14,7 +13,6 @@ public class Tax implements Taxable, PubSubable {
 
     private Topic WEALTH_GROWTH_DUE_TO_TAX = null;
     private Topic MORALE_DUE_TO_TAX = null;
-    private Topic collectTaxTopic = null;
 
     private TaxLevel taxLevel;
 
@@ -23,14 +21,14 @@ public class Tax implements Taxable, PubSubable {
     }
 
     /**
-     * Set topics once and only once
+     * Set topics required by tax
      * 
      * @param wealthGrowthTopic Wealth growth topic
      * @param moraleTopic       Morale topic
      */
     public void setTopics(Topic wealthGrowthTopic, Topic moraleTopic) {
-        Util.setOnce(this.WEALTH_GROWTH_DUE_TO_TAX, wealthGrowthTopic);
-        Util.setOnce(this.MORALE_DUE_TO_TAX, moraleTopic);
+        this.WEALTH_GROWTH_DUE_TO_TAX = wealthGrowthTopic;
+        this.MORALE_DUE_TO_TAX = moraleTopic;
     }
 
     @Override
@@ -40,31 +38,24 @@ public class Tax implements Taxable, PubSubable {
 
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
+
+        if (this.taxLevel.equals(taxLevel))
+            return;
+
+        // Change to very high tax
+        if (taxLevel instanceof VeryHighTax)
+            this.publish(this.MORALE_DUE_TO_TAX, Message.of(true)); // -1 morale change
+
+        // Change from very high tax
+        else if ((this.taxLevel instanceof VeryHighTax) && !(taxLevel instanceof VeryHighTax))
+            this.publish(this.MORALE_DUE_TO_TAX, Message.of(false)); // 0 morale change
+
+        // Set tax level
         this.taxLevel = taxLevel;
 
         // Wealth growth event
         this.publish(this.WEALTH_GROWTH_DUE_TO_TAX,
                 Message.of(this.taxLevel.getWealthGrowthChange()));
-
-        // Morale change event
-        if (taxLevel instanceof VeryHighTax)
-            this.publish(this.MORALE_DUE_TO_TAX, Message.of(true)); // -1 morale change
-        else
-            this.publish(this.MORALE_DUE_TO_TAX, Message.of(false)); // 0 morale change
-    }
-
-    /**
-     * 
-     * @param wealth
-     * @return
-     */
-    public int collectTaxImple(int wealth) {
-        return wealth * (taxLevel.getTaxRate() / 100); // tax rate formula
-    }
-
-    @Override
-    public void collectTax() {
-        return;
     }
 
     @Override
