@@ -4,12 +4,19 @@
 
 package unsw.gloriaromanus.component;
 
-public abstract class Stat {
+import java.util.ArrayList;
+import unsw.gloriaromanus.util.Pair;
+
+public abstract class Stat implements Statable {
+
+    private enum ModType {
+        SCALAR, MULTIPLY;
+    }
 
     protected int MIN;
     protected int MAX;
     protected int baseValue;
-    // protected int modifiedValue;
+    protected ArrayList<Pair<Integer, ModType>> modifiedValue;
 
     /**
      * Stat constructor
