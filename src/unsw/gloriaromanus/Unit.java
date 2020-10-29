@@ -57,8 +57,8 @@ public class Unit implements Entity, Locable, Moveable, Statable, ArmyComponent 
     }
 
     @Override
-    public void addToStat(Stats.Type type, int change) {
-        this.stats.addToStat(type, change);
+    public void addStat(Stats.Type type, int change) {
+        this.stats.addStat(type, change);
     }
 
     @Override

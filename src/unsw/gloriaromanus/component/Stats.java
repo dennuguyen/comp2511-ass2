@@ -57,7 +57,7 @@ public class Stats implements Statable {
     /**
      * Stats copy constructor
      * 
-     * @param stats
+     * @param stats Stats object
      */
     public Stats(Stats stats) {
         this.stats = new HashMap<Stats.Type, Stat>(stats.stats);
@@ -74,8 +74,8 @@ public class Stats implements Statable {
     }
 
     @Override
-    public void addToStat(Stats.Type type, int change) {
-        this.stats.get(type).addToStat(change);
+    public void addStat(Stats.Type type, int change) {
+        this.stats.get(type).addStat(change);
     }
 
     @Override
