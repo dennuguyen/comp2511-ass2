@@ -9,7 +9,6 @@ import unsw.gloriaromanus.component.Stats;
 public class Army {
 
     private ArrayList<Unit> army;
-    //location
     
     public Army() {
         army = new ArrayList<Unit>();
@@ -49,17 +48,24 @@ public class Army {
 		army.remove(unit);
     }
 
-    /*
-    public void druidBonus() {
-        int druidCount = 0;
+    /*PSEUDOCODE
+    public int countUnits (Class class) {
+        int count = 0;
         for (Unit u : army) {
-            if (u instanceof Druid)
-                druidCount++;
+            if (u instanceof class)
+                count++;
         }
+        return count;
+    }
+    
+    public void druidBonus() {
+        int druidCount = countUnits(Druid);
         int bonus = (druidCount > 5) ? 50 : druidCount * 10;
         for (Unit u : army)  {
             u.multiplyStat(Stats.Type.MORALE, bonus);
         }
     }
     */
+
+    /
 }
