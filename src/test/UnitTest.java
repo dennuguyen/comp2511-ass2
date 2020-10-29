@@ -1,7 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.Before;
 import org.junit.Test;
 import unsw.gloriaromanus.RomanLegionary;
 import unsw.gloriaromanus.Unit;
@@ -10,7 +10,7 @@ import unsw.gloriaromanus.component.Stats;
 
 public class UnitTest {
 
-    @BeforeEach
+    @Before
     public void setUp() {
     }
 

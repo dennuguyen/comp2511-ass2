@@ -1,37 +1,44 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import unsw.gloriaromanus.Turn;
 
 public class TurnTest {
 
-    Turn turn = null;
+    Turn turn;
 
-    @BeforeEach
+    @Before
     public void setUp() {
         this.turn = Turn.getInstance();
     }
 
+    @After
+    public void tearDown() {
+    }
+
     @Test
     public void turnInitialisationShouldHaveTurn0() throws Exception {
-        assertEquals(turn.getTurn(), 0);
+        assertNotEquals(null, turn);
+        assertEquals(0, turn.getTurn());
     }
 
     @Test
     public void turnShouldIncrement() throws Exception {
-        assertEquals(turn.getTurn(), 0);
+        assertEquals(0, turn.getTurn());
         turn.incrementTurn();
-        assertEquals(turn.getTurn(), 1);
+        assertEquals(1, turn.getTurn());
     }
 
     @Test
     public void onlyOneTurnInstanceShouldEverExist() throws Exception {
         turn.incrementTurn();
         Turn turning = Turn.getInstance();
-        assertEquals(turn.getTurn(), 1);
-        assertEquals(turning.getTurn(), 1);
+        assertEquals(2, turn.getTurn());
+        assertEquals(2, turn.getTurn());
         assertEquals(turn, turning);
     }
 }
