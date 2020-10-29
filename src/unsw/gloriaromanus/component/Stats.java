@@ -72,4 +72,14 @@ public class Stats implements Statable {
     public void setStat(Stats.Type type, int value) {
         this.stats.get(type).setStat(value);
     }
+
+    @Override
+    public void addToStat(Stats.Type type, int change) {
+        this.stats.get(type).addToStat(change);
+    }
+
+    @Override
+    public void multiplyStat(Stats.Type type, int change) {
+        this.stats.get(type).multiplyStat(change);
+    }
 }
