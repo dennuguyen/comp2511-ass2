@@ -10,9 +10,9 @@ import unsw.gloriaromanus.component.Move;
 import unsw.gloriaromanus.component.Moveable;
 import unsw.gloriaromanus.component.Statable;
 import unsw.gloriaromanus.component.Stats;
-import unsw.gloriaromanus.util.ComponentArmy;
+import unsw.gloriaromanus.util.ArmyComponent;
 
-public class Unit implements Entity, Locable, Moveable, Statable, ComponentArmy {
+public class Unit implements Entity, Locable, Moveable, Statable, ArmyComponent {
 
     private final Locale locale;
     private final Move move;
@@ -54,5 +54,15 @@ public class Unit implements Entity, Locable, Moveable, Statable, ComponentArmy 
     @Override
     public void setStat(Stats.Type type, int value) {
         this.stats.setStat(type, value);
+    }
+
+    @Override
+    public void addToStat(Stats.Type type, int change) {
+        this.stats.addToStat(type, change);
+    }
+
+    @Override
+    public void multiplyStat(Stats.Type type, int change) {
+        this.stats.multiplyStat(type, change);
     }
 }
