@@ -3,30 +3,49 @@ package unsw.gloriaromanus;
 import java.util.ArrayList;
 import java.util.Random;
 
-import unsw.gloriaromanus.util.Component;
+import unsw.gloriaromanus.component.Stats;
+//import unsw.gloriaromanus.util.ArmyComponent;
 
-public class Army implements Component {
+public class Army {
 
-    ArrayList<Component>  children = new ArrayList<Component>();
-
-    public int getNumUnits() {
-        return children.size();
+    private ArrayList<Unit> army;
+    //location
+    
+    public Army() {
+        army = new ArrayList<Unit>();
     }
 
-    public Component getRandomUnit() {
+    /**
+     * Returns number of units in the army
+     * @return size of army
+     */
+    public int getNumUnits() {
+        return army.size();
+    }
+
+    /**
+     * Returns a random unit from the army
+     * @return random unit
+     */
+    public Unit getRandomUnit() {
         Random rand = new Random();
         int index = rand.nextInt(getNumUnits());
-        Component child = children.get(index);
-        if (child instanceof Army) 
-            ((Army)child).getRandomUnit();
-        return child;
+        return army.get(index);
     }
 
-    public void add(Component unit) {
-		children.add(unit);
+    /**
+     * Adds a unit to the army
+     * @param unit unit to be added
+     */
+    public void add(Unit unit) {
+		army.add(unit);
 	}
-
-	public void remove(Component unit) {
-		children.remove(unit);
+    
+    /**
+     * Removes a unit from the army
+     * @param unit unit to be removed
+     */
+	public void remove(Unit unit) {
+		army.remove(unit);
     }
 }
