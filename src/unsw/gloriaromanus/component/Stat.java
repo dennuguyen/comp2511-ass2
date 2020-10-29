@@ -4,19 +4,12 @@
 
 package unsw.gloriaromanus.component;
 
-import java.util.ArrayList;
-import unsw.gloriaromanus.util.Pair;
-
 public abstract class Stat {
-
-    private enum ModType {
-        SCALAR, MULTIPLY;
-    }
 
     protected int MIN;
     protected int MAX;
     protected int baseValue;
-    protected ArrayList<Pair<Integer, ModType>> modifiedValues;
+    protected int modifiedValue;
 
     /**
      * Stat constructor
@@ -37,7 +30,7 @@ public abstract class Stat {
     public Stat(int baseValue, int MIN, int MAX) {
         this.MIN = MIN;
         this.MAX = MAX;
-        this.baseValue = limit(baseValue);
+        this.baseValue = this.modifiedValue = limit(baseValue);
     }
 
     /**
@@ -60,20 +53,7 @@ public abstract class Stat {
      * @return Value of stat
      */
     public int getStat() {
-
-        int value = this.baseValue;
-
-        // Apply multipliers first
-        for (Pair<Integer, ModType> modifiedValue : this.modifiedValues)
-            if (modifiedValue.second == ModType.MULTIPLY)
-                value = limit(value * modifiedValue.first / 100);
-
-        // Apply scalar modifiers second
-        for (Pair<Integer, ModType> modifiedValue : this.modifiedValues)
-            if (modifiedValue.second == ModType.SCALAR)
-                value = limit(value + modifiedValue.first);
-
-        return value;
+        return this.modifiedValue;
     }
 
     /**
@@ -92,7 +72,7 @@ public abstract class Stat {
      * @param change value of stat addition
      */
     public void addStat(int change) {
-        this.modifiedValues.add(Pair.of(change, ModType.SCALAR));
+        this.modifiedValue += change;
     }
 
     /**
@@ -102,6 +82,6 @@ public abstract class Stat {
      * @param change value of stat multiplier
      */
     public void multiplyStat(int change) {
-        this.modifiedValues.add(Pair.of(change, ModType.MULTIPLY));
+        this.modifiedValue = this.modifiedValue * change / 100;
     }
 }
