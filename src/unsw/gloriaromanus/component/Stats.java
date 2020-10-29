@@ -41,8 +41,8 @@ public class Stats implements Statable {
      * @param strength   base strength
      * @param tactics    base tactics
      */
-    public Stats(int armour, int discipline, int fire, int morale, int strength, int flanking,
-            int shield, int tactics) {
+    public Stats(int armour, int discipline, int fire, int flanking, int morale, int shield,
+            int strength, int tactics) {
         this.stats = new HashMap<Stats.Type, Stat>();
         this.stats.put(Stats.Type.ARMOUR, new Armour(armour));
         this.stats.put(Stats.Type.DISCIPLINE, new Discipline(discipline));
@@ -60,7 +60,7 @@ public class Stats implements Statable {
      * @param stats
      */
     public Stats(Stats stats) {
-        this.stats = stats.stats;
+        this.stats = new HashMap<Stats.Type, Stat>(stats.stats);
     }
 
     @Override

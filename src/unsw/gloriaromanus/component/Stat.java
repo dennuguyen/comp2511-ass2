@@ -9,7 +9,7 @@ public abstract class Stat {
     protected int MIN;
     protected int MAX;
     protected int baseValue;
-    protected int modifiedValue;
+    // protected int modifiedValue;
 
     /**
      * Stat constructor
@@ -53,7 +53,7 @@ public abstract class Stat {
      * @return Value of stat
      */
     public int getStat() {
-        return this.modifiedValue;
+        return this.baseValue;
     }
 
     /**
@@ -62,6 +62,6 @@ public abstract class Stat {
      * @param value New stat value
      */
     public void setStat(int value) {
-        this.modifiedValue = limit(value);
+        this.baseValue = limit(value);
     }
 }

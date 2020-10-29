@@ -27,7 +27,7 @@ public class Unit implements Entity, Locable, Moveable, Statable {
     public Unit(String spawn, Move.Type movementType, Stats stats) {
         this.locale = new Locale(spawn);
         this.move = new Move(movementType);
-        this.stats = stats;
+        this.stats = new Stats(stats);
     }
 
     @Override
