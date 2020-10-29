@@ -10,7 +10,8 @@ import org.junit.runners.Suite.SuiteClasses;
 public class GloriaRomanusTest {
 
     @RunWith(Suite.class)
-    @SuiteClasses({TurnTest.class, MoveTest.class, UnitTest.class, WorldTest.class})
+    @SuiteClasses({TurnTest.class, StatsTest.class, MoveTest.class, UnitTest.class,
+            WorldTest.class})
     public class TestSuite {
     }
 

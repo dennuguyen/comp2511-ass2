@@ -41,10 +41,16 @@ public class Tax implements Taxable, PubSubable {
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
         this.taxLevel = taxLevel;
+
+        // Wealth growth event
         this.publish(this.WEALTH_GROWTH_DUE_TO_TAX,
-                Message.of(this.taxLevel.getWealthGrowthChange())); // wealth growth
+                Message.of(this.taxLevel.getWealthGrowthChange()));
+
+        // Morale change event
         if (taxLevel instanceof VeryHighTax)
-            this.publish(this.MORALE_DUE_TO_TAX, Message.of(-1)); // -1 morale
+            this.publish(this.MORALE_DUE_TO_TAX, Message.of(true)); // -1 morale change
+        else
+            this.publish(this.MORALE_DUE_TO_TAX, Message.of(false)); // 0 morale change
     }
 
     /**

@@ -38,7 +38,6 @@ public class Move implements Moveable, PubSubable {
         this.movesLeft = moveType.moveCapacity;
     }
 
-
     /**
      * Subtracts the number of moves left with move points spent
      * 

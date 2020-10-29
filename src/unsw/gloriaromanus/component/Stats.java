@@ -41,8 +41,8 @@ public class Stats implements Statable {
      * @param strength   base strength
      * @param tactics    base tactics
      */
-    public Stats(int armour, int discipline, int fire, int morale, int strength, int flanking,
-            int shield, int tactics) {
+    public Stats(int armour, int discipline, int fire, int flanking, int morale, int shield,
+            int strength, int tactics) {
         this.stats = new HashMap<Stats.Type, Stat>();
         this.stats.put(Stats.Type.ARMOUR, new Armour(armour));
         this.stats.put(Stats.Type.DISCIPLINE, new Discipline(discipline));
@@ -57,10 +57,10 @@ public class Stats implements Statable {
     /**
      * Stats copy constructor
      * 
-     * @param stats
+     * @param stats Stats object
      */
     public Stats(Stats stats) {
-        this.stats = stats.stats;
+        this.stats = new HashMap<Stats.Type, Stat>(stats.stats);
     }
 
     @Override
@@ -71,5 +71,15 @@ public class Stats implements Statable {
     @Override
     public void setStat(Stats.Type type, int value) {
         this.stats.get(type).setStat(value);
+    }
+
+    @Override
+    public void addStat(Stats.Type type, int change) {
+        this.stats.get(type).addStat(change);
+    }
+
+    @Override
+    public void multiplyStat(Stats.Type type, int change) {
+        this.stats.get(type).multiplyStat(change);
     }
 }
