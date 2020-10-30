@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import unsw.gloriaromanus.Province;
 import unsw.gloriaromanus.component.HighTax;
 import unsw.gloriaromanus.component.LowTax;
 import unsw.gloriaromanus.component.NormalTax;
@@ -14,8 +15,10 @@ import unsw.gloriaromanus.component.VeryHighTax;
 
 public class TaxTest {
 
+    Province britannia;
     @Before
     public void setUp() {
+        britannia = new Province("Britannia");
     }
 
     @After
@@ -23,21 +26,17 @@ public class TaxTest {
     }
 
     @Test
-    public void setTax() {
-        Tax tax = new Tax();
-        assertEquals(tax.getTaxRate(), 10);
+    public void taxCollectionShouldReduceWealth() {
+        britannia.addWealth(100);
+        assertEquals(100, britannia.getWealth());
+        assertEquals(10, britannia.getTaxRate());
+        britannia.collectTax();
+        assertEquals(90, britannia.getWealth());
+    }
 
-        tax.setTaxLevel(new NormalTax());
-        assertEquals(tax.getTaxRate(), 15);
-
-        tax.setTaxLevel(new HighTax());
-        assertEquals(tax.getTaxRate(), 20);
-
-        tax.setTaxLevel(new VeryHighTax());
-        assertEquals(tax.getTaxRate(), 25);
-
-        tax.setTaxLevel(new LowTax());
-        assertEquals(tax.getTaxRate(), 10);
+    @Test
+    public void newTaxLevelShouldChangeWealthGrowth() {
+        
     }
 
 }
