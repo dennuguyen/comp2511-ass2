@@ -60,4 +60,17 @@ public class StatsTest {
         stats.multiplyStat(Stats.Type.STRENGTH, -80);
         assertEquals(30, stats.getStat(Stats.Type.STRENGTH));
     }
+
+    @Test
+    public void statsShouldNotBeAddedOverLimit() {
+        stats.addStat(Stats.Type.FLANKING, 100);
+        assertEquals(10, stats.getStat(Stats.Type.FLANKING));
+    }
+
+    @Test
+    public void statsShouldNotBeMultipliedOverLimit() {
+        stats.setStat(Stats.Type.FLANKING, 1);
+        stats.multiplyStat(Stats.Type.FLANKING, 1000);
+        assertEquals(10, stats.getStat(Stats.Type.FLANKING));
+    }
 }

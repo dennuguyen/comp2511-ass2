@@ -79,7 +79,7 @@ public abstract class Stat {
      * @param change value of stat addition
      */
     public void addStat(int change) {
-        this.modifiedValue += change;
+        this.modifiedValue = limit(this.modifiedValue + change);
     }
 
     /**
