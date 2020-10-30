@@ -17,6 +17,7 @@ public class StatsTest {
 
     @After
     public void tearDown() {
+        stats = null;
     }
 
     @Test
@@ -45,6 +46,18 @@ public class StatsTest {
 
     @Test
     public void statsShouldBeAdditive() {
+        stats.setStat(Stats.Type.STRENGTH, 50);
+        stats.addStat(Stats.Type.STRENGTH, 100);
+        assertEquals(150, stats.getStat(Stats.Type.STRENGTH));
+    }
 
+    @Test
+    public void statsShouldBeMultiplicative() {
+        stats.setStat(Stats.Type.STRENGTH, 100);
+        stats.multiplyStat(Stats.Type.STRENGTH, 50);
+        assertEquals(150, stats.getStat(Stats.Type.STRENGTH));
+
+        stats.multiplyStat(Stats.Type.STRENGTH, -80);
+        assertEquals(30, stats.getStat(Stats.Type.STRENGTH));
     }
 }
