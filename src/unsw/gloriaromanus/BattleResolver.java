@@ -5,11 +5,10 @@ import java.lang.Math;
 import unsw.gloriaromanus.component.Stats;
 
 public class BattleResolver {
-    Army attacker;
-    Army defender;
-    int numEngagements;
-    Unit attackUnit;
-    Unit defenceUnit;
+
+    private int numEngagements;
+    private Army attacker;
+    private Army defender;
 
     public BattleResolver(Army attacker, Army defender) {
         this.attacker = attacker;
@@ -17,35 +16,44 @@ public class BattleResolver {
         numEngagements = 0;
     }
 
-    public void chooseAttackUnit() {
-        attackUnit = attacker.getRandomUnit();
+    public Unit chooseAttackUnit() {
+        return attacker.getRandomUnit();
     }
 
-    public void chooseDefenceUnit() {
-        defenceUnit = defender.getRandomUnit();
+    public Unit chooseDefenceUnit() {
+        return defender.getRandomUnit();
     }
 
-    Engagement determineMixedEngagement(Unit missile, Unit melee) {
+    public Engagement determineMixedEngagement(Unit missile, Unit melee) {
         int chanceMelee = 50 + 10 * (melee.getStat(Stats.Type.TACTICS) - missile.getStat(Stats.Type.TACTICS));
         if (chanceMelee < 5) chanceMelee = 5;
         else if (chanceMelee > 95) chanceMelee = 95;
         var d = Math.random() * 100;
         if (d < chanceMelee)
-            return melee;
+            return new MeleeEngagement(missile, melee);
         else
-            return missile;
+            return new MissileEngagement(missile, melee);
     }
 
-    Engagement determineEngagementType() {
+    public Engagement determineEngagementType(Unit attackUnit, Unit defenceUnit) {
         if (attackUnit is melee && defenceUnit is melee) 
-            return melee
+            return new MeleeEngagement(attackUnit, defenceUnit);
         if (attackUnit is missile && defenceUnit is missile)
-            return missile
+            return new MissileEngagement(attackUnit, defenceUnit);
         if (attackUnit is missile && defenceUnit is melee)
             return determineMixedEngagement(attackUnit, defenceUnit);
         if (attackUnit is melee && defenceUnit is missile)
             return determineMixedEngagement(defenceUnit, attackUnit);
     }
+
+    public void doBattle() {
+        Unit attackUnit = chooseAttackUnit();
+        Unit defenceUnit = chooseDefenceUnit();
+        Engagement e = determineEngagementType(attackUnit, defenceUnit);
+        
+    }
+
+
 
     
 }
