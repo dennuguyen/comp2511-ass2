@@ -70,7 +70,7 @@ public class Faction implements PubSubable {
     }
 
     /**
-     * Returns total wealth across factions provinces
+     * Returns total wealth across all faction's provinces
      * 
      * @return wealth across all provinces
      */
@@ -98,7 +98,7 @@ public class Faction implements PubSubable {
 
     @Override
     public void listen(String topic, Message<Object> message) {
-        if (topic.contains("COLLECT_TAX_FROM_WEALTH"))
+        if (topic.contains("TAX_COLLECT"))
             this.addTreasury((Integer) message.getMessage());
     }
 
