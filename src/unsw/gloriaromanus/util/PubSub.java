@@ -13,8 +13,7 @@ import java.util.Map;
 
 public class PubSub implements PubSubable {
 
-    private Map<String, PubSubable> publishers = new HashMap<String, PubSubable>();
-    private Map<String, ArrayList<PubSubable>> subscribers = new HashMap<String, ArrayList<PubSubable>>();
+    private static Map<String, ArrayList<PubSubable>> subscribers = new HashMap<String, ArrayList<PubSubable>>();
 
     /**
      * Topic server constructor
@@ -43,30 +42,24 @@ public class PubSub implements PubSubable {
      * 
      * @return List of topics
      */
-    public ArrayList<String> getTopics() {
-        ArrayList<String> topics = new ArrayList<String>(this.publishers.keySet());
-        topics.addAll(this.subscribers.keySet());
-        return topics;
+    public static ArrayList<String> getTopics() {
+        return new ArrayList<String>(PubSub.subscribers.keySet());
     }
 
     @Override
-    public void publishTo(String topic) {
-    }
-
-    /**
-     * Add publisher to topic server
-     * 
-     * @param publisher Object implementing PubSubable
-     * @param topic     Name of topic
-     */
-    public void publishTo(PubSubable publisher, String topic) {
-        // if topic does not exist, create a new entry for publishers
-        if (!this.publishers.containsKey(topic))
-            this.publishers.put(topic, publisher);
+    public void publish(String topic, Message<Object> message) {
+        if (PubSub.subscribers.containsKey(topic))
+            for (PubSubable subscriber : PubSub.subscribers.get(topic))
+                subscriber.listen(topic, message);
     }
 
     @Override
-    public void subscribeTo(String topic) {
+    public void listen(String topic, Message<Object> message) {
+        // Listeners implement PubSub function
+    }
+
+    @Override
+    public void subscribe(String topic) {
     }
 
     /**
@@ -75,43 +68,16 @@ public class PubSub implements PubSubable {
      * @param publisher Object implementing PubSubable
      * @param topic     Name of topic
      */
-    public void subscribeTo(PubSubable subscriber, String topic) {
+    public void subscribe(PubSubable subscriber, String topic) {
         ArrayList<PubSubable> temp = null; // temp list
 
-        if (this.subscribers.containsKey(topic))
-            temp = this.subscribers.get(topic);
+        if (PubSub.subscribers.containsKey(topic))
+            temp = PubSub.subscribers.get(topic);
         else
             temp = new ArrayList<PubSubable>();
 
         temp.add(subscriber); // add subscriber to temp list
-        this.subscribers.put(topic, temp);
-    }
-
-    @Override
-    public void publish(String topic, Message<Object> message) {
-        if (this.subscribers.containsKey(topic))
-            for (PubSubable subscriber : this.subscribers.get(topic))
-                subscriber.listen(topic, message);
-    }
-
-    @Override
-    public void listen(String topic, Message<Object> message) {
-        // Listeners implement this function
-    }
-
-    @Override
-    public void unpublish(String topic) {
-    }
-
-    /**
-     * Remove publisher from topic server
-     * 
-     * @param publisher Publisher object
-     * @param topic     Topic to remove publisher from
-     */
-    public void unpublish(PubSubable publisher, String topic) {
-        if (this.publishers.containsKey(topic))
-            this.publishers.put(topic, null);
+        PubSub.subscribers.put(topic, temp);
     }
 
     @Override
@@ -125,12 +91,12 @@ public class PubSub implements PubSubable {
      * @param topic      Topic to remove subscriber from
      */
     public void unsubscribe(PubSubable subscriber, String topic) {
-        if (this.subscribers.containsKey(topic)) {
-            ArrayList<PubSubable> temp = this.subscribers.get(topic);
+        if (PubSub.subscribers.containsKey(topic)) {
+            ArrayList<PubSubable> temp = PubSub.subscribers.get(topic);
             if (temp == null)
                 return;
             temp.remove(subscriber);
-            this.subscribers.put(topic, temp);
+            PubSub.subscribers.put(topic, temp);
         }
     }
 }

@@ -18,7 +18,6 @@ public class Turn implements PubSubable {
      * Turn constructor
      */
     private Turn() {
-        this.publishTo(Topics.NEXT_TURN);
     }
 
     /**
@@ -55,16 +54,6 @@ public class Turn implements PubSubable {
     }
 
     @Override
-    public void publishTo(String topic) {
-        PubSub.getInstance().publishTo(this, topic);
-    }
-
-    @Override
-    public void subscribeTo(String topic) {
-        PubSub.getInstance().subscribeTo(this, topic);
-    }
-
-    @Override
     public void publish(String topic, Message<Object> message) {
         PubSub.getInstance().publish(topic, message);
     }
@@ -74,8 +63,8 @@ public class Turn implements PubSubable {
     }
 
     @Override
-    public void unpublish(String topic) {
-        PubSub.getInstance().unpublish(this, topic);
+    public void subscribe(String topic) {
+        PubSub.getInstance().subscribe(this, topic);
     }
 
     @Override

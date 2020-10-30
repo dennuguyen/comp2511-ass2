@@ -44,17 +44,10 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
         this.CAMPED_UNITS = name + Topics.CAMP;
 
         // Subscribe to turn events
-        this.subscribeTo(Topics.NEXT_TURN);
+        this.subscribe(Topics.NEXT_TURN);
 
         // Publish-subscribe wealth growth change event due to tax changes
-        this.publishTo(this.WEALTH_GROWTH_DUE_TO_TAX);
-        this.subscribeTo(this.WEALTH_GROWTH_DUE_TO_TAX);
-
-        // Publish-subscribe morale change event due to tax changes
-        this.publishTo(this.MORALE_DUE_TO_TAX);
-
-        // Publish to camped units topic
-        this.publishTo(this.CAMPED_UNITS);
+        this.subscribe(this.WEALTH_GROWTH_DUE_TO_TAX);
     }
 
     @Override
@@ -120,16 +113,6 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
     }
 
     @Override
-    public void publishTo(String topic) {
-        PubSub.getInstance().publishTo(this, topic);
-    }
-
-    @Override
-    public void subscribeTo(String topic) {
-        PubSub.getInstance().subscribeTo(this, topic);
-    }
-
-    @Override
     public void publish(String topic, Message<Object> message) {
         PubSub.getInstance().publish(topic, message);
     }
@@ -151,8 +134,8 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
     }
 
     @Override
-    public void unpublish(String topic) {
-        PubSub.getInstance().unpublish(this, topic);
+    public void subscribe(String topic) {
+        PubSub.getInstance().subscribe(this, topic);
     }
 
     @Override

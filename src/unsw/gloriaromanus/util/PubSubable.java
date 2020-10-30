@@ -7,20 +7,6 @@ package unsw.gloriaromanus.util;
 public interface PubSubable {
 
     /**
-     * Add publisher to topic server
-     * 
-     * @param topic Name of topic
-     */
-    public void publishTo(String topic);
-
-    /**
-     * Add subscriber to topic server
-     * 
-     * @param topic Name of topic
-     */
-    public void subscribeTo(String topic);
-
-    /**
      * Publish message to topic
      * 
      * @param topic   Published topic
@@ -37,11 +23,11 @@ public interface PubSubable {
     public void listen(String topic, Message<Object> message);
 
     /**
-     * Remove publisher from topic server
+     * Add subscriber to topic server
      * 
-     * @param topic Topic to remove publisher from
+     * @param topic Name of topic
      */
-    public void unpublish(String topic);
+    public void subscribe(String topic);
 
     /**
      * Remove subscriber from topic server

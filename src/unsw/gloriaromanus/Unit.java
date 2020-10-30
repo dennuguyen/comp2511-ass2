@@ -37,8 +37,8 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
         this.stats = new Stats(stats);
 
         // Subscribe to camped unit broadcast of spawnpoint
-        this.subscribeTo(spawn + Topics.CAMP);
-        this.subscribeTo(spawn + Topics.MORALE);
+        this.subscribe(spawn + Topics.CAMP);
+        this.subscribe(spawn + Topics.MORALE);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
         // Set the unit's subscription to a province broadcast
         this.unsubscribe(this.CAMPED_UNITS);
         this.CAMPED_UNITS = location + Topics.CAMP;
-        this.subscribeTo(this.CAMPED_UNITS);
+        this.subscribe(this.CAMPED_UNITS);
 
         return this.locale.setLocation(location);
     }
@@ -83,16 +83,6 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
     }
 
     @Override
-    public void publishTo(String topic) {
-        PubSub.getInstance().publishTo(this, topic);
-    }
-
-    @Override
-    public void subscribeTo(String topic) {
-        PubSub.getInstance().subscribeTo(this, topic);
-    }
-
-    @Override
     public void publish(String topic, Message<Object> message) {
         PubSub.getInstance().publish(topic, message);
     }
@@ -109,8 +99,8 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
     }
 
     @Override
-    public void unpublish(String topic) {
-        PubSub.getInstance().unpublish(this, topic);
+    public void subscribe(String topic) {
+        PubSub.getInstance().subscribe(this, topic);
     }
 
     @Override
