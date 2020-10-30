@@ -15,11 +15,29 @@ public class Faction implements PubSubable {
     int treasury;
     int wealth;
 
+    /**
+     * Constructor given only a name
+     * @param name name of faction
+     */
     public Faction(String name) {
         this.name = name;
         territories = new ArrayList<Province>();
         treasury = 0;
         wealth = 0;
+    }
+
+    /**
+     * Constructor given name and list of factions
+     * @param name name of faction
+     */
+    public Faction(String name, List<Province> provinces) {
+        this.name = name;
+        territories = new ArrayList<Province>();
+        for (Province p : provinces) {
+            territories.add(p);
+        }
+        treasury = 0;
+        wealth = calculateWealth();
     }
 
     /**
@@ -80,7 +98,8 @@ public class Faction implements PubSubable {
 
     @Override
     public void listen(String topic, Message<Object> message) {
-        this.addTreasury((Integer) message.getMessage());
+        if (topic.contains("COLLECT_TAX_FROM_WEALTH"))
+            this.addTreasury((Integer) message.getMessage());
     }
 
     @Override
