@@ -29,9 +29,4 @@ public class Tax implements Taxable {
     public void setTaxLevel(TaxLevel taxLevel) {
         this.taxLevel = taxLevel;
     }
-
-    @Override
-    public int calculateTax(int amount) {
-        return amount*getTaxRate()/100;
-    }
 }
