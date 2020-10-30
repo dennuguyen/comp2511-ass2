@@ -20,4 +20,22 @@ public class FactionTest {
         britannia.collectTax();
         assertEquals(10, f.getTreasury());
     }
+
+    @Test
+    public void wealthShouldAccumulateAllProvinces() {
+        Faction f = new Faction("F");
+        Province britannia  = new Province("Britannia");
+        Province lugdunensis  = new Province("Lugdunensis");
+        Province belgica  = new Province("Belgica");
+        Province aquitania  = new Province("Aquitania");
+        f.addProvince(britannia);
+        f.addProvince(lugdunensis);
+        f.addProvince(belgica);
+        f.addProvince(aquitania);
+        britannia.addWealth(100);
+        lugdunensis.addWealth(100);
+        belgica.addWealth(100);
+        aquitania.addWealth(100);
+        assertEquals(400, f.calculateWealth());
+    }
 }
