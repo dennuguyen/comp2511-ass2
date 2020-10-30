@@ -15,11 +15,11 @@ public class Camp implements Levyable {
     }
 
     @Override
-    public Unit enlist(Levyable.Type unitType) {
+    public Unit recruit(Levyable.Type unitType) {
         return null;
     }
 
-    public Unit enlist(Levyable.Type unitType, String locale) {
+    public Unit recruit(Levyable.Type unitType, String locale) {
         Unit unit = null;
         switch (unitType) {
             case RomanLegionary:

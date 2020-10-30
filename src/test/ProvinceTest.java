@@ -9,7 +9,8 @@ import org.junit.Test;
 import unsw.gloriaromanus.Province;
 import unsw.gloriaromanus.RomanLegionary;
 import unsw.gloriaromanus.World;
-import unsw.gloriaromanus.UnitFactory;
+import unsw.gloriaromanus.component.Stats;
+import unsw.gloriaromanus.Levyable;
 
 public class ProvinceTest {
 
@@ -24,9 +25,10 @@ public class ProvinceTest {
     }
 
     @Test
-    public void unitFactoryShouldSpawnUnit() {
+    public void campShouldSpawnUnit() {
         Province noricum = world.getProvince("Noricum");
-        RomanLegionary roman = (RomanLegionary) noricum.recruit(UnitFactory.Type.RomanLegionary);
+        RomanLegionary roman = (RomanLegionary) noricum.recruit(Levyable.Type.RomanLegionary);
         assertEquals(roman.getLocation(), noricum.getLocation());
+        assertEquals(0, roman.getStat(Stats.Type.STRENGTH));
     }
 }

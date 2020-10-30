@@ -20,5 +20,5 @@ public interface Levyable {
         }
     }
 
-    public Unit enlist(Levyable.Type unitType);
+    public Unit recruit(Levyable.Type unitType);
 }

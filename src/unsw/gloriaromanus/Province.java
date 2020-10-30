@@ -63,8 +63,8 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
     }
 
     @Override
-    public Unit enlist(Levyable.Type unitType) {
-        return this.camp.enlist(unitType, this.getLocation());
+    public Unit recruit(Levyable.Type unitType) {
+        return this.camp.recruit(unitType, this.getLocation());
     }
 
     @Override
