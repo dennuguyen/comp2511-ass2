@@ -39,7 +39,6 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
         this.locale = new Locale(name);
         this.wealth = new Wealth();
         this.tax = new Tax();
-        this.setTaxLevel(new LowTax());
 
         // Prepare topics
         this.WEALTH_GROWTH_DUE_TO_TAX = name + Topics.WEALTH_GROWTH;
@@ -54,6 +53,8 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
         this.subscribe(this.WEALTH_GROWTH_DUE_TO_TAX);
 
         this.subscribe(this.COLLECT_TAX_FROM_WEALTH);
+
+        this.setTaxLevel(new LowTax());
     }
 
     @Override
@@ -88,7 +89,7 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
 
         // Wealth growth event
         this.publish(this.WEALTH_GROWTH_DUE_TO_TAX, Message.of(getWealthGrowth() + taxLevel.getWealthGrowthChange()));
-
+        
         // Set the tax level
         tax.setTaxLevel(taxLevel);
     }
@@ -125,7 +126,7 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
 
     @Override
     public void listen(String topic, Message<Object> message) {
-
+        
         if (topic.equals(this.WEALTH_GROWTH_DUE_TO_TAX)) {
             this.setWealthGrowth((Integer) message.getMessage());
         }

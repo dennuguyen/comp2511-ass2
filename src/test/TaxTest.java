@@ -36,7 +36,14 @@ public class TaxTest {
 
     @Test
     public void newTaxLevelShouldChangeWealthGrowth() {
-        
+        assertEquals(10, britannia.getWealthGrowth());
+        britannia.setTaxLevel(new VeryHighTax());
+        assertEquals(-20, britannia.getWealthGrowth());
+        britannia.setTaxLevel(new LowTax());
+        assertEquals(-10, britannia.getWealthGrowth());
+    }
+
+    public static void main(String[] args) {
     }
 
 }
