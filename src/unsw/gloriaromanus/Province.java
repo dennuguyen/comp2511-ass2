@@ -25,9 +25,6 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
     private final Wealth wealth;
     private final Camp camp;
 
-    private @interface SetTaxEvent {
-    }
-
     /**
      * Base constructor for province
      * 
@@ -73,7 +70,6 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
     }
 
     @Override
-    @SetTaxEvent
     public void setTaxLevel(TaxLevel taxLevel) {
 
         if (this.tax.getTaxLevel().equals(taxLevel))
@@ -132,7 +128,7 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
         }
 
         else if (topic.equals(Topics.NEXT_TURN)) {
-            this.addWealth(this.getWealthGrowth());
+            this.addWealth(this.getWealthGrowth()); // Wealth naturally grows
             this.publish(this.CAMPED_UNITS, null); // Camped units recruit some troops
         }
 

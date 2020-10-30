@@ -8,12 +8,14 @@ import org.junit.Test;
 
 import unsw.gloriaromanus.Province;
 import unsw.gloriaromanus.RomanLegionary;
+import unsw.gloriaromanus.Turn;
 import unsw.gloriaromanus.World;
 import unsw.gloriaromanus.component.Stats;
 import unsw.gloriaromanus.Levyable;
 
 public class ProvinceTest {
 
+    Turn turn = Turn.getInstance();
     World world = new World("src/unsw/gloriaromanus/province_adjacency_matrix.json");
 
     @Before
@@ -30,5 +32,11 @@ public class ProvinceTest {
         RomanLegionary roman = (RomanLegionary) noricum.recruit(Levyable.Type.RomanLegionary);
         assertEquals(roman.getLocation(), noricum.getLocation());
         assertEquals(0, roman.getStat(Stats.Type.STRENGTH));
+
+        this.turn.incrementTurn();
+        assertEquals(500, roman.getStat(Stats.Type.STRENGTH));
+
+        this.turn.incrementTurn();
+        assertEquals(1000, roman.getStat(Stats.Type.STRENGTH));
     }
 }
