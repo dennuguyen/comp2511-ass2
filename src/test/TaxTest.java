@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,14 +25,14 @@ public class TaxTest {
     @Test
     public void setTax() {
         Tax tax = new Tax();
-        assertEquals(tax.getTaxRate(), 10); 
-        
+        assertEquals(tax.getTaxRate(), 10);
+
         tax.setTaxLevel(new NormalTax());
-        assertEquals(tax.getTaxRate(), 15); 
-        
+        assertEquals(tax.getTaxRate(), 15);
+
         tax.setTaxLevel(new HighTax());
         assertEquals(tax.getTaxRate(), 20);
-         
+
         tax.setTaxLevel(new VeryHighTax());
         assertEquals(tax.getTaxRate(), 25);
 
@@ -39,5 +40,4 @@ public class TaxTest {
         assertEquals(tax.getTaxRate(), 10);
     }
 
-    
 }

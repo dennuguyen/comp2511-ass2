@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MoveTest {
+public class LocaleTest {
 
     @Before
     public void setUp() {
@@ -17,6 +17,7 @@ public class MoveTest {
     }
 
     @Test
-    public void unitShouldBeAbleToMove() {
+    public void locationShouldHaveWorldString() {
+
     }
 }
