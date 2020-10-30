@@ -69,13 +69,16 @@ public class Engagement {
     }
 
     /**
-     * Limit casualties between 0 and size of unit 
+     * Limits casualties between 0 and size of unit 
+     * 
+     * @param casualties calculated value of casualties
+     * @param intial initial size of unit
      * 
      * @return modified casualties
      */
-    public int limitCasualties(int casualties, Unit enemy) {
-        if (casualties > enemy.getStat(Stats.Type.STRENGTH)) 
-            return enemy.getStat(Stats.Type.STRENGTH);
+    public int limit(int casualties, int initial) {
+        if (casualties > initial) 
+            return initial;
         if (casualties < 0) 
             return 0;
         return casualties;
@@ -89,11 +92,13 @@ public class Engagement {
         int casualties;
         
         casualties = type.calculateCasualties(unitA, unitB, unitBInitialSize);
-        casualties = limitCasualties(casualties, unitB);
+        casualties = limit(casualties, unitBInitialSize);
+        unitBCasualties = casualties;
         unitB.addStat(Stats.Type.STRENGTH, -1 * casualties);
         
         casualties = type.calculateCasualties(unitB, unitA, unitAInitialSize);
-        casualties = limitCasualties(casualties, unitA);
+        casualties = limit(casualties, unitAInitialSize);
+        unitACasualties = casualties;
         unitA.addStat(Stats.Type.STRENGTH, -1 * casualties);
     }
 
