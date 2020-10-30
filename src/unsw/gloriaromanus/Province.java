@@ -1,7 +1,10 @@
 package unsw.gloriaromanus;
 
+import java.util.Objects;
+
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
+import unsw.gloriaromanus.component.LowTax;
 import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
@@ -35,6 +38,7 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
     public Province(String name) {
         this.locale = new Locale(name);
         this.tax = new Tax();
+        this.setTaxLevel(new LowTax());
         this.wealth = new Wealth();
 
         // Prepare topics
@@ -48,6 +52,8 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
 
         // Publish-subscribe wealth growth change event due to tax changes
         this.subscribe(this.WEALTH_GROWTH_DUE_TO_TAX);
+
+        this.subscribe(this.COLLECT_TAX_FROM_WEALTH);
     }
 
     @Override
@@ -69,7 +75,7 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
     @SetTaxEvent
     public void setTaxLevel(TaxLevel taxLevel) {
 
-        if (this.tax.getTaxLevel().equals(taxLevel))
+        if (Objects.equals(this.tax.getTaxLevel(), taxLevel))
             return;
 
         // Change to very high tax
@@ -85,6 +91,11 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
 
         // Set the tax level
         tax.setTaxLevel(taxLevel);
+    }
+
+    @Override
+    public int calculateTax(int amount) {
+        return tax.calculateTax(wealth.getWealth());
     }
 
     @Override
@@ -129,6 +140,7 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
         }
 
         else if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {
+            System.out.println("MESSAGE: " + (Integer) message.getMessage());
             this.addWealth((Integer) message.getMessage());
         }
     }
@@ -141,5 +153,9 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
     @Override
     public void unsubscribe(String topic) {
         PubSub.getInstance().unsubscribe(this, topic);
+    }
+
+    public void collectTax() {
+        this.publish(this.COLLECT_TAX_FROM_WEALTH , Message.of(this.calculateTax(0)));
     }
 }
