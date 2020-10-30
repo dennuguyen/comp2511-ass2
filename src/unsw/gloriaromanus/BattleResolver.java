@@ -25,7 +25,18 @@ public class BattleResolver {
         defenceUnit = defender.getRandomUnit();
     }
 
-    public Engagement determineEngagementType() {
+    Engagement determineMixedEngagement(Unit missile, Unit melee) {
+        int chanceMelee = 50 + 10 * (melee.getStat(Stats.Type.TACTICS) - missile.getStat(Stats.Type.TACTICS));
+        if (chanceMelee < 5) chanceMelee = 5;
+        else if (chanceMelee > 95) chanceMelee = 95;
+        var d = Math.random() * 100;
+        if (d < chanceMelee)
+            return melee;
+        else
+            return missile;
+    }
+
+    Engagement determineEngagementType() {
         if (attackUnit is melee && defenceUnit is melee) 
             return melee
         if (attackUnit is missile && defenceUnit is missile)
@@ -34,15 +45,7 @@ public class BattleResolver {
             return determineMixedEngagement(attackUnit, defenceUnit);
         if (attackUnit is melee && defenceUnit is missile)
             return determineMixedEngagement(defenceUnit, attackUnit);
-
     }
 
-    public Engagement determineMixedEngagement(Unit missile, Unit melee) {
-        int chanceMelee = 50 + 10 * (melee.getStat(Stats.Type.TACTICS) - missile.getStat(Stats.Type.TACTICS));
-        var d = Math.random() * 100;
-        if (d < chanceMelee)
-            return melee;
-        else
-            return missile;
-    }
+    
 }
