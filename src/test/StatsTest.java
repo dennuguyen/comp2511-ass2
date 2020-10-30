@@ -42,4 +42,9 @@ public class StatsTest {
         assertEquals(1000, stats.getStat(Stats.Type.STRENGTH));
         assertEquals(0, stats.getStat(Stats.Type.FLANKING));
     }
+
+    @Test
+    public void statsShouldBeAdditive() {
+
+    }
 }
