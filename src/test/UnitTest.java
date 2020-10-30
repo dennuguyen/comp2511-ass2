@@ -36,7 +36,7 @@ public class UnitTest {
         assertEquals(8, legionary.getStat(Stats.Type.DISCIPLINE));
         assertEquals(10, legionary.getStat(Stats.Type.FIRE));
         assertEquals(6, legionary.getStat(Stats.Type.FLANKING));
-        assertEquals(1000, legionary.getStat(Stats.Type.STRENGTH));
+        assertEquals(0, legionary.getStat(Stats.Type.STRENGTH));
         assertEquals(5, legionary.getStat(Stats.Type.TACTICS));
     }
 

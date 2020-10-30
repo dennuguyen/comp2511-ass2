@@ -16,7 +16,7 @@ import unsw.gloriaromanus.util.PubSubable;
 import unsw.gloriaromanus.util.Topics;
 import unsw.gloriaromanus.component.Wealth;
 
-public class Province implements Locable, Taxable, Wealthable, PubSubable {
+public class Province implements Locable, Levyable, Taxable, Wealthable, PubSubable {
 
     private final String WEALTH_GROWTH_DUE_TO_TAX;
     private final String MORALE_DUE_TO_TAX;
@@ -26,9 +26,7 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
     private final Locale locale;
     private final Tax tax;
     private final Wealth wealth;
-
-    private @interface SetTaxEvent {
-    }
+    private final Camp camp;
 
     /**
      * Base constructor for province
@@ -39,6 +37,7 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
         this.locale = new Locale(name);
         this.wealth = new Wealth();
         this.tax = new Tax();
+        this.camp = new Camp();
 
         // Prepare topics
         this.WEALTH_GROWTH_DUE_TO_TAX = name + Topics.WEALTH_GROWTH;
@@ -68,12 +67,16 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
     }
 
     @Override
+    public Unit recruit(Levyable.Type unitType) {
+        return this.camp.recruit(unitType, this.getLocation());
+    }
+
+    @Override
     public int getTaxRate() {
         return this.tax.getTaxRate();
     }
 
     @Override
-    @SetTaxEvent
     public void setTaxLevel(TaxLevel taxLevel) {
 
         if (Objects.equals(this.tax.getTaxLevel(), taxLevel))
@@ -132,7 +135,8 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
         }
 
         else if (topic.equals(Topics.NEXT_TURN)) {
-            this.addWealth(this.getWealthGrowth());
+            this.addWealth(this.getWealthGrowth()); // Wealth naturally grows
+            this.publish(this.CAMPED_UNITS, null); // Camped units recruit some troops
         }
 
         else if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {
