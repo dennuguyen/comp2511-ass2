@@ -8,7 +8,7 @@ package unsw.gloriaromanus;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
-import unsw.gloriaromanus.util.Topic;
+import unsw.gloriaromanus.util.Topics;
 
 public class Turn implements PubSubable {
 
@@ -18,7 +18,7 @@ public class Turn implements PubSubable {
      * Turn constructor
      */
     private Turn() {
-        this.publishTo(Topic.NEXT_TURN);
+        this.publishTo(Topics.NEXT_TURN);
     }
 
     /**
@@ -51,35 +51,35 @@ public class Turn implements PubSubable {
      */
     public void incrementTurn() {
         this.turn++;
-        this.publish(Topic.NEXT_TURN, Message.of(this.turn));
+        this.publish(Topics.NEXT_TURN, Message.of(this.turn));
     }
 
     @Override
-    public void publishTo(Topic topic) {
+    public void publishTo(String topic) {
         PubSub.getInstance().publishTo(this, topic);
     }
 
     @Override
-    public void subscribeTo(Topic topic) {
+    public void subscribeTo(String topic) {
         PubSub.getInstance().subscribeTo(this, topic);
     }
 
     @Override
-    public void publish(Topic topic, Message<Object> message) {
+    public void publish(String topic, Message<Object> message) {
         PubSub.getInstance().publish(topic, message);
     }
 
     @Override
-    public void listen(Topic topic, Message<Object> message) {
+    public void listen(String topic, Message<Object> message) {
     }
 
     @Override
-    public void unpublish(Topic topic) {
+    public void unpublish(String topic) {
         PubSub.getInstance().unpublish(this, topic);
     }
 
     @Override
-    public void unsubscribe(Topic topic) {
+    public void unsubscribe(String topic) {
         PubSub.getInstance().unsubscribe(this, topic);
     }
 }

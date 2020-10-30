@@ -11,14 +11,14 @@ public interface PubSubable {
      * 
      * @param topic Name of topic
      */
-    public void publishTo(Topic topic);
+    public void publishTo(String topic);
 
     /**
      * Add subscriber to topic server
      * 
      * @param topic Name of topic
      */
-    public void subscribeTo(Topic topic);
+    public void subscribeTo(String topic);
 
     /**
      * Publish message to topic
@@ -26,7 +26,7 @@ public interface PubSubable {
      * @param topic   Published topic
      * @param message Message to send
      */
-    public void publish(Topic topic, Message<Object> message);
+    public void publish(String topic, Message<Object> message);
 
     /**
      * Listen to topic for message
@@ -34,19 +34,19 @@ public interface PubSubable {
      * @param topic   Subscribed topic
      * @param message Message to receive
      */
-    public void listen(Topic topic, Message<Object> message);
+    public void listen(String topic, Message<Object> message);
 
     /**
      * Remove publisher from topic server
      * 
      * @param topic Topic to remove publisher from
      */
-    public void unpublish(Topic topic);
+    public void unpublish(String topic);
 
     /**
      * Remove subscriber from topic server
      * 
      * @param topic Topic to remove subscriber from
      */
-    public void unsubscribe(Topic topic);
+    public void unsubscribe(String topic);
 }

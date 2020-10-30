@@ -5,22 +5,27 @@ import unsw.gloriaromanus.component.Locale;
 import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
+import unsw.gloriaromanus.component.VeryHighTax;
 import unsw.gloriaromanus.component.Wealthable;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
-import unsw.gloriaromanus.util.Topic;
+import unsw.gloriaromanus.util.Topics;
 import unsw.gloriaromanus.component.Wealth;
 
 public class Province implements Locable, Taxable, Wealthable, PubSubable {
 
-    private final Topic WEALTH_GROWTH_DUE_TO_TAX;
-    private final Topic MORALE_DUE_TO_TAX;
-    private final Topic COLLECT_TAX_FROM_WEALTH;
+    private final String WEALTH_GROWTH_DUE_TO_TAX;
+    private final String MORALE_DUE_TO_TAX;
+    private final String COLLECT_TAX_FROM_WEALTH;
+    private final String CAMPED_UNITS;
 
     private final Locale locale;
     private final Tax tax;
     private final Wealth wealth;
+
+    private @interface SetTaxEvent {
+    }
 
     /**
      * Base constructor for province
@@ -33,24 +38,23 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
         this.wealth = new Wealth();
 
         // Prepare topics
-        this.WEALTH_GROWTH_DUE_TO_TAX = Topic.of(name + "/WEALTH_GROWTH");
-        this.MORALE_DUE_TO_TAX = Topic.of(name + "/MORALE");
-        this.COLLECT_TAX_FROM_WEALTH = Topic.of(name + "/TAX_COLLECT");
-
-        // Set topics for delegated objects
-        this.tax.setTopics(this.WEALTH_GROWTH_DUE_TO_TAX, this.MORALE_DUE_TO_TAX);
-        this.wealth.setTopics(this.WEALTH_GROWTH_DUE_TO_TAX, this.COLLECT_TAX_FROM_WEALTH);
+        this.WEALTH_GROWTH_DUE_TO_TAX = name + Topics.WEALTH_GROWTH;
+        this.MORALE_DUE_TO_TAX = name + Topics.MORALE;
+        this.COLLECT_TAX_FROM_WEALTH = name + Topics.TAX_COLLECT;
+        this.CAMPED_UNITS = name + Topics.CAMP;
 
         // Subscribe to turn events
-        this.subscribeTo(Topic.NEXT_TURN);
+        this.subscribeTo(Topics.NEXT_TURN);
 
         // Publish-subscribe wealth growth change event due to tax changes
-        this.tax.publishTo(this.WEALTH_GROWTH_DUE_TO_TAX);
-        this.wealth.subscribeTo(this.WEALTH_GROWTH_DUE_TO_TAX);
+        this.publishTo(this.WEALTH_GROWTH_DUE_TO_TAX);
+        this.subscribeTo(this.WEALTH_GROWTH_DUE_TO_TAX);
 
         // Publish-subscribe morale change event due to tax changes
-        this.tax.publishTo(this.MORALE_DUE_TO_TAX);
-        // this.wealth.subscribeTo(Topic.of(name + Topic.MORALE_DUE_TO_TAX));
+        this.publishTo(this.MORALE_DUE_TO_TAX);
+
+        // Publish to camped units topic
+        this.publishTo(this.CAMPED_UNITS);
     }
 
     @Override
@@ -69,13 +73,25 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
     }
 
     @Override
+    @SetTaxEvent
     public void setTaxLevel(TaxLevel taxLevel) {
-        tax.setTaxLevel(taxLevel);
-    }
 
-    @Override
-    public void collectTax() {
-        // Notify faction to add tax to treasury
+        if (this.tax.getTaxLevel().equals(taxLevel))
+            return;
+
+        // Change to very high tax
+        if (taxLevel instanceof VeryHighTax)
+            this.publish(this.MORALE_DUE_TO_TAX, Message.of(true)); // -1 morale change
+
+        // Change from very high tax
+        else if ((this.tax.getTaxLevel() instanceof VeryHighTax) && !(taxLevel instanceof VeryHighTax))
+            this.publish(this.MORALE_DUE_TO_TAX, Message.of(false)); // 0 morale change
+
+        // Wealth growth event
+        this.publish(this.WEALTH_GROWTH_DUE_TO_TAX, Message.of(taxLevel.getWealthGrowthChange()));
+
+        // Set the tax level
+        tax.setTaxLevel(taxLevel);
     }
 
     @Override
@@ -104,31 +120,43 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
     }
 
     @Override
-    public void publishTo(Topic topic) {
+    public void publishTo(String topic) {
         PubSub.getInstance().publishTo(this, topic);
     }
 
     @Override
-    public void subscribeTo(Topic topic) {
+    public void subscribeTo(String topic) {
         PubSub.getInstance().subscribeTo(this, topic);
     }
 
     @Override
-    public void publish(Topic topic, Message<Object> message) {
+    public void publish(String topic, Message<Object> message) {
         PubSub.getInstance().publish(topic, message);
     }
 
     @Override
-    public void listen(Topic topic, Message<Object> message) {
+    public void listen(String topic, Message<Object> message) {
+
+        if (topic.equals(this.WEALTH_GROWTH_DUE_TO_TAX)) {
+            this.setWealthGrowth((Integer) message.getMessage());
+        }
+
+        else if (topic.equals(Topics.NEXT_TURN)) {
+            this.addWealth(this.getWealthGrowth());
+        }
+
+        else if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {
+            this.addWealth((Integer) message.getMessage());
+        }
     }
 
     @Override
-    public void unpublish(Topic topic) {
+    public void unpublish(String topic) {
         PubSub.getInstance().unpublish(this, topic);
     }
 
     @Override
-    public void unsubscribe(Topic topic) {
+    public void unsubscribe(String topic) {
         PubSub.getInstance().unsubscribe(this, topic);
     }
 }

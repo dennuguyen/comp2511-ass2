@@ -7,7 +7,7 @@ package unsw.gloriaromanus.component;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
-import unsw.gloriaromanus.util.Topic;
+import unsw.gloriaromanus.util.Topics;
 
 public class Move implements Moveable, PubSubable {
 
@@ -72,35 +72,35 @@ public class Move implements Moveable, PubSubable {
     }
 
     @Override
-    public void publishTo(Topic topic) {
+    public void publishTo(String topic) {
         PubSub.getInstance().publishTo(this, topic);
     }
 
     @Override
-    public void subscribeTo(Topic topic) {
+    public void subscribeTo(String topic) {
         PubSub.getInstance().subscribeTo(this, topic);
     }
 
     @Override
-    public void publish(Topic topic, Message<Object> message) {
+    public void publish(String topic, Message<Object> message) {
         PubSub.getInstance().publish(topic, message);
     }
 
     @Override
-    public void listen(Topic topic, Message<Object> message) {
+    public void listen(String topic, Message<Object> message) {
 
-        if (topic.equals(Topic.NEXT_TURN)) {
+        if (topic.equals(Topics.NEXT_TURN)) {
             this.movesLeft = moveType.moveCapacity;
         }
     }
 
     @Override
-    public void unpublish(Topic topic) {
+    public void unpublish(String topic) {
         PubSub.getInstance().unpublish(this, topic);
     }
 
     @Override
-    public void unsubscribe(Topic topic) {
+    public void unsubscribe(String topic) {
         PubSub.getInstance().unsubscribe(this, topic);
     }
 }
