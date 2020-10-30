@@ -59,7 +59,22 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
 
     @Override
     public String moveTo(String destination) {
+        this.uncamp();
         return this.locale.setLocation(this.move.moveTo(this.locale.getLocation(), destination));
+    }
+
+    /**
+     * Unit makes camp at a province therefore can recover manpower
+     */
+    public void camp() {
+        this.CAMPED_UNITS = this.locale.getLocation() + Topics.CAMP;
+    }
+
+    /**
+     * Unsubscribe from province camp topic
+     */
+    public void uncamp() {
+        this.CAMPED_UNITS = null;
     }
 
     @Override
@@ -95,6 +110,10 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
                 this.stats.addStat(Stats.Type.MORALE, -1);
             else
                 this.stats.addStat(Stats.Type.MORALE, 1);
+        }
+
+        else if (topic.equals(this.CAMPED_UNITS)) {
+            this.addStat(Stats.Type.STRENGTH, 500);
         }
     }
 
