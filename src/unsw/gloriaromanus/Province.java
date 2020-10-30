@@ -141,7 +141,7 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
 
         else if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {
             System.out.println("MESSAGE: " + (Integer) message.getMessage());
-            this.addWealth((Integer) message.getMessage());
+            this.addWealth(-1 * (Integer) (message.getMessage()));
         }
     }
 

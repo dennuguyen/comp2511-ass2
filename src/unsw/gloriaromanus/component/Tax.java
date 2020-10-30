@@ -32,6 +32,6 @@ public class Tax implements Taxable {
 
     @Override
     public int calculateTax(int amount) {
-        return -1*amount*getTaxRate()/100;
+        return amount*getTaxRate()/100;
     }
 }
