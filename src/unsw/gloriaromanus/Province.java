@@ -2,6 +2,7 @@ package unsw.gloriaromanus;
 
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
+import unsw.gloriaromanus.component.Recruitable;
 import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
@@ -13,7 +14,7 @@ import unsw.gloriaromanus.util.PubSubable;
 import unsw.gloriaromanus.util.Topics;
 import unsw.gloriaromanus.component.Wealth;
 
-public class Province implements Locable, Taxable, Wealthable, PubSubable {
+public class Province implements Locable, UnitFactory, Taxable, Wealthable, PubSubable {
 
     private final String WEALTH_GROWTH_DUE_TO_TAX;
     private final String MORALE_DUE_TO_TAX;
@@ -58,6 +59,17 @@ public class Province implements Locable, Taxable, Wealthable, PubSubable {
     @Override
     public String setLocation(String location) {
         return this.locale.setLocation(location);
+    }
+
+    @Override
+    public Unit recruit(UnitFactory.Type unitType) {
+        switch (unitType) {
+            case RomanLegionary:
+                return new RomanLegionary(this.getLocation());
+            default:
+                break;
+        }
+        return null;
     }
 
     @Override
