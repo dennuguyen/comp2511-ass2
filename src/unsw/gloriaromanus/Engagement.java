@@ -52,6 +52,18 @@ public class Engagement {
     }
 
     /**
+     * Calculates casualties of a unit after engagement
+     * 
+     * @param e engagement during which casualties occurred 
+     * @param u unit to be checked
+     * 
+     * @return number of casualties
+     */
+    public int calculateCasualties(Engagement e, Unit u) {
+        return e.getInitialUnitSize(u) - u.getStat(Stats.Type.STRENGTH);
+    }
+
+    /**
      * Limit casualties between 0 and size of unit 
      * 
      * @return modified casualties
