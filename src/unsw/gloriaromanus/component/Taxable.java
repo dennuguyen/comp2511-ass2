@@ -20,4 +20,13 @@ public interface Taxable {
      * @return Tax rate
      */
     public int getTaxRate();
+
+    /**
+     * Calculates tax
+     * 
+     * @param amount value to be taxed
+     * 
+     * @return tax revenue 
+     */
+    public int calculateTax(int amount);
 }

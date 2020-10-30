@@ -9,7 +9,6 @@ public class Tax implements Taxable {
     private TaxLevel taxLevel;
 
     public Tax() {
-        this.taxLevel = new LowTax();
     }
 
     /**
@@ -29,5 +28,10 @@ public class Tax implements Taxable {
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
         this.taxLevel = taxLevel;
+    }
+
+    @Override
+    public int calculateTax(int amount) {
+        return -1*amount*getTaxRate()/100;
     }
 }
