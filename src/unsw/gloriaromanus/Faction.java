@@ -16,7 +16,8 @@ public class Faction implements PubSubable {
     int wealth;
 
     /**
-     * Constructor given only a name
+     * Constructs a faction given only a name
+     * 
      * @param name name of faction
      */
     public Faction(String name) {
@@ -27,8 +28,10 @@ public class Faction implements PubSubable {
     }
 
     /**
-     * Constructor given name and list of factions
+     * Constructs a faction given name and list of factions
+     * 
      * @param name name of faction
+     * @param provinces provinces belonging to faction
      */
     public Faction(String name, List<Province> provinces) {
         this.name = name;
