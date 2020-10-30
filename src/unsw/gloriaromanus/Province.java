@@ -1,7 +1,10 @@
 package unsw.gloriaromanus;
 
+import java.util.Objects;
+
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
+import unsw.gloriaromanus.component.LowTax;
 import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
@@ -32,8 +35,8 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
      */
     public Province(String name) {
         this.locale = new Locale(name);
-        this.tax = new Tax();
         this.wealth = new Wealth();
+        this.tax = new Tax();
         this.camp = new Camp();
 
         // Prepare topics
@@ -47,6 +50,10 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
 
         // Publish-subscribe wealth growth change event due to tax changes
         this.subscribe(this.WEALTH_GROWTH_DUE_TO_TAX);
+
+        this.subscribe(this.COLLECT_TAX_FROM_WEALTH);
+
+        this.setTaxLevel(new LowTax());
     }
 
     @Override
@@ -72,7 +79,7 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
 
-        if (this.tax.getTaxLevel().equals(taxLevel))
+        if (Objects.equals(this.tax.getTaxLevel(), taxLevel))
             return;
 
         // Change to very high tax
@@ -84,8 +91,8 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
             this.publish(this.MORALE_DUE_TO_TAX, Message.of(false)); // 0 morale change
 
         // Wealth growth event
-        this.publish(this.WEALTH_GROWTH_DUE_TO_TAX, Message.of(taxLevel.getWealthGrowthChange()));
-
+        this.publish(this.WEALTH_GROWTH_DUE_TO_TAX, Message.of(getWealthGrowth() + taxLevel.getWealthGrowthChange()));
+        
         // Set the tax level
         tax.setTaxLevel(taxLevel);
     }
@@ -122,7 +129,7 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
 
     @Override
     public void listen(String topic, Message<Object> message) {
-
+        
         if (topic.equals(this.WEALTH_GROWTH_DUE_TO_TAX)) {
             this.setWealthGrowth((Integer) message.getMessage());
         }
@@ -133,7 +140,8 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
         }
 
         else if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {
-            this.addWealth((Integer) message.getMessage());
+            System.out.println("MESSAGE: " + (Integer) message.getMessage());
+            this.addWealth(-1 * (Integer) (message.getMessage()));
         }
     }
 
@@ -145,5 +153,13 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
     @Override
     public void unsubscribe(String topic) {
         PubSub.getInstance().unsubscribe(this, topic);
+    }
+
+    public int calculateTax() {
+        return getWealth() * getTaxRate() / 100;
+    }
+
+    public void collectTax() {
+        this.publish(this.COLLECT_TAX_FROM_WEALTH , Message.of(this.calculateTax()));
     }
 }
