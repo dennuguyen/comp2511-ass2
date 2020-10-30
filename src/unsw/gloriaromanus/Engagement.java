@@ -2,7 +2,6 @@ package unsw.gloriaromanus;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Random;
 import unsw.gloriaromanus.component.Stats;
 
 public class Engagement {
@@ -13,7 +12,15 @@ public class Engagement {
     private int unitBInitialSize;
     private EngagementType type;
 
-    public Engagement (Unit unitA, Unit unitB, EngagementType type) {
+    /**
+     * Constructs an engagement between two units 
+     * 
+     * @param unitA a unit
+     * @param unitB an opoosing unit
+     * 
+     * @param type type of engagement
+     */
+    public Engagement(Unit unitA, Unit unitB, EngagementType type) {
         this.unitA = unitA;
         unitAInitialSize = unitA.getStat(Stats.Type.STRENGTH);
         this.unitB = unitB;
@@ -58,11 +65,13 @@ public class Engagement {
     }
 
     /**
-     * Perform the engagement
+     * Performs the engagement
      * 
      */
     public void doEngagement() {
-        int casualties = type.calculateCasualties(unitA, unitB, unitBInitialSize);
+        int casualties;
+        
+        casualties = type.calculateCasualties(unitA, unitB, unitBInitialSize);
         casualties = limitCasualties(casualties, unitB);
         unitB.addStat(Stats.Type.STRENGTH, -1 * casualties);
         
