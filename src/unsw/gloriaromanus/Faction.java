@@ -6,10 +6,9 @@ import java.util.List;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
+import unsw.gloriaromanus.util.Topics;
 
 public class Faction implements PubSubable {
-
-    private final String COLLECT_TAX_FROM_WEALTH;
 
     String name;
     List<Province> territories;
@@ -21,12 +20,31 @@ public class Faction implements PubSubable {
         territories = new ArrayList<Province>();
         treasury = 0;
         wealth = 0;
+    }
 
-        this.COLLECT_TAX_FROM_WEALTH = name + Topics.TAX_COLLECT;
+    /**
+     * Adds a province to faction
+     * 
+     * @param province province to be added
+     */
+    public void addProvince(Province province) {
+        subscribe(province.getLocation() + Topics.TAX_COLLECT);
+        territories.add(province);
+    }
+
+    /**
+     * Removes a province from faction
+     * 
+     * @param province province to be removed
+     */
+    public void removeProvince(Province province) {
+        unsubscribe(province.getLocation() + Topics.TAX_COLLECT);
+        territories.remove(province);
     }
 
     /**
      * Returns amount in treasury
+     * 
      * @return amount in treasury
      */
     public int getTreasury() {
@@ -35,9 +53,10 @@ public class Faction implements PubSubable {
 
     /**
      * Returns total wealth across factions provinces
-     * @return wealth across provinces
+     * 
+     * @return wealth across all provinces
      */
-    public int getWealth() {
+    public int calculateWealth() {
         int total = 0;
         for (Province p : territories) {
             total += p.getWealth();
@@ -47,6 +66,7 @@ public class Faction implements PubSubable {
 
     /**
      * Adds amount to treasury
+     * 
      * @param int amount to be added
      */
     public void addTreasury(int amount) {
@@ -60,10 +80,7 @@ public class Faction implements PubSubable {
 
     @Override
     public void listen(String topic, Message<Object> message) {
-
-        if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {
-            this.addTreasury((Integer) message.getMessage());
-        }
+        this.addTreasury((Integer) message.getMessage());
     }
 
     @Override
