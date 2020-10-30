@@ -34,6 +34,13 @@ public abstract class Stat {
     }
 
     /**
+     * Reset the stat
+     */
+    public void resetStat() {
+        this.modifiedValue = this.baseValue;
+    }
+
+    /**
      * Hard limiter on stat value
      * 
      * @param value Value to check
@@ -62,7 +69,7 @@ public abstract class Stat {
      * @param value New stat value
      */
     public void setStat(int value) {
-        this.baseValue = limit(value);
+        this.modifiedValue = limit(value);
     }
 
     /**
