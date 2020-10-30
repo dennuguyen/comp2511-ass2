@@ -1,6 +1,10 @@
+/**
+ * Unit factory
+ */
+
 package unsw.gloriaromanus;
 
-public interface UnitFactory {
+public interface Levyable {
 
     public enum Type {
         RomanLegionary(RomanLegionary.class);
@@ -16,5 +20,5 @@ public interface UnitFactory {
         }
     }
 
-    public Unit recruit(UnitFactory.Type unitType);
+    public Unit enlist(Levyable.Type unitType);
 }

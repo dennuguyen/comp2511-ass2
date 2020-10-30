@@ -2,7 +2,6 @@ package unsw.gloriaromanus;
 
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
-import unsw.gloriaromanus.component.Recruitable;
 import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
@@ -14,7 +13,7 @@ import unsw.gloriaromanus.util.PubSubable;
 import unsw.gloriaromanus.util.Topics;
 import unsw.gloriaromanus.component.Wealth;
 
-public class Province implements Locable, UnitFactory, Taxable, Wealthable, PubSubable {
+public class Province implements Locable, Levyable, Taxable, Wealthable, PubSubable {
 
     private final String WEALTH_GROWTH_DUE_TO_TAX;
     private final String MORALE_DUE_TO_TAX;
@@ -24,6 +23,7 @@ public class Province implements Locable, UnitFactory, Taxable, Wealthable, PubS
     private final Locale locale;
     private final Tax tax;
     private final Wealth wealth;
+    private final Camp camp;
 
     private @interface SetTaxEvent {
     }
@@ -37,6 +37,7 @@ public class Province implements Locable, UnitFactory, Taxable, Wealthable, PubS
         this.locale = new Locale(name);
         this.tax = new Tax();
         this.wealth = new Wealth();
+        this.camp = new Camp();
 
         // Prepare topics
         this.WEALTH_GROWTH_DUE_TO_TAX = name + Topics.WEALTH_GROWTH;
@@ -62,14 +63,8 @@ public class Province implements Locable, UnitFactory, Taxable, Wealthable, PubS
     }
 
     @Override
-    public Unit recruit(UnitFactory.Type unitType) {
-        switch (unitType) {
-            case RomanLegionary:
-                return new RomanLegionary(this.getLocation());
-            default:
-                break;
-        }
-        return null;
+    public Unit enlist(Levyable.Type unitType) {
+        return this.camp.enlist(unitType, this.getLocation());
     }
 
     @Override
@@ -138,6 +133,7 @@ public class Province implements Locable, UnitFactory, Taxable, Wealthable, PubS
 
         else if (topic.equals(Topics.NEXT_TURN)) {
             this.addWealth(this.getWealthGrowth());
+            this.publish(this.CAMPED_UNITS, null); // Camped units recruit some troops
         }
 
         else if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {
