@@ -8,8 +8,10 @@ public class Engagement {
 
     private Unit unitA;
     private int unitAInitialSize;
+    private int unitACasualties;
     private Unit unitB;
     private int unitBInitialSize;
+    private int unitBCasualties;
     private EngagementType type;
 
     /**
@@ -23,8 +25,10 @@ public class Engagement {
     public Engagement(Unit unitA, Unit unitB, EngagementType type) {
         this.unitA = unitA;
         unitAInitialSize = unitA.getStat(Stats.Type.STRENGTH);
+        unitACasualties = 0;
         this.unitB = unitB;
         unitBInitialSize = unitB.getStat(Stats.Type.STRENGTH);
+        unitBCasualties = 0;
         this.type = type;
     }
 
@@ -52,15 +56,16 @@ public class Engagement {
     }
 
     /**
-     * Calculates casualties of a unit after engagement
+     * Returns casualties of unit after engagement
      * 
-     * @param e engagement during which casualties occurred 
-     * @param u unit to be checked
+     * @param unit unit to be checked
      * 
-     * @return number of casualties
+     * @return casualties of unit
      */
-    public int calculateCasualties(Engagement e, Unit u) {
-        return e.getInitialUnitSize(u) - u.getStat(Stats.Type.STRENGTH);
+    public int getCasualties(Unit unit) {
+        if (unit.equals(unitA)) return unitACasualties;
+        if (unit.equals(unitB)) return unitBCasualties;
+        return 0;
     }
 
     /**

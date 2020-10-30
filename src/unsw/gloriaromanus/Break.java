@@ -13,9 +13,9 @@ public class Break {
     public int calculateBreakChance(Engagement e, Unit breaker, Unit enemy) {
         int base = 100 - (breaker.getStat(Stats.Type.MORALE) * 10);
                     
-        int x = e.calculateCasualties(e, breaker)/e.getInitialUnitSize(breaker);
+        int x = e.getCasualties(breaker)/e.getInitialUnitSize(breaker);
 
-        int y = e.calculateCasualties(e, enemy)/e.getInitialUnitSize(enemy);
+        int y = e.getCasualties(enemy)/e.getInitialUnitSize(enemy);
 
         return base + x * 10 / y;
     }

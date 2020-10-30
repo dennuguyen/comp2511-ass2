@@ -3,7 +3,7 @@ package unsw.gloriaromanus;
 public interface EngagementType {
 
     /**
-     * Calculate casualties caused by engagement
+     * Calculates casualties caused by engagement
      * 
      * @return number of casualties
      */
