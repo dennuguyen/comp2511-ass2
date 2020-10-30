@@ -85,10 +85,10 @@ public abstract class Stat {
     /**
      * Multiply a stat by a specific value
      * 
-     * @param type   Type of stat
-     * @param change value of stat multiplier
+     * @param type       Type of stat
+     * @param percentage Stat multiplier percentage
      */
-    public void multiplyStat(int change) {
-        this.modifiedValue = this.modifiedValue * change / 100;
+    public void multiplyStat(int percentage) {
+        this.modifiedValue = this.modifiedValue * (100 + percentage / 100);
     }
 }
