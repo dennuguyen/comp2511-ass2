@@ -8,7 +8,8 @@ public class TreasuryLeaf extends Leaf  {
 
     @Override
     public Boolean evaluate(){
-        // check Accumulating a treasury balance of 100,000 gold
-        return true;
+        Faction f = super.getFaction();
+        if (f.getTreasury() >= 100000) return true;
+        return false;
     }
 }
