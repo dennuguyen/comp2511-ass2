@@ -23,6 +23,10 @@ public class Break {
     /**
      * Calculates chance of unit breaking after an engagement
      * 
+     * @param e engagement between breaker and enemy unit
+     * @param breaker unit attempting to break
+     * @param enemy unit opposing breaker
+     * 
      * @return chance of unit breaking
      */
     public int calculateBreakChance(Engagement e, Unit breaker, Unit enemy) {
@@ -36,9 +40,13 @@ public class Break {
     }
 
     /**
-     * Determines if unit will break
+     * Determines if breaker unit will break
      * 
-     * @return if unit will break
+     * @param e engagement between breaker and enemy unit
+     * @param breaker unit attempting to break
+     * @param enemy unit opposing breaker
+     * 
+     * @return if breaker unit successfully breaks
      */
     public boolean isBroken(Engagement e, Unit breaker, Unit enemy) {
         var d = Math.random() * 100;
