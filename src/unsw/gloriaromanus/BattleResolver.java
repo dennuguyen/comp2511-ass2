@@ -8,7 +8,6 @@ package unsw.gloriaromanus;
 import java.lang.Math;
 
 import unsw.gloriaromanus.component.Stats;
-import unsw.gloriaromanus.Break;
 
 public class BattleResolver {
 
@@ -67,21 +66,18 @@ public class BattleResolver {
      * @param b opposing unit involved in engagement
      */
     public void attemptBreak(Engagement e, Unit a, Unit b) {
-        Break break = new Break();
-        boolean aBroken = break.isBroken(e, a, b);
-        boolean bBroken = break.isBroken(e, b, a);
-        
+        Breaking breaking = new Breaking();
+        boolean aBroken = breaking.isBroken(e, a, b);
+        boolean bBroken = breaking.isBroken(e, b, a);
+
         if (aBroken && bBroken) {
-            //end engagement sequence, remove both units from battle
-        }
-        else if (aBroken) {
+            // end engagement sequence, remove both units from battle
+        } else if (aBroken) {
             attemptFlee(a, b);
-        }
-        else if (bBroken) {
+        } else if (bBroken) {
             attemptFlee(b, a);
-        }
-        else {
-            //do nothing, continue to next engagement
+        } else {
+            // do nothing, continue to next engagement
         }
     }
 
@@ -114,8 +110,5 @@ public class BattleResolver {
         while (attacker.getNumUnits() > 0 && attacker.getNumUnits() > 0) {
             doEngagementSequence();
         }
-    }
-
-    public void skirmish(Unit att, Unit def) {
     }
 }
