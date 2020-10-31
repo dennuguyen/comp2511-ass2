@@ -13,10 +13,21 @@ public class World {
     private Map<String, Map<String, Boolean>> matrix = new HashMap<String, Map<String, Boolean>>();
     private Map<String, Province> provinces = new HashMap<String, Province>();
 
-    public World(String JSONFile) {
+    private World(String JSONFile) {
         this.createWorld(JSONFile);
         this.createProvinces(this.matrix.keySet());
-        // System.out.println(this.provinces);
+    }
+
+    private static class BillPughWorld {
+        private static World worldSingleton = null;
+    }
+
+    public static void init(String JSONFile) {
+        BillPughWorld.worldSingleton = new World(JSONFile);
+    }
+
+    public static World getInstance() {
+        return BillPughWorld.worldSingleton;
     }
 
     private void createWorld(String JSONFile) {
