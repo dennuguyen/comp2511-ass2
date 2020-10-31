@@ -11,58 +11,62 @@ public class BattleResolver {
     private Army attacker;
     private Army defender;
 
+    /**
+     * Constructs a battle resolver
+     * 
+     * @param attacker army attacking the province
+     * @param defender army defending the province
+     */
     public BattleResolver(Army attacker, Army defender) {
         this.attacker = attacker;
         this.defender = defender;
         numEngagements = 0;
     }
 
+    /**
+     * Returns a random unit from the attacking army
+     * 
+     * @return random attacking unit
+     */
     public Unit chooseAttackUnit() {
         return attacker.getRandomUnit();
     }
 
+    /**
+     * Returns a random unit from the defending army
+     * 
+     * @return random defending unit
+     */
     public Unit chooseDefenceUnit() {
         return defender.getRandomUnit();
-    }
-
-    public EngagementType determineMixedEngagement(Unit missile, Unit melee) {
-        int chanceMelee = 50 + 10 * (melee.getStat(Stats.Type.TACTICS) - missile.getStat(Stats.Type.TACTICS));
-        if (chanceMelee < 5) chanceMelee = 5;
-        else if (chanceMelee > 95) chanceMelee = 95;
-        var d = Math.random() * 100;
-        if (d < chanceMelee)
-            return new MeleeEngagement();
-        else
-            return new MissileEngagement();
-    }
-
-    public EngagementType determineEngagementType(Unit attackUnit, Unit defenceUnit) {
-        if (attackUnit is melee && defenceUnit is melee) 
-            return new MeleeEngagement();
-        if (attackUnit is missile && defenceUnit is missile)
-            return new MissileEngagement();
-        if (attackUnit is missile && defenceUnit is melee)
-            return determineMixedEngagement();
-        if (attackUnit is melee && defenceUnit is missile)
-            return determineMixedEngagement();
     }
 
     /**
      * Checks if a unit was destroyed
      * 
+     * @param unit unit to be checked
+     * 
+     * @return if unit was destroyed
      */
-    public boolean isDestroyed(Unit a) {
-        if (a.getStat(Stats.Type.STRENGTH) <= 0) return true;
+    public boolean isDestroyed(Unit unit) {
+        if (unit.getStat(Stats.Type.STRENGTH) <= 0) return true;
         return false;
     }
 
+    /**
+     * Performs a break attempt for two units
+     * 
+     * @param e engagement before break attempt is made
+     * @param a a unit involved in engagement
+     * @param b opposing unit involved in engagement
+     */
     public void attemptBreak(Engagement e, Unit a, Unit b) {
-        Break Break = new Break();
-        boolean aBroken = Break.isBroken(e, a, b);
-        boolean bBroken = Break.isBroken(e, b, a);
+        Break break = new Break();
+        boolean aBroken = break.isBroken(e, a, b);
+        boolean bBroken = break.isBroken(e, b, a);
         
         if (aBroken && bBroken) {
-            //end engagement sequence, remove units from battle
+            //end engagement sequence, remove both units from battle
         }
         else if (aBroken) {
             attemptFlee(a, b);
@@ -75,23 +79,27 @@ public class BattleResolver {
         }
     }
 
+    /**
+     * Peforms repeated rout attempts until router is destroyed or routs
+     * 
+     * @param router routing unit
+     * @param pursuer pursuing unit
+     */
     public void attemptFlee(Unit router, Unit pursuer) {
-        EngagementType type = determineEngagementType(router, pursuer);
         Rout r = new Rout();
         while (!r.isRouted(router, pursuer) || !isDestroyed(router)) {
-            Engagement e = new RoutingEngagement(router, pursuer, type);
+            Engagement e = new RoutingEngagement(router, pursuer);
         }
-        if(isDestroyed(router)) //remove unit from game
-        else // remove unit from battle
+        if(isDestroyed(router)) //remove router unit from game
+        else // remove router unit from battle
         
     }
 
     public void doEngagementSequence() {
         Unit attackUnit = chooseAttackUnit();
         Unit defenceUnit = chooseDefenceUnit();
-        EngagementType type = determineEngagementType(attackUnit, defenceUnit);
         while (!isDestroyed(attackUnit) && !isDestroyed(defenceUnit)) {
-            Engagement e = new NormalEngagement(attackUnit, defenceUnit, type);
+            Engagement e = new NormalEngagement(attackUnit, defenceUnit);
             attemptBreak(e, attackUnit, defenceUnit);
         }
     }

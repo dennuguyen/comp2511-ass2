@@ -20,14 +20,14 @@ public abstract class Engagement {
      * 
      * @param type type of engagement
      */
-    public Engagement(Unit unitA, Unit unitB, EngagementType type) {
+    public Engagement(Unit unitA, Unit unitB) {
         this.unitA = unitA;
         unitAInitialSize = unitA.getStat(Stats.Type.STRENGTH);
         unitACasualties = 0;
         this.unitB = unitB;
         unitBInitialSize = unitB.getStat(Stats.Type.STRENGTH);
         unitBCasualties = 0;
-        this.type = type;
+        this.type = determineEngagementType(unitA, unitB);
     }
 
     /**
@@ -46,6 +46,44 @@ public abstract class Engagement {
      */
     public Unit getUnitB() {
         return unitB;
+    }
+
+    /**
+     * Determines the engagement type between a missile and melee unit
+     * 
+     * @param missile missile unit involved in engagement
+     * @param melee melee unit involved in engagement
+     * 
+     * @return type of engagement
+     */
+    public EngagementType determineMixedEngagement(Unit missile, Unit melee) {
+        int chanceMelee = 50 + 10 * (melee.getStat(Stats.Type.TACTICS) - missile.getStat(Stats.Type.TACTICS));
+        if (chanceMelee < 5) chanceMelee = 5;
+        else if (chanceMelee > 95) chanceMelee = 95;
+        var d = Math.random() * 100;
+        if (d < chanceMelee)
+            return new MeleeEngagement();
+        else
+            return new MissileEngagement();
+    }
+
+    /**
+     * Determines the engagement type between an attacking and defending unit
+     * 
+     * @param attackUnit attack unit involved in engagement
+     * @param defenceUnit defence unit involved in engagement
+     * 
+     * @return type of engagement
+     */
+    public EngagementType determineEngagementType(Unit a, Unit b) {
+        if (a is melee && b is melee) 
+            return new MeleeEngagement();
+        if (a is missile && b is missile)
+            return new MissileEngagement();
+        if (a is missile && b is melee)
+            return determineMixedEngagement(a, b);
+        if (a is melee && b is missile)
+            return determineMixedEngagement(b, a);
     }
 
     /**
