@@ -4,13 +4,10 @@ import java.util.ArrayList;
 
 public abstract class Composite implements Condition {
 
-    private Faction faction;
-
     public ArrayList<Condition> children;
 
-    public Composite(Faction faction){ 
+    public Composite(){ 
         this.children = new ArrayList<Condition>(); 
-        this.faction = faction;
     }
 
     @Override
