@@ -103,4 +103,10 @@ public class BattleResolver {
             attemptBreak(e, attackUnit, defenceUnit);
         }
     }
+
+    public void doBattle() {
+        while (attacker.getNumUnits() > 0 && attacker.getNumUnits() > 0) {
+            doEngagementSequence();
+        }
+    }
 }
