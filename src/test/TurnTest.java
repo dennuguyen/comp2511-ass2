@@ -41,5 +41,11 @@ public class TurnTest {
         assertEquals(2, turn.getTurn());
         assertEquals(2, turn.getTurn());
         assertEquals(turn, turning);
+
+        Turn anotherTurn = Turn.getInstance();
+        anotherTurn.incrementTurn();
+        assertEquals(3, turn.getTurn());
+        assertEquals(3, turning.getTurn());
+        assertEquals(3, anotherTurn.getTurn());
     }
 }

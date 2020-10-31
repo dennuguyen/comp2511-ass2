@@ -9,7 +9,6 @@ public class Tax implements Taxable {
     private TaxLevel taxLevel;
 
     public Tax() {
-        this.taxLevel = new LowTax();
     }
 
     /**

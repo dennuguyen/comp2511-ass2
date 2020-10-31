@@ -58,25 +58,25 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
 
     @Override
     public String moveTo(String destination) {
-        this.uncamp();
+        // this.uncamp();
         return this.locale.setLocation(this.move.moveTo(this.locale.getLocation(), destination));
     }
 
-    /**
-     * Unit makes camp at a province therefore can recover manpower
-     */
-    public void camp() {
-        this.CAMPED_UNITS = this.locale.getLocation() + Topics.CAMP;
-        this.subscribe(this.CAMPED_UNITS);
-    }
+    // /**
+    // * Unit makes camp at a province therefore can recover manpower
+    // */
+    // public void camp() {
+    // this.CAMPED_UNITS = this.locale.getLocation() + Topics.CAMP;
+    // this.subscribe(this.CAMPED_UNITS);
+    // }
 
-    /**
-     * Unsubscribe from province camp topic
-     */
-    public void uncamp() {
-        this.unsubscribe(this.CAMPED_UNITS);
-        this.CAMPED_UNITS = null;
-    }
+    // /**
+    // * Unsubscribe from province camp topic
+    // */
+    // public void uncamp() {
+    // this.unsubscribe(this.CAMPED_UNITS);
+    // this.CAMPED_UNITS = null;
+    // }
 
     @Override
     public int getStat(Stats.Type type) {
@@ -114,7 +114,11 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
         }
 
         else if (topic.equals(this.CAMPED_UNITS)) {
-            this.addStat(Stats.Type.STRENGTH, 500);
+            Turn turn = Turn.getInstance();
+            System.out.println("Topic: " + this.CAMPED_UNITS);
+            System.out.println("Before: " + turn.getTurn() + " : " + this.getStat(Stats.Type.STRENGTH));
+            this.addStat(Stats.Type.STRENGTH, (Integer) message.getMessage());
+            System.out.println("After: " + turn.getTurn() + " : " + this.getStat(Stats.Type.STRENGTH));
         }
     }
 

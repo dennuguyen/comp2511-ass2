@@ -7,12 +7,15 @@ import org.junit.runner.notification.Failure;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import unsw.gloriaromanus.Turn;
+
 public class GloriaRomanusTest {
 
     @RunWith(Suite.class)
-    @SuiteClasses({TurnTest.class, StatsTest.class, MoveTest.class, UnitTest.class,
-            WorldTest.class})
+    @SuiteClasses({ TurnTest.class, StatsTest.class, MoveTest.class, UnitTest.class, PubSubTest.class,
+            ProvinceTest.class })
     public class TestSuite {
+        Turn turn = Turn.getInstance();
     }
 
     public static void main(String[] args) {

@@ -8,8 +8,10 @@ import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
 import unsw.gloriaromanus.util.Topics;
+import unsw.gloriaromanus.util.Observer;
+import unsw.gloriaromanus.util.Subject;
 
-public class Move implements Moveable, PubSubable {
+public class Move implements Moveable, PubSubable, Observer {
 
     public static enum Type {
         ARTILLERY(4), CAVALRY(15), INFANTRY(10);
@@ -78,10 +80,6 @@ public class Move implements Moveable, PubSubable {
 
     @Override
     public void listen(String topic, Message<Object> message) {
-
-        if (topic.equals(Topics.NEXT_TURN)) {
-            this.movesLeft = moveType.moveCapacity;
-        }
     }
 
     @Override
@@ -92,5 +90,10 @@ public class Move implements Moveable, PubSubable {
     @Override
     public void unsubscribe(String topic) {
         PubSub.getInstance().unsubscribe(this, topic);
+    }
+
+    @Override
+    public void update(Subject subject) {
+        this.movesLeft = moveType.moveCapacity;
     }
 }

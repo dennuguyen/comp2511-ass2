@@ -82,16 +82,13 @@ public class GloriaRomanusController {
     @FXML
     private void initialize() throws JsonParseException, JsonMappingException, IOException {
 
+        // Initialise singletons
         PubSub pubSub = PubSub.getInstance();
+        Turn turn = Turn.getInstance();
 
-        Turn turn1 = Turn.getInstance();
-        System.out.println(turn1.getTurn());
-        turn1.incrementTurn();
-        System.out.println(turn1.getTurn());
-        // Turn turn2 = Turn.getInstance();
-        // System.out.println(turn2);
-        // World world = new World("src/unsw/gloriaromanus/province_adjacency_matrix.json");
-
+        // Create world
+        // World world = new
+        // World("src/unsw/gloriaromanus/province_adjacency_matrix.json");
 
         // provinceToOwningFactionMap = getProvinceToOwningFactionMap();
 
@@ -101,7 +98,8 @@ public class GloriaRomanusController {
         // provinceToNumberTroopsMap.put(provinceName, r.nextInt(500));
         // }
 
-        // // TODO = load this from a configuration file you create (user should be able to
+        // // TODO = load this from a configuration file you create (user should be able
+        // to
         // // select in loading screen)
         // humanFaction = "Rome";
 
@@ -114,10 +112,8 @@ public class GloriaRomanusController {
     @FXML
     public void clickedInvadeButton(ActionEvent e) throws IOException {
         if (currentlySelectedHumanProvince != null && currentlySelectedEnemyProvince != null) {
-            String humanProvince =
-                    (String) currentlySelectedHumanProvince.getAttributes().get("name");
-            String enemyProvince =
-                    (String) currentlySelectedEnemyProvince.getAttributes().get("name");
+            String humanProvince = (String) currentlySelectedHumanProvince.getAttributes().get("name");
+            String enemyProvince = (String) currentlySelectedEnemyProvince.getAttributes().get("name");
             if (confirmIfProvincesConnected(humanProvince, enemyProvince)) {
                 // TODO = have better battle resolution than 50% chance of winning
                 Random r = new Random();
@@ -148,11 +144,11 @@ public class GloriaRomanusController {
     }
 
     /**
-     * run this initially to update province owner, change feature in each FeatureLayer to be
-     * visible/invisible depending on owner. Can also update graphics initially
+     * run this initially to update province owner, change feature in each
+     * FeatureLayer to be visible/invisible depending on owner. Can also update
+     * graphics initially
      */
-    private void initializeProvinceLayers()
-            throws JsonParseException, JsonMappingException, IOException {
+    private void initializeProvinceLayers() throws JsonParseException, JsonMappingException, IOException {
 
         Basemap myBasemap = Basemap.createImagery();
         // myBasemap.getReferenceLayers().remove(0);
@@ -164,8 +160,7 @@ public class GloriaRomanusController {
         // does nothing
         // so forced to only have 1 selection color (unless construct graphics overlays
         // to give color highlighting)
-        GeoPackage gpkg_provinces =
-                new GeoPackage("src/unsw/gloriaromanus/provinces_right_hand_fixed.gpkg");
+        GeoPackage gpkg_provinces = new GeoPackage("src/unsw/gloriaromanus/provinces_right_hand_fixed.gpkg");
         gpkg_provinces.loadAsync();
         gpkg_provinces.addDoneLoadingListener(() -> {
             if (gpkg_provinces.getLoadStatus() == LoadStatus.LOADED) {
@@ -181,12 +176,10 @@ public class GloriaRomanusController {
         addAllPointGraphics();
     }
 
-    private void addAllPointGraphics()
-            throws JsonParseException, JsonMappingException, IOException {
+    private void addAllPointGraphics() throws JsonParseException, JsonMappingException, IOException {
         mapView.getGraphicsOverlays().clear();
 
-        InputStream inputStream =
-                new FileInputStream(new File("src/unsw/gloriaromanus/provinces_label.geojson"));
+        InputStream inputStream = new FileInputStream(new File("src/unsw/gloriaromanus/provinces_label.geojson"));
         FeatureCollection fc = new ObjectMapper().readValue(inputStream, FeatureCollection.class);
 
         GraphicsOverlay graphicsOverlay = new GraphicsOverlay();
@@ -195,15 +188,14 @@ public class GloriaRomanusController {
             if (f.getGeometry() instanceof org.geojson.Point) {
                 org.geojson.Point p = (org.geojson.Point) f.getGeometry();
                 LngLatAlt coor = p.getCoordinates();
-                Point curPoint = new Point(coor.getLongitude(), coor.getLatitude(),
-                        SpatialReferences.getWgs84());
+                Point curPoint = new Point(coor.getLongitude(), coor.getLatitude(), SpatialReferences.getWgs84());
                 PictureMarkerSymbol s = null;
                 String province = (String) f.getProperty("name");
                 String faction = provinceToOwningFactionMap.get(province);
 
                 TextSymbol t = new TextSymbol(10,
-                        faction + "\n" + province + "\n" + provinceToNumberTroopsMap.get(province),
-                        0xFFFF0000, HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
+                        faction + "\n" + province + "\n" + provinceToNumberTroopsMap.get(province), 0xFFFF0000,
+                        HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
 
                 switch (faction) {
                     case "Gaul":
@@ -215,8 +207,8 @@ public class GloriaRomanusController {
                         // https://stackoverflow.com/a/30970114
 
                         // you can pass in a filename to create a PictureMarkerSymbol...
-                        s = new PictureMarkerSymbol(new Image(
-                                (new File("images/Celtic_Druid.png")).toURI().toString()));
+                        s = new PictureMarkerSymbol(
+                                new Image((new File("images/Celtic_Druid.png")).toURI().toString()));
                         break;
                     case "Rome":
                         // you can also pass in a javafx Image to create a PictureMarkerSymbol
@@ -266,8 +258,8 @@ public class GloriaRomanusController {
                 // maximum results
                 // note - if select right on border, even with 0 tolerance, can select multiple
                 // features - so have to check length of result when handling it
-                final ListenableFuture<IdentifyLayerResult> identifyFuture =
-                        mapView.identifyLayerAsync(flp, screenPoint, 0, false, 25);
+                final ListenableFuture<IdentifyLayerResult> identifyFuture = mapView.identifyLayerAsync(flp,
+                        screenPoint, 0, false, 25);
 
                 // add a listener to the future
                 identifyFuture.addDoneListener(() -> {
@@ -278,11 +270,10 @@ public class GloriaRomanusController {
                         // a reference to the feature layer can be used, for example, to select
                         // identified features
                         if (identifyLayerResult.getLayerContent() instanceof FeatureLayer) {
-                            FeatureLayer featureLayer =
-                                    (FeatureLayer) identifyLayerResult.getLayerContent();
+                            FeatureLayer featureLayer = (FeatureLayer) identifyLayerResult.getLayerContent();
                             // select all features that were identified
-                            List<Feature> features = identifyLayerResult.getElements().stream()
-                                    .map(f -> (Feature) f).collect(Collectors.toList());
+                            List<Feature> features = identifyLayerResult.getElements().stream().map(f -> (Feature) f)
+                                    .collect(Collectors.toList());
 
                             if (features.size() > 1) {
                                 printMessageToTerminal(
@@ -295,15 +286,13 @@ public class GloriaRomanusController {
                                 if (provinceToOwningFactionMap.get(province).equals(humanFaction)) {
                                     // province owned by human
                                     if (currentlySelectedHumanProvince != null) {
-                                        featureLayer
-                                                .unselectFeature(currentlySelectedHumanProvince);
+                                        featureLayer.unselectFeature(currentlySelectedHumanProvince);
                                     }
                                     currentlySelectedHumanProvince = f;
                                     invading_province.setText(province);
                                 } else {
                                     if (currentlySelectedEnemyProvince != null) {
-                                        featureLayer
-                                                .unselectFeature(currentlySelectedEnemyProvince);
+                                        featureLayer.unselectFeature(currentlySelectedEnemyProvince);
                                     }
                                     currentlySelectedEnemyProvince = f;
                                     opponent_province.setText(province);
@@ -311,7 +300,6 @@ public class GloriaRomanusController {
 
                                 featureLayer.selectFeature(f);
                             }
-
 
                         }
                     } catch (InterruptedException | ExecutionException ex) {
@@ -326,8 +314,7 @@ public class GloriaRomanusController {
     }
 
     private Map<String, String> getProvinceToOwningFactionMap() throws IOException {
-        String content = Files
-                .readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
+        String content = Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
         JSONObject ownership = new JSONObject(content);
         Map<String, String> m = new HashMap<String, String>();
         for (String key : ownership.keySet()) {
@@ -345,16 +332,15 @@ public class GloriaRomanusController {
     private ArrayList<String> getHumanProvincesList() throws IOException {
         // https://developers.arcgis.com/labs/java/query-a-feature-layer/
 
-        String content = Files
-                .readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
+        String content = Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
         JSONObject ownership = new JSONObject(content);
         return ArrayUtil.convert(ownership.getJSONArray(humanFaction));
     }
 
     /**
-     * returns query for arcgis to get features representing human provinces can apply this to
-     * FeatureTable.queryFeaturesAsync() pass string to QueryParameters.setWhereClause() as the
-     * query string
+     * returns query for arcgis to get features representing human provinces can
+     * apply this to FeatureTable.queryFeaturesAsync() pass string to
+     * QueryParameters.setWhereClause() as the query string
      */
     private String getHumanProvincesQuery() throws IOException {
         LinkedList<String> l = new LinkedList<String>();
@@ -364,17 +350,16 @@ public class GloriaRomanusController {
         return "(" + String.join(" OR ", l) + ")";
     }
 
-    private boolean confirmIfProvincesConnected(String province1, String province2)
-            throws IOException {
-        String content = Files.readString(
-                Paths.get("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json"));
+    private boolean confirmIfProvincesConnected(String province1, String province2) throws IOException {
+        String content = Files
+                .readString(Paths.get("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json"));
         JSONObject provinceAdjacencyMatrix = new JSONObject(content);
         return provinceAdjacencyMatrix.getJSONObject(province1).getBoolean(province2);
     }
 
     private void resetSelections() {
-        featureLayer_provinces.unselectFeatures(
-                Arrays.asList(currentlySelectedEnemyProvince, currentlySelectedHumanProvince));
+        featureLayer_provinces
+                .unselectFeatures(Arrays.asList(currentlySelectedEnemyProvince, currentlySelectedHumanProvince));
         currentlySelectedEnemyProvince = null;
         currentlySelectedHumanProvince = null;
         invading_province.setText("");
