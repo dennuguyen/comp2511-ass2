@@ -17,7 +17,7 @@ import unsw.gloriaromanus.util.Topics;
 
 public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
 
-    private String CAMPED_UNITS;
+    private String RECOVERY;
     private String MORALE_DUE_TO_TAX;
 
     private final Locale locale;
@@ -37,11 +37,11 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
         this.stats = new Stats(stats);
 
         // Prepare topics
-        this.CAMPED_UNITS = spawn + Topics.CAMP;
+        this.RECOVERY = spawn + Topics.CAMP;
         this.MORALE_DUE_TO_TAX = spawn + Topics.MORALE;
 
         // Subscribe to camped unit broadcast of spawnpoint
-        this.subscribe(this.CAMPED_UNITS);
+        this.subscribe(this.RECOVERY);
         this.subscribe(this.MORALE_DUE_TO_TAX);
     }
 
@@ -66,16 +66,16 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
     // * Unit makes camp at a province therefore can recover manpower
     // */
     // public void camp() {
-    // this.CAMPED_UNITS = this.locale.getLocation() + Topics.CAMP;
-    // this.subscribe(this.CAMPED_UNITS);
+    // this.RECOVERY = this.locale.getLocation() + Topics.CAMP;
+    // this.subscribe(this.RECOVERY);
     // }
 
     // /**
     // * Unsubscribe from province camp topic
     // */
     // public void uncamp() {
-    // this.unsubscribe(this.CAMPED_UNITS);
-    // this.CAMPED_UNITS = null;
+    // this.unsubscribe(this.RECOVERY);
+    // this.RECOVERY = null;
     // }
 
     @Override
@@ -113,12 +113,8 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
                 this.stats.addStat(Stats.Type.MORALE, 1);
         }
 
-        else if (topic.equals(this.CAMPED_UNITS)) {
-            Turn turn = Turn.getInstance();
-            System.out.println("Topic: " + this.CAMPED_UNITS);
-            System.out.println("Before: " + turn.getTurn() + " : " + this.getStat(Stats.Type.STRENGTH));
+        else if (topic.equals(this.RECOVERY)) {
             this.addStat(Stats.Type.STRENGTH, (Integer) message.getMessage());
-            System.out.println("After: " + turn.getTurn() + " : " + this.getStat(Stats.Type.STRENGTH));
         }
     }
 

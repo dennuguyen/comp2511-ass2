@@ -30,7 +30,7 @@ public class ProvinceTest {
     @Test
     public void campShouldSpawnUnit() {
         Province noricum = new Province("Noricum");
-        RomanLegionary roman1 = (RomanLegionary) noricum.recruit(Levyable.Type.RomanLegionary);
+        RomanLegionary roman1 = (RomanLegionary) noricum.enlist(Levyable.Type.RomanLegionary);
         assertEquals(roman1.getLocation(), noricum.getLocation());
         assertEquals(0, roman1.getStat(Stats.Type.STRENGTH));
 
@@ -46,7 +46,7 @@ public class ProvinceTest {
     @Test
     public void unitShouldRecoverManpower() {
         Province achaia = new Province("Achaia");
-        RomanLegionary roman2 = (RomanLegionary) achaia.recruit(Levyable.Type.RomanLegionary);
+        RomanLegionary roman2 = (RomanLegionary) achaia.enlist(Levyable.Type.RomanLegionary);
         assertEquals(roman2.getLocation(), achaia.getLocation());
         assertEquals(0, roman2.getStat(Stats.Type.STRENGTH));
 
@@ -60,8 +60,8 @@ public class ProvinceTest {
     @Test
     public void multipleUnitsShouldRecoverManpower() {
         Province raetia = new Province("Raetia");
-        RomanLegionary roman3 = (RomanLegionary) raetia.recruit(Levyable.Type.RomanLegionary);
-        RomanLegionary roman4 = (RomanLegionary) raetia.recruit(Levyable.Type.RomanLegionary);
+        RomanLegionary roman3 = (RomanLegionary) raetia.enlist(Levyable.Type.RomanLegionary);
+        RomanLegionary roman4 = (RomanLegionary) raetia.enlist(Levyable.Type.RomanLegionary);
 
         assertEquals(roman3.getLocation(), raetia.getLocation());
         assertEquals(roman4.getLocation(), raetia.getLocation());
