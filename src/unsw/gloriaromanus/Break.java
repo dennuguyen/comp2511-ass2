@@ -4,6 +4,21 @@ import unsw.gloriaromanus.component.Stats;
 
 public class Break {
 
+    
+    /**
+     * Limits number between 5 and 95 
+     * 
+     * @param num value to be modified
+     * 
+     * @return modified number
+     */
+    public int limit(int num) {
+        if (num > 95) 
+            return 95;
+        if (num < 5) 
+            return 5;
+        return num;
+    }
   
     /**
      * Calculates chance of unit breaking after an engagement
@@ -17,7 +32,7 @@ public class Break {
 
         int y = e.getCasualties(enemy)/e.getInitialUnitSize(enemy);
 
-        return base + x * 10 / y;
+        return limit(base + x * 10 / y);
     }
 
     /**
