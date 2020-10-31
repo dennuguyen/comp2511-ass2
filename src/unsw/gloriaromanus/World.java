@@ -49,4 +49,8 @@ public class World {
     public Province getProvince(String name) {
         return provinces.get(name);
     }
+
+    public int numProvinces() {
+        return provinces.size();
+    }
 }
