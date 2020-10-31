@@ -62,6 +62,15 @@ public class Faction implements PubSubable {
         unsubscribe(province.getLocation() + Topics.TAX_COLLECT);
         territories.remove(province);
     }
+    
+    /**
+     * Returns number of territories owned
+     * 
+     * @return number of faction's territories
+     */
+    public int numTerritories() {
+        return territories.size();
+    }
 
     /**
      * Returns amount in treasury
