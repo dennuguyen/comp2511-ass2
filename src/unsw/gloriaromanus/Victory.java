@@ -19,14 +19,18 @@ public class Victory {
         this.world = world;
     }
 
-    public void generateVictoryCondition() {
+    public List<Condition> generateListLeaves() {
         List<Condition> leaves = new ArrayList<Condition>();
         leaves.add(new ConquestLeaf(player, world));
         leaves.add(new TreasuryLeaf(player));
         leaves.add(new WealthLeaf(player));
+        return leaves;
+    }
 
-        Condition composite1 = chooseComposite();
+    public void generateVictoryCondition() {
         Random rand = new Random();
+        List<Condition> leaves = generateListLeaves();
+        Condition composite1 = chooseComposite();
         int index = rand.nextInt(3);
         composite1.add(leaves.get(index));
         leaves.remove(index);
