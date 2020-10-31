@@ -11,15 +11,17 @@ import unsw.gloriaromanus.Condition;
 public class Victory {
 
     private Faction player;
+    private World world;
     private Condition victoryCondition;
 
-    public Victory(Faction player) {
+    public Victory(Faction player, World world) {
         this.player = player;
+        this.world = world;
     }
 
     public void generateVictoryCondition() {
         List<Condition> leaves = new ArrayList<Condition>();
-        leaves.add(new ConquestLeaf(player));
+        leaves.add(new ConquestLeaf(player, world));
         leaves.add(new TreasuryLeaf(player));
         leaves.add(new WealthLeaf(player));
 
@@ -41,8 +43,8 @@ public class Victory {
     public Condition chooseComposite() {
         Random rand = new Random();
         int i = rand.nextInt(2);
-        if (i == 0) return new AndComposite(player);
-        else return new OrComposite(player);
+        if (i == 0) return new AndComposite();
+        else return new OrComposite();
     }
 
 
