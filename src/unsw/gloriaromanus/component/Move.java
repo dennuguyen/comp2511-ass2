@@ -68,21 +68,17 @@ public class Move implements Moveable, PubSubable, Observer {
     }
 
     public ArrayList<String> shortestPath(String start, String end) {
-        Map<String, Map<String, Boolean>> matrix = World.getInstance().getMap();
 
-        Map<String, Boolean> visited = new HashMap<String, Boolean>();
+        Map<String, Map<String, Boolean>> matrix = World.getInstance().getMap();
         Map<String, String> breadcrumbs = new HashMap<String, String>();
 
-        for (String province : matrix.keySet()) {
-            visited.put(province, false);
+        for (String province : matrix.keySet())
             breadcrumbs.put(province, null);
-        }
 
         // Visit starting province
         Queue<String> pqueue = new PriorityQueue<>();
         Queue<String> nqueue = new PriorityQueue<>();
         Queue<Integer> wqueue = new PriorityQueue<>();
-        visited.put(start, true);
         pqueue.add(start);
         nqueue.add(start);
         wqueue.add(1);
