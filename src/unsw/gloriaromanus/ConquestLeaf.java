@@ -2,13 +2,17 @@ package unsw.gloriaromanus;
 
 public class ConquestLeaf extends Leaf  {
 
-    public ConquestLeaf(Faction f){
+    World world; 
+
+    public ConquestLeaf(Faction f, World world){
         super(f);
+        this.world = world;
     }
 
     @Override
     public Boolean evaluate(){
-        // check Conquering all territories 
-        return true;
+        Faction f = super.getFaction();
+        if (f.numTerritories() == world.numProvinces()) return true;
+        return false;
     }
 }
