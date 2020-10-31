@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 public abstract class Composite implements Expression {
 
+    private Faction faction;
+
     public ArrayList<Expression> children;
 
-    public Composite(){ 
+    public Composite(Faction faction){ 
         this.children = new ArrayList<Expression>(); 
+        this.faction = faction;
     }
 
     @Override
@@ -17,8 +20,5 @@ public abstract class Composite implements Expression {
 
     @Override
     public abstract Boolean evaluate();
-    
-    public Boolean hasChildren() {
-        return !children.isEmpty(); 
-    }
+
 }
