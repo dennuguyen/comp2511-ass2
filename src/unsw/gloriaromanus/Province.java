@@ -8,12 +8,14 @@ import unsw.gloriaromanus.component.Taxable;
 import unsw.gloriaromanus.component.VeryHighTax;
 import unsw.gloriaromanus.component.Wealthable;
 import unsw.gloriaromanus.util.Message;
+import unsw.gloriaromanus.util.Observer;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
+import unsw.gloriaromanus.util.Subject;
 import unsw.gloriaromanus.util.Topics;
 import unsw.gloriaromanus.component.Wealth;
 
-public class Province implements Locable, Levyable, Taxable, Wealthable, PubSubable {
+public class Province implements Locable, Levyable, Taxable, Wealthable, PubSubable, Observer {
 
     private final String WEALTH_GROWTH_DUE_TO_TAX;
     private final String MORALE_DUE_TO_TAX;
@@ -42,11 +44,11 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
         this.COLLECT_TAX_FROM_WEALTH = name + Topics.TAX_COLLECT;
         this.CAMPED_UNITS = name + Topics.CAMP;
 
-        // Subscribe to turn events
-        this.subscribe(Topics.NEXT_TURN);
-
         // Publish-subscribe wealth growth change event due to tax changes
         this.subscribe(this.WEALTH_GROWTH_DUE_TO_TAX);
+
+        // Attach to turn events
+        Turn.getInstance().attach(this);
     }
 
     @Override
@@ -127,11 +129,6 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
             this.setWealthGrowth((Integer) message.getMessage());
         }
 
-        else if (topic.equals(Topics.NEXT_TURN)) {
-            this.addWealth(this.getWealthGrowth()); // Wealth naturally grows
-            this.publish(this.CAMPED_UNITS, null); // Camped units recruit some troops
-        }
-
         else if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {
             this.addWealth((Integer) message.getMessage());
         }
@@ -145,5 +142,11 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
     @Override
     public void unsubscribe(String topic) {
         PubSub.getInstance().unsubscribe(this, topic);
+    }
+
+    @Override
+    public void update(Subject subject) {
+        this.addWealth(this.getWealthGrowth()); // Wealth naturally grows
+        this.publish(this.CAMPED_UNITS, Message.of(500)); // Camped units recruit some troops
     }
 }
