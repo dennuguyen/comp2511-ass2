@@ -33,6 +33,15 @@ public class Army {
     }
 
     /**
+     * Checks if a unit is in the army
+     */
+    public boolean contains(Unit unit) {
+        for (Unit u : army) {
+            if (u.equals(unit)) return true;
+        }
+        return false;
+    }
+    /**
      * Adds a unit to the army
      * @param unit unit to be added
      */

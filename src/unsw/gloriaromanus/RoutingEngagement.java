@@ -10,10 +10,14 @@ public class RoutingEngagement extends Engagement {
      * 
      * @param type type of engagement
      */
-    public RoutingEngagement(Unit router, Unit pursuer, EngagementType type) {
-        super(router, pursuer, type);
+    public RoutingEngagement(Unit router, Unit pursuer) {
+        super(router, pursuer);
     }
 
+    /**
+     * Performs a rout engagement, i.e. router is attacked by pursuer and does
+     * not inflict casualties
+     */
     @Override
     public void doEngagement() {
         inflictDamage(super.getUnitA());
