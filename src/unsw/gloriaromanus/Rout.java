@@ -23,6 +23,9 @@ public class Rout {
     /**
      * Calculates chance of unit successfully routing 
      * 
+     * @param router unit attempting to rout
+     * @param pursuer unit pursuing router
+     * 
      * @return chance of unit routing
      */
     public int calculateRoutChance(Unit router, Unit pursuer) {
@@ -32,9 +35,12 @@ public class Rout {
     /**
      * Determines if unit will successfully rout
      * 
-     * @return if unit will rout
+     * @param router unit attempting to rout
+     * @param pursuer unit pursuing router
+     * 
+     * @return if router unit will rout
      */
-    public boolean isBroken(Unit router, Unit pursuer) {
+    public boolean isRouted(Unit router, Unit pursuer) {
         var d = Math.random() * 100;
         if ((int) d < calculateRoutChance(router, pursuer))
             return true;
