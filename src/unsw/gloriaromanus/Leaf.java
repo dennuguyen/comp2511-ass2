@@ -2,10 +2,14 @@ package unsw.gloriaromanus;
 
 public abstract class Leaf implements Condition {
     
-    Faction faction;
+    private Faction faction;
 
     public Leaf(Faction faction){ 
         this.faction = faction;
+    }
+
+    public Faction getFaction() {
+        return faction;
     }
 
     @Override
