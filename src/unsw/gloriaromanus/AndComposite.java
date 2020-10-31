@@ -1,6 +1,10 @@
 package unsw.gloriaromanus;
 
-public class And extends Composite {
+public class AndComposite extends Composite {
+
+    public AndComposite(Faction f){
+        super(f);
+    }
 
     @Override
     public  Boolean evaluate(){

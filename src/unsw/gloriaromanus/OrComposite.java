@@ -1,6 +1,10 @@
 package unsw.gloriaromanus;
 
-public class Or extends Composite {
+public class OrComposite extends Composite {
+    
+    public OrComposite(Faction f){
+        super(f);
+    }
 
     @Override
     public Boolean evaluate(){
