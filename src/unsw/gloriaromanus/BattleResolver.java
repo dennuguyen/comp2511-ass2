@@ -3,6 +3,7 @@ package unsw.gloriaromanus;
 import java.lang.Math;
 
 import unsw.gloriaromanus.component.Stats;
+import unsw.gloriaromanus.Break;
 
 public class BattleResolver {
 
@@ -46,14 +47,52 @@ public class BattleResolver {
             return determineMixedEngagement();
     }
 
-    public void doBattle() {
-        Unit attackUnit = chooseAttackUnit();
-        Unit defenceUnit = chooseDefenceUnit();
-        EngagementType type = determineEngagementType(attackUnit, defenceUnit);
+    /**
+     * Checks if a unit was destroyed
+     * 
+     */
+    public boolean isDestroyed(Unit a) {
+        if (a.getStat(Stats.Type.STRENGTH) <= 0) return true;
+        return false;
+    }
+
+    public void attemptBreak(Engagement e, Unit a, Unit b) {
+        Break Break = new Break();
+        boolean aBroken = Break.isBroken(e, a, b);
+        boolean bBroken = Break.isBroken(e, b, a);
+        
+        if (aBroken && bBroken) {
+            //end engagement sequence, remove units from battle
+        }
+        else if (aBroken) {
+            attemptFlee(a, b);
+        }
+        else if (bBroken) {
+            attemptFlee(b, a);
+        }
+        else {
+            //do nothing, continue to next engagement
+        }
+    }
+
+    public void attemptFlee(Unit router, Unit pursuer) {
+        EngagementType type = determineEngagementType(router, pursuer);
+        Rout r = new Rout();
+        while (!r.isRouted(router, pursuer) || !isDestroyed(router)) {
+            Engagement e = new RoutingEngagement(router, pursuer, type);
+        }
+        if(isDestroyed(router)) //remove unit from game
+        else // remove unit from battle
         
     }
 
-
-
-    
+    public void doEngagementSequence() {
+        Unit attackUnit = chooseAttackUnit();
+        Unit defenceUnit = chooseDefenceUnit();
+        EngagementType type = determineEngagementType(attackUnit, defenceUnit);
+        while (!isDestroyed(attackUnit) && !isDestroyed(defenceUnit)) {
+            Engagement e = new NormalEngagement(attackUnit, defenceUnit, type);
+            attemptBreak(e, attackUnit, defenceUnit);
+        }
+    }
 }
