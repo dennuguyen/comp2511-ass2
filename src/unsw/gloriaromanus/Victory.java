@@ -6,24 +6,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import unsw.gloriaromanus.Expression;
+import unsw.gloriaromanus.Condition;
 
 public class Victory {
 
     private Faction player;
-    private Expression victoryCondition;
+    private Condition victoryCondition;
 
     public Victory(Faction player) {
         this.player = player;
     }
 
     public void generateVictoryCondition() {
-        List<Expression> leaves = new ArrayList<Expression>();
+        List<Condition> leaves = new ArrayList<Condition>();
         leaves.add(new ConquestLeaf(player));
         leaves.add(new TreasuryLeaf(player));
         leaves.add(new WealthLeaf(player));
 
-        Expression composite1 = chooseComposite();
+        Condition composite1 = chooseComposite();
         Random rand = new Random();
         int index = rand.nextInt(3);
         composite1.add(leaves.get(index));
@@ -31,14 +31,14 @@ public class Victory {
         index = rand.nextInt(2);
         composite1.add(leaves.get(index));
         leaves.remove(index);
-        Expression composite2 = chooseComposite();
+        Condition composite2 = chooseComposite();
         composite2.add(leaves.get(0));
         composite2.add(composite1);
 
         victoryCondition = composite2;
     }
 
-    public Expression chooseComposite() {
+    public Condition chooseComposite() {
         Random rand = new Random();
         int i = rand.nextInt(2);
         if (i == 0) return new AndComposite(player);

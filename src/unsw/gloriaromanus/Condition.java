@@ -1,6 +1,6 @@
 package unsw.gloriaromanus;
 
-public interface Expression {
-    void add(Expression expr);
+public interface Condition {
+    void add(Condition expr);
     public Boolean evaluate();
 }

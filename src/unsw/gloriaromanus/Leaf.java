@@ -1,6 +1,6 @@
 package unsw.gloriaromanus;
 
-public abstract class Leaf implements Expression {
+public abstract class Leaf implements Condition {
     
     Faction faction;
 
@@ -9,7 +9,7 @@ public abstract class Leaf implements Expression {
     }
 
     @Override
-    public void add(Expression expr){ 
+    public void add(Condition expr){ 
     }
 
     @Override
