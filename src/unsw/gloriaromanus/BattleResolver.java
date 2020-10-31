@@ -1,3 +1,8 @@
+/**
+ * Battles consist of three phases: Engagement , Breaking , Routing.
+ * 
+ */
+
 package unsw.gloriaromanus;
 
 import java.lang.Math;
@@ -18,9 +23,9 @@ public class BattleResolver {
      * @param defender army defending the province
      */
     public BattleResolver(Army attacker, Army defender) {
+        this.numEngagements = 0;
         this.attacker = attacker;
         this.defender = defender;
-        numEngagements = 0;
     }
 
     /**
@@ -49,7 +54,8 @@ public class BattleResolver {
      * @return if unit was destroyed
      */
     public boolean isDestroyed(Unit unit) {
-        if (unit.getStat(Stats.Type.STRENGTH) <= 0) return true;
+        if (unit.getStat(Stats.Type.STRENGTH) <= 0)
+            return true;
         return false;
     }
 
@@ -108,5 +114,8 @@ public class BattleResolver {
         while (attacker.getNumUnits() > 0 && attacker.getNumUnits() > 0) {
             doEngagementSequence();
         }
+    }
+
+    public void skirmish(Unit att, Unit def) {
     }
 }

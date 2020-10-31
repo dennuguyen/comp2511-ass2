@@ -49,7 +49,7 @@ public class Unit implements Entity, Engageable, Locable, Moveable, Statable, Pu
     }
 
     @Override
-    public Engageable.Type getType() {
+    public Engageable.Type getEngageType() {
         return this.engageType;
     }
 

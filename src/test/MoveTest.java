@@ -33,6 +33,13 @@ public class MoveTest {
     }
 
     @Test
+    public void complexShortestPathShouldReturnShortestPath() {
+        Move move = new Move(Move.Type.INFANTRY);
+        ArrayList<String> path = move.shortestPath("Britannia", "Alpes Cottiae");
+        assertEquals("[Britannia, Lugdunensis, Aquitania, Narbonensis, Alpes Cottiae]", path.toString());
+    }
+
+    @Test
     public void unitMovesShouldBeResetToCapacity() {
     }
 }

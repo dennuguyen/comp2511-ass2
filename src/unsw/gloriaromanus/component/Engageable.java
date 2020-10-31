@@ -9,5 +9,5 @@ public interface Engageable {
         Melee, Missile;
     }
 
-    public Engageable.Type getType();
+    public Engageable.Type getEngageType();
 }

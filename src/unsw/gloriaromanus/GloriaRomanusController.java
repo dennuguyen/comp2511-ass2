@@ -87,8 +87,8 @@ public class GloriaRomanusController {
         Turn turn = Turn.getInstance();
 
         // Create world
-        // World world = new
-        // World("src/unsw/gloriaromanus/province_adjacency_matrix.json");
+        World.init("src/unsw/gloriaromanus/province_adjacency_matrix.json");
+        World world = World.getInstance();
 
         // provinceToOwningFactionMap = getProvinceToOwningFactionMap();
 

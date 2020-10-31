@@ -84,4 +84,8 @@ public class ProvinceTest {
         assertEquals(1000, roman3.getStat(Stats.Type.STRENGTH));
         assertEquals(1000, roman4.getStat(Stats.Type.STRENGTH));
     }
+
+    @Test
+    public void settingTaxLevelShouldAffectWealthGrowth() {
+    }
 }
