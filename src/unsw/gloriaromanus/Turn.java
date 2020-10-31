@@ -51,7 +51,6 @@ public class Turn implements Subject {
      */
     public void incrementTurn() {
         this.turn++;
-        System.out.println("Turn: " + this.turn);
         tell();
     }
 
