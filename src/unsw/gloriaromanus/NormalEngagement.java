@@ -11,12 +11,12 @@ public class NormalEngagement extends Engagement{
      * 
      * @param type
      */
-    public NormalEngagement(Unit unitA, Unit unitB, EngagementType type) {
-        super(unitA, unitB, type);
+    public NormalEngagement(Unit unitA, Unit unitB) {
+        super(unitA, unitB);
     }
 
     /**
-     * Perform a normal engagement, i.e. both units attack one another
+     * Performs a normal engagement, i.e. both units attack one another
      */
     @Override
     public void doEngagement() {

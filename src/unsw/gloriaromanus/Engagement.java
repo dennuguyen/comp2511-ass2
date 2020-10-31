@@ -1,10 +1,8 @@
 package unsw.gloriaromanus;
 
-import java.util.List;
-import java.util.ArrayList;
 import unsw.gloriaromanus.component.Stats;
 
-public class Engagement {
+public abstract class Engagement {
 
     private Unit unitA;
     private int unitAInitialSize;
@@ -15,33 +13,77 @@ public class Engagement {
     private EngagementType type;
 
     /**
-     * Constructs an engagement between two units 
+     * Constructs an engagement between two units. 
      * 
      * @param unitA a unit
      * @param unitB an opoosing unit
      * 
      * @param type type of engagement
      */
-    public Engagement(Unit unitA, Unit unitB, EngagementType type) {
+    public Engagement(Unit unitA, Unit unitB) {
         this.unitA = unitA;
         unitAInitialSize = unitA.getStat(Stats.Type.STRENGTH);
         unitACasualties = 0;
         this.unitB = unitB;
         unitBInitialSize = unitB.getStat(Stats.Type.STRENGTH);
         unitBCasualties = 0;
-        this.type = type;
+        this.type = determineEngagementType(unitA, unitB);
     }
 
     /**
-     * Returns units involved in engagement
+     * Returns unit A
      * 
-     * @return units in engagement
+     * @return unit A
      */
-    public List<Unit> getUnits() {
-        ArrayList<Unit> units = new ArrayList<Unit>();
-        units.add(unitA);
-        units.add(unitB);
-        return units;
+    public Unit getUnitA() {
+        return unitA;
+    }
+
+    /**
+     * Returns unit B
+     * 
+     * @return unit B
+     */
+    public Unit getUnitB() {
+        return unitB;
+    }
+
+    /**
+     * Determines the engagement type between a missile and melee unit
+     * 
+     * @param missile missile unit involved in engagement
+     * @param melee melee unit involved in engagement
+     * 
+     * @return type of engagement
+     */
+    public EngagementType determineMixedEngagement(Unit missile, Unit melee) {
+        int chanceMelee = 50 + 10 * (melee.getStat(Stats.Type.TACTICS) - missile.getStat(Stats.Type.TACTICS));
+        if (chanceMelee < 5) chanceMelee = 5;
+        else if (chanceMelee > 95) chanceMelee = 95;
+        var d = Math.random() * 100;
+        if (d < chanceMelee)
+            return new MeleeEngagement();
+        else
+            return new MissileEngagement();
+    }
+
+    /**
+     * Determines the engagement type between an attacking and defending unit
+     * 
+     * @param attackUnit attack unit involved in engagement
+     * @param defenceUnit defence unit involved in engagement
+     * 
+     * @return type of engagement
+     */
+    public EngagementType determineEngagementType(Unit a, Unit b) {
+        if (a is melee && b is melee) 
+            return new MeleeEngagement();
+        if (a is missile && b is missile)
+            return new MissileEngagement();
+        if (a is missile && b is melee)
+            return determineMixedEngagement(a, b);
+        if (a is melee && b is missile)
+            return determineMixedEngagement(b, a);
     }
 
     /**
@@ -85,35 +127,30 @@ public class Engagement {
     }
 
     /**
-     * Performs the engagement
+     * Performs the inflicting of damage during engagement
+     * 
+     * @param current current attacking unit
      * 
      */
-    public void doEngagement() {
+    public void inflictDamage(Unit current) {
         int casualties;
-        
-        casualties = type.calculateCasualties(unitA, unitB, unitBInitialSize);
-        casualties = limit(casualties, unitBInitialSize);
-        unitBCasualties = casualties;
-        unitB.addStat(Stats.Type.STRENGTH, -1 * casualties);
-        
-        casualties = type.calculateCasualties(unitB, unitA, unitAInitialSize);
-        casualties = limit(casualties, unitAInitialSize);
-        unitACasualties = casualties;
-        unitA.addStat(Stats.Type.STRENGTH, -1 * casualties);
+        if (current.equals(unitA)) {
+            casualties = type.calculateCasualties(unitA, unitB, unitBInitialSize);
+            casualties = limit(casualties, unitBInitialSize);
+            unitBCasualties = casualties;
+            unitB.addStat(Stats.Type.STRENGTH, -1 * casualties);
+        } else {
+            casualties = type.calculateCasualties(unitB, unitA, unitAInitialSize);
+            casualties = limit(casualties, unitAInitialSize);
+            unitACasualties = casualties;
+            unitA.addStat(Stats.Type.STRENGTH, -1 * casualties);
+        }
     }
 
     /**
-     * Checks if either unit was destroyed
-     * 
+     * Performs engagement between two units
      */
-    public boolean checkDestroyed() {
-        boolean destroyed = false;
-        if (unitA.getStat(Stats.Type.STRENGTH) == 0) 
-            //remove unit from army
-            destroyed = true;
-        if (unitB.getStat(Stats.Type.STRENGTH) == 0)
-            //remove unit from army 
-            destroyed = true;
-        return destroyed;
+    public void doEngagement() {
     }
+
 }

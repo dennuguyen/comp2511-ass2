@@ -3,7 +3,6 @@ package unsw.gloriaromanus;
 import unsw.gloriaromanus.component.Stats;
 
 public class Break {
-
     
     /**
      * Limits number between 5 and 95 
@@ -30,6 +29,8 @@ public class Break {
      * @return chance of unit breaking
      */
     public int calculateBreakChance(Engagement e, Unit breaker, Unit enemy) {
+        if (e.getCasualties(breaker) == 0) return 0;
+    
         int base = 100 - (breaker.getStat(Stats.Type.MORALE) * 10);
                     
         int x = e.getCasualties(breaker)/e.getInitialUnitSize(breaker);
