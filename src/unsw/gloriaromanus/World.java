@@ -35,7 +35,11 @@ public class World {
 
     private void createWorld(String JSONFile) {
         System.out.println("Creating world...");
-        JSONObject jsonObject = Util.parseJsonFile(JSONFile);
+        JSONObject jsonObject;
+        if (JSONFile.startsWith("{"))  
+            jsonObject = new JSONObject(JSONFile);
+        else 
+            jsonObject = Util.parseJsonFile(JSONFile);
         try {
             this.matrix = new ObjectMapper().readValue(jsonObject.toString(), LinkedHashMap.class);
         } catch (IOException e) {
