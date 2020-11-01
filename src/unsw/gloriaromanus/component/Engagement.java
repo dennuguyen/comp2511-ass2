@@ -24,9 +24,11 @@ public abstract class Engagement {
         this.unitA = unitA;
         unitAInitialSize = ((Stats) unitA).getStat(Stats.Type.STRENGTH);
         unitACasualties = 0;
+
         this.unitB = unitB;
         unitBInitialSize = ((Stats) unitB).getStat(Stats.Type.STRENGTH);
         unitBCasualties = 0;
+
         this.type = determineEngagementType(unitA, unitB);
     }
 

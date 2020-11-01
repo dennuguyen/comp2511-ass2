@@ -2,7 +2,6 @@ package unsw.gloriaromanus.component;
 
 public class NormalEngagement extends Engagement {
 
-
     /**
      * Constructs a normal engagement
      * 

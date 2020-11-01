@@ -13,5 +13,4 @@ public interface EngagementType {
      */
     public int calculateCasualties(Engageable attacker, Engageable defender,
             int initialDefenderSize);
-
 }
