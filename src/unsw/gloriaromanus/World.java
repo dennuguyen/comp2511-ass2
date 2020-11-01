@@ -57,7 +57,4 @@ public class World {
         return this.matrix;
     }
 
-    public int numProvinces() {
-        return provinces.size();
-    }
 }
