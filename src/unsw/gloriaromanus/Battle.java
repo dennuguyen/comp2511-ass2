@@ -121,7 +121,7 @@ public class Battle {
     }
 
     public void doBattle() {
-        while (attacker.getNumUnits() > 0 && attacker.getNumUnits() > 0) {
+        while (attacker.getNumUnits() > 0 && defender.getNumUnits() > 0) {
             doEngagementSequence();
         }
     }
