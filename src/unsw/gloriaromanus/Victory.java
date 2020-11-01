@@ -1,12 +1,8 @@
 package unsw.gloriaromanus;
 
-import unsw.gloriaromanus.Faction;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import unsw.gloriaromanus.Condition;
 
 public class Victory {
 
@@ -25,6 +21,10 @@ public class Victory {
         leaves.add(new TreasuryLeaf(player));
         leaves.add(new WealthLeaf(player));
         return leaves;
+    }
+
+    public Condition getVictoryCondition() {
+        return victoryCondition;
     }
 
     public void generateVictoryCondition() {
@@ -51,5 +51,8 @@ public class Victory {
         else return new OrComposite();
     }
 
+    public boolean getResult() {
+        return victoryCondition.evaluate();
+    }
 
 }
