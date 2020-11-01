@@ -10,6 +10,8 @@ import unsw.gloriaromanus.component.Move;
 
 public class RomanLegionary extends Unit {
 
+    private static final long serialVersionUID = -8275752041064187854L;
+
     /**
      * Roman Legionary constructor
      */

@@ -18,6 +18,7 @@ import unsw.gloriaromanus.util.Topics;
 
 public class Unit implements Entity, Engageable, Locable, Moveable, Statable, PubSubable {
 
+    private static final long serialVersionUID = 466913578146928049L;
     private String RECOVERY;
     private String MORALE_DUE_TO_TAX;
 

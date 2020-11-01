@@ -10,8 +10,9 @@ import org.json.JSONObject;
 
 import unsw.gloriaromanus.util.Util;
 
-public class World {
+public class World implements Entity {
 
+    private static final long serialVersionUID = 4468423671214064072L;
     private Map<String, Map<String, Boolean>> matrix =
             new LinkedHashMap<String, Map<String, Boolean>>();
     private Map<String, Province> provinces = new LinkedHashMap<String, Province>();

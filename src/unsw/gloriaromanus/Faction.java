@@ -8,8 +8,9 @@ import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
 import unsw.gloriaromanus.util.Topics;
 
-public class Faction implements PubSubable {
+public class Faction implements Entity, PubSubable {
 
+    private static final long serialVersionUID = -2460947940289328286L;
     String name;
     List<Province> territories;
     int treasury;
@@ -30,7 +31,7 @@ public class Faction implements PubSubable {
     /**
      * Constructs a faction given name and list of factions
      * 
-     * @param name name of faction
+     * @param name      name of faction
      * @param provinces provinces belonging to faction
      */
     public Faction(String name, List<Province> provinces) {
@@ -62,7 +63,7 @@ public class Faction implements PubSubable {
         unsubscribe(province.getLocation() + Topics.TAX_COLLECT);
         territories.remove(province);
     }
-    
+
     /**
      * Returns number of territories owned
      * 

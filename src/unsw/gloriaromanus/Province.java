@@ -18,8 +18,10 @@ import unsw.gloriaromanus.util.Subject;
 import unsw.gloriaromanus.util.Topics;
 import unsw.gloriaromanus.component.Wealth;
 
-public class Province implements Locable, Levyable, Taxable, Wealthable, PubSubable, Observer {
+public class Province
+        implements Entity, Locable, Levyable, Taxable, Wealthable, PubSubable, Observer {
 
+    private static final long serialVersionUID = 6055239351776908023L;
     private final String WEALTH_GROWTH_DUE_TO_TAX;
     private final String MORALE_DUE_TO_TAX;
     private final String COLLECT_TAX_FROM_WEALTH;
@@ -89,11 +91,12 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
             this.publish(this.MORALE_DUE_TO_TAX, Message.of(true)); // -1 morale change
 
         // Change from very high tax
-        else if ((this.tax.getTaxLevel() instanceof VeryHighTax) && !(taxLevel instanceof VeryHighTax))
+        else if ((this.tax.getTaxLevel() instanceof VeryHighTax)
+                && !(taxLevel instanceof VeryHighTax))
             this.publish(this.MORALE_DUE_TO_TAX, Message.of(false)); // 0 morale change
 
         // Wealth growth event
-        this.publish(this.WEALTH_GROWTH_DUE_TO_TAX, Message.of(getWealthGrowth() + taxLevel.getWealthGrowthChange()));
+        this.publish(this.WEALTH_GROWTH_DUE_TO_TAX, Message.of(taxLevel.getWealthGrowthChange()));
 
         // Set the tax level
         tax.setTaxLevel(taxLevel);
@@ -133,7 +136,7 @@ public class Province implements Locable, Levyable, Taxable, Wealthable, PubSuba
     public void listen(String topic, Message<Object> message) {
 
         if (topic.equals(this.WEALTH_GROWTH_DUE_TO_TAX)) {
-            this.setWealthGrowth((Integer) message.getMessage());
+            this.addWealthGrowth((Integer) message.getMessage());
         }
 
         else if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {

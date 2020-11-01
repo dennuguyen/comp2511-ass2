@@ -10,8 +10,9 @@ import unsw.gloriaromanus.util.Subject;
 
 import java.util.ArrayList;
 
-public class Turn implements Subject {
+public class Turn implements Entity, Subject {
 
+    private static final long serialVersionUID = 8264103827362941942L;
     private int turn = 0;
     private ArrayList<Observer> observers = new ArrayList<Observer>();
 
