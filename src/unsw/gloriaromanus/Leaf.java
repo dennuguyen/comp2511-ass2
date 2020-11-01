@@ -18,4 +18,9 @@ public abstract class Leaf implements Condition {
 
     @Override
     public abstract Boolean evaluate(); 
+
+    @Override
+    public String nameString() {
+        return this.getClass().toString();
+    }
 }

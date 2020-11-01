@@ -18,4 +18,14 @@ public abstract class Composite implements Condition {
     @Override
     public abstract Boolean evaluate();
 
+    @Override
+    public String nameString() {
+        String answer = "[" + this.getClass()  + " "; 
+		for(Condition c : children) {
+			answer = answer + " " + c.nameString();
+		}	
+		answer = answer + "]";
+        return answer;
+    }
+
 }
