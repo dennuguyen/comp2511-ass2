@@ -1,4 +1,4 @@
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.component;
 
 import java.util.ArrayList;
 

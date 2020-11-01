@@ -9,15 +9,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import unsw.gloriaromanus.Faction;
-import unsw.gloriaromanus.OrComposite;
+import unsw.gloriaromanus.component.OrComposite;
 import unsw.gloriaromanus.Province;
-import unsw.gloriaromanus.TreasuryLeaf;
+import unsw.gloriaromanus.component.TreasuryLeaf;
 import unsw.gloriaromanus.Victory;
-import unsw.gloriaromanus.WealthLeaf;
+import unsw.gloriaromanus.component.WealthLeaf;
 import unsw.gloriaromanus.World;
-import unsw.gloriaromanus.AndComposite;
-import unsw.gloriaromanus.VictoryCondition;
-import unsw.gloriaromanus.ConquestLeaf;
+import unsw.gloriaromanus.component.AndComposite;
+import unsw.gloriaromanus.component.VictoryCondition;
+import unsw.gloriaromanus.component.ConquestLeaf;
 
 public class VictoryTest {
     World world;

@@ -1,4 +1,6 @@
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.component;
+
+import unsw.gloriaromanus.Faction;
 
 public class WealthLeaf extends VictoryLeaf {
 

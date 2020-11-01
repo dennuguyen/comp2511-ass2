@@ -3,6 +3,12 @@ package unsw.gloriaromanus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import unsw.gloriaromanus.component.AndComposite;
+import unsw.gloriaromanus.component.ConquestLeaf;
+import unsw.gloriaromanus.component.OrComposite;
+import unsw.gloriaromanus.component.TreasuryLeaf;
+import unsw.gloriaromanus.component.VictoryCondition;
+import unsw.gloriaromanus.component.WealthLeaf;
 
 public class Victory implements Entity {
 

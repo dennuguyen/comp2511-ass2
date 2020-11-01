@@ -1,4 +1,7 @@
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.component;
+
+import unsw.gloriaromanus.Faction;
+import unsw.gloriaromanus.World;
 
 public class ConquestLeaf extends VictoryLeaf {
 
