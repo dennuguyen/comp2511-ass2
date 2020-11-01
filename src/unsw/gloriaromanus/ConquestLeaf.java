@@ -12,7 +12,7 @@ public class ConquestLeaf extends Leaf  {
     @Override
     public Boolean evaluate(){
         Faction f = super.getFaction();
-        if (f.numTerritories() == world.numProvinces()) return true;
+        if (f.numTerritories() == world.getMap().size() return true;
         return false;
     }
 }
