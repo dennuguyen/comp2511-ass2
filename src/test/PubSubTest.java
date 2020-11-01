@@ -16,14 +16,6 @@ public class PubSubTest {
 
         int val = 2;
 
-        private int getVal() {
-            return this.val;
-        }
-
-        private void setVal(int val) {
-            this.val = val;
-        }
-
         @Override
         public void publish(String topic, Message<Object> message) {
             PubSub.getInstance().publish(topic, message);
@@ -55,10 +47,6 @@ public class PubSubTest {
 
         private String getStr() {
             return this.str;
-        }
-
-        private void setVal(int val) {
-            this.val = val;
         }
 
         private void setStr(String str) {
