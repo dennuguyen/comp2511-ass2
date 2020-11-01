@@ -2,7 +2,7 @@ package unsw.gloriaromanus;
 
 import java.util.ArrayList;
 
-public abstract class Composite implements VictoryCondition {
+public abstract class VictoryComposite implements VictoryCondition {
 
     ArrayList<VictoryCondition> children;
 
@@ -10,7 +10,7 @@ public abstract class Composite implements VictoryCondition {
      * Constructs composite victory condition
      * 
      */
-    public Composite() {
+    public VictoryComposite() {
         this.children = new ArrayList<VictoryCondition>();
     }
 

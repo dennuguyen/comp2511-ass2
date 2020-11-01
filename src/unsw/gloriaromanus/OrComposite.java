@@ -1,6 +1,6 @@
 package unsw.gloriaromanus;
 
-public class OrComposite extends Composite {
+public class OrComposite extends VictoryComposite {
 
     @Override
     public Boolean evaluate() {
