@@ -161,7 +161,7 @@ public class Province
         this.camp.recruit(); // Recruit some troops
     }
 
-    public int calculateTax() {
+    private int calculateTax() {
         return getWealth() * getTaxRate() / 100;
     }
 
