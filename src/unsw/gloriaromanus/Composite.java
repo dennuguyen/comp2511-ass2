@@ -2,21 +2,21 @@ package unsw.gloriaromanus;
 
 import java.util.ArrayList;
 
-public abstract class Composite implements Condition {
+public abstract class Composite implements VictoryCondition {
 
-    ArrayList<Condition> children;
+    ArrayList<VictoryCondition> children;
 
     /**
-    * Constructs composite victory condition
-    * 
-    */
-    public Composite(){ 
-        this.children = new ArrayList<Condition>(); 
+     * Constructs composite victory condition
+     * 
+     */
+    public Composite() {
+        this.children = new ArrayList<VictoryCondition>();
     }
 
     @Override
-    public void add(Condition e){
-        children.add(e); 
+    public void add(VictoryCondition e) {
+        children.add(e);
     }
 
     @Override
@@ -24,11 +24,11 @@ public abstract class Composite implements Condition {
 
     @Override
     public String nameString() {
-        String answer = "[" + this.getClass()  + " "; 
-		for(Condition c : children) {
-			answer = answer + " " + c.nameString();
-		}	
-		answer = answer + "]";
+        String answer = "[" + this.getClass() + " ";
+        for (VictoryCondition c : children) {
+            answer = answer + " " + c.nameString();
+        }
+        answer = answer + "]";
         return answer;
     }
 

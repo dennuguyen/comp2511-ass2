@@ -1,7 +1,7 @@
 package unsw.gloriaromanus;
 
-public abstract class Leaf implements Condition {
-    
+public abstract class Leaf implements VictoryCondition {
+
     private Faction faction;
 
     /**
@@ -9,7 +9,7 @@ public abstract class Leaf implements Condition {
      * 
      * @param faction player's faction
      */
-    public Leaf(Faction faction){ 
+    public Leaf(Faction faction) {
         this.faction = faction;
     }
 
@@ -23,11 +23,11 @@ public abstract class Leaf implements Condition {
     }
 
     @Override
-    public void add(Condition expr){ 
+    public void add(VictoryCondition expr) {
     }
 
     @Override
-    public abstract Boolean evaluate(); 
+    public abstract Boolean evaluate();
 
     @Override
     public String nameString() {

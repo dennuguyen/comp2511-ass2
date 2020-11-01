@@ -1,6 +1,6 @@
 package unsw.gloriaromanus;
 
-public interface Condition {
+public interface VictoryCondition {
     /**
      * Returns string containing name of condition
      * 
@@ -13,7 +13,7 @@ public interface Condition {
      * 
      * @param expr condition to be added
      */
-    public void add(Condition expr);
+    public void add(VictoryCondition expr);
 
     /**
      * Evaluates condition
