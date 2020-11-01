@@ -9,7 +9,7 @@ public class Breaking {
      * 
      * @return modified number
      */
-    public int limit(int num) {
+    private int limit(int num) {
         if (num > 95)
             return 95;
         if (num < 5)

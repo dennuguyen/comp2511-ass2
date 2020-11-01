@@ -35,11 +35,13 @@ public class Battle {
      * 
      * @return random attacking unit
      */
-    public Unit chooseAttackUnit() {
-        while(true){
+    private Unit chooseAttackUnit() {
+        while (true) {
             Unit unit = attacker.getRandomUnit();
-            if (unit.getStat(Stats.Type.MORALE) > 0) return unit;
-            else continue;
+            if (unit.getStat(Stats.Type.MORALE) > 0)
+                return unit;
+            else
+                continue;
         }
     }
 
@@ -48,11 +50,13 @@ public class Battle {
      * 
      * @return random defending unit
      */
-    public Unit chooseDefenceUnit() {
-        while(true){
+    private Unit chooseDefenceUnit() {
+        while (true) {
             Unit unit = attacker.getRandomUnit();
-            if (unit.getStat(Stats.Type.MORALE) > 0) return unit;
-            else continue;
+            if (unit.getStat(Stats.Type.MORALE) > 0)
+                return unit;
+            else
+                continue;
         }
     }
 
@@ -63,7 +67,7 @@ public class Battle {
      * 
      * @return if unit was destroyed
      */
-    public boolean isDestroyed(Unit unit) {
+    private boolean isDestroyed(Unit unit) {
         if (unit.getStat(Stats.Type.STRENGTH) <= 0)
             return true;
         return false;
@@ -76,7 +80,7 @@ public class Battle {
      * @param a a unit involved in engagement
      * @param b opposing unit involved in engagement
      */
-    public void attemptBreak(Engagement e, Unit a, Unit b) {
+    private void attemptBreak(Engagement e, Unit a, Unit b) {
         Breaking breaking = new Breaking();
         boolean aBroken = breaking.isBroken(e, a, b);
         boolean bBroken = breaking.isBroken(e, b, a);
@@ -98,7 +102,7 @@ public class Battle {
      * @param router  routing unit
      * @param pursuer pursuing unit
      */
-    public void attemptFlee(Unit router, Unit pursuer) {
+    private void attemptFlee(Unit router, Unit pursuer) {
 
         Routing r = new Routing();
 
@@ -112,14 +116,14 @@ public class Battle {
                 System.err.println("Unit not part of any army");
         } else if (!r.isRouted(router, pursuer)) {
             // remove router unit from battle
-            
+
         } else {
             Engagement e = new RoutingEngagement(router, pursuer);
         }
 
     }
 
-    public void doEngagementSequence() {
+    private void doEngagementSequence() {
         Unit attackUnit = chooseAttackUnit();
         Unit defenceUnit = chooseDefenceUnit();
         while (!isDestroyed(attackUnit) && !isDestroyed(defenceUnit)) {

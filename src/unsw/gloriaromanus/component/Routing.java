@@ -9,7 +9,7 @@ public class Routing {
      * 
      * @return modified number
      */
-    public int limit(int num) {
+    private int limit(int num) {
         if (num > 95)
             return 100;
         if (num < 10)

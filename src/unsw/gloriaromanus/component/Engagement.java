@@ -58,7 +58,7 @@ public abstract class Engagement {
      * 
      * @return type of engagement
      */
-    public EngagementType determineMixedEngagement(Engageable missile, Engageable melee) {
+    private EngagementType determineMixedEngagement(Engageable missile, Engageable melee) {
         int chanceMelee = 50 + 10 * (((Stats) melee).getStat(Stats.Type.TACTICS)
                 - ((Stats) missile).getStat(Stats.Type.TACTICS));
         if (chanceMelee < 5)
@@ -138,7 +138,7 @@ public abstract class Engagement {
      * 
      * @return modified casualties
      */
-    public int limit(int casualties, int initial) {
+    private int limit(int casualties, int initial) {
         if (casualties > initial)
             return initial;
         if (casualties < 0)
