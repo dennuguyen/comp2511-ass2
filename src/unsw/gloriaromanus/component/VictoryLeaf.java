@@ -25,7 +25,7 @@ public abstract class VictoryLeaf implements VictoryCondition {
     }
 
     @Override
-    public void add(VictoryCondition expr) {
+    public void add(VictoryCondition e) {
     }
 
     @Override
