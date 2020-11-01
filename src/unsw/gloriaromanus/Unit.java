@@ -4,6 +4,7 @@
 
 package unsw.gloriaromanus;
 
+import unsw.gloriaromanus.component.Engageable;
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
 import unsw.gloriaromanus.component.Move;
@@ -15,7 +16,7 @@ import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
 import unsw.gloriaromanus.util.Topics;
 
-public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
+public class Unit implements Entity, Engageable, Locable, Moveable, Statable, PubSubable {
 
     private String RECOVERY;
     private String MORALE_DUE_TO_TAX;
@@ -23,6 +24,7 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
     private final Locale locale;
     private final Move move;
     private final Stats stats;
+    private final Engageable.Type engageType;
 
     /**
      * Unit constructor
@@ -31,9 +33,10 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
      * @param movementType Unit's movement type
      * @param stats        Base stats
      */
-    public Unit(String spawn, Move.Type movementType, Stats stats) {
+    public Unit(String spawn, Move.Type movementType, Engageable.Type engageType, Stats stats) {
         this.locale = new Locale(spawn);
         this.move = new Move(movementType);
+        this.engageType = engageType;
         this.stats = new Stats(stats);
 
         // Prepare topics
@@ -43,6 +46,11 @@ public class Unit implements Entity, Locable, Moveable, Statable, PubSubable {
         // Subscribe to camped unit broadcast of spawnpoint
         this.subscribe(this.RECOVERY);
         this.subscribe(this.MORALE_DUE_TO_TAX);
+    }
+
+    @Override
+    public Engageable.Type getEngageType() {
+        return this.engageType;
     }
 
     @Override

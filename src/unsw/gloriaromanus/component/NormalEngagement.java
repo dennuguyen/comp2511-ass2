@@ -1,7 +1,6 @@
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.component;
 
-public class NormalEngagement extends Engagement{
-
+public class NormalEngagement extends Engagement {
 
     /**
      * Constructs a normal engagement
@@ -11,12 +10,12 @@ public class NormalEngagement extends Engagement{
      * 
      * @param type
      */
-    public NormalEngagement(Unit unitA, Unit unitB, EngagementType type) {
-        super(unitA, unitB, type);
+    public NormalEngagement(Engageable unitA, Engageable unitB) {
+        super(unitA, unitB);
     }
 
     /**
-     * Perform a normal engagement, i.e. both units attack one another
+     * Performs a normal engagement, i.e. both units attack one another
      */
     @Override
     public void doEngagement() {
