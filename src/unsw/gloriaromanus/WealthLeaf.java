@@ -11,7 +11,7 @@ public class WealthLeaf extends Leaf  {
     @Override
     public Boolean evaluate(){
         Faction f = super.getFaction();
-        if (f.getWealth() >= 400000) return true;
+        if (f.calculateWealth() >= 400000) return true;
         return false;
     }
 }
