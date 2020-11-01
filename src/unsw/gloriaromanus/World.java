@@ -37,9 +37,9 @@ public class World implements Entity {
     private void createWorld(String JSONFile) {
         System.out.println("Creating world...");
         JSONObject jsonObject;
-        if (JSONFile.startsWith("{"))  
+        if (JSONFile.startsWith("{"))
             jsonObject = new JSONObject(JSONFile);
-        else 
+        else
             jsonObject = Util.parseJsonFile(JSONFile);
         try {
             this.matrix = new ObjectMapper().readValue(jsonObject.toString(), LinkedHashMap.class);
