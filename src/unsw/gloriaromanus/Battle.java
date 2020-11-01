@@ -1,15 +1,18 @@
 /**
- * Battles consist of three phases: Engagement , Breaking , Routing.
- * 
+ * Battles consist of many skirmishes between pairs of units. Skirmishes consist of three phases:
+ * Engagement , Breaking , Routing.
  */
 
 package unsw.gloriaromanus;
 
-import java.lang.Math;
-
+import unsw.gloriaromanus.component.Breaking;
+import unsw.gloriaromanus.component.Engagement;
+import unsw.gloriaromanus.component.NormalEngagement;
+import unsw.gloriaromanus.component.Routing;
+import unsw.gloriaromanus.component.RoutingEngagement;
 import unsw.gloriaromanus.component.Stats;
 
-public class BattleResolver {
+public class Battle {
 
     private int numEngagements;
     private Army attacker;
@@ -21,7 +24,7 @@ public class BattleResolver {
      * @param attacker army attacking the province
      * @param defender army defending the province
      */
-    public BattleResolver(Army attacker, Army defender) {
+    public Battle(Army attacker, Army defender) {
         this.numEngagements = 0;
         this.attacker = attacker;
         this.defender = defender;
@@ -84,17 +87,28 @@ public class BattleResolver {
     /**
      * Peforms repeated rout attempts until router is destroyed or routs
      * 
-     * @param router routing unit
+     * @param router  routing unit
      * @param pursuer pursuing unit
      */
     public void attemptFlee(Unit router, Unit pursuer) {
-        Rout r = new Rout();
-        while (!r.isRouted(router, pursuer) || !isDestroyed(router)) {
+
+        Routing r = new Routing();
+
+        if (isDestroyed(router)) {
+            // remove router unit from game
+            if (this.attacker.contains(router))
+                this.attacker.remove(router);
+            else if (this.defender.contains(router))
+                this.defender.remove(router);
+            else
+                System.err.println("Unit not part of any army");
+        } else if (!r.isRouted(router, pursuer)) {
+            // remove router unit from battle
+
+        } else {
             Engagement e = new RoutingEngagement(router, pursuer);
         }
-        if(isDestroyed(router)) //remove router unit from game
-        else // remove router unit from battle
-        
+
     }
 
     public void doEngagementSequence() {

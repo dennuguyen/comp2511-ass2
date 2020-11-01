@@ -1,31 +1,31 @@
-package unsw.gloriaromanus;
-
-import unsw.gloriaromanus.component.Stats;
+package unsw.gloriaromanus.component;
 
 public abstract class Engagement {
 
-    private Unit unitA;
+    private Engageable unitA;
     private int unitAInitialSize;
     private int unitACasualties;
-    private Unit unitB;
+
+    private Engageable unitB;
     private int unitBInitialSize;
     private int unitBCasualties;
+
     private EngagementType type;
 
     /**
-     * Constructs an engagement between two units. 
+     * Constructs an engagement between two units.
      * 
      * @param unitA a unit
      * @param unitB an opoosing unit
      * 
-     * @param type type of engagement
+     * @param type  type of engagement
      */
-    public Engagement(Unit unitA, Unit unitB) {
+    public Engagement(Engageable unitA, Engageable unitB) {
         this.unitA = unitA;
-        unitAInitialSize = unitA.getStat(Stats.Type.STRENGTH);
+        unitAInitialSize = ((Stats) unitA).getStat(Stats.Type.STRENGTH);
         unitACasualties = 0;
         this.unitB = unitB;
-        unitBInitialSize = unitB.getStat(Stats.Type.STRENGTH);
+        unitBInitialSize = ((Stats) unitB).getStat(Stats.Type.STRENGTH);
         unitBCasualties = 0;
         this.type = determineEngagementType(unitA, unitB);
     }
@@ -35,7 +35,7 @@ public abstract class Engagement {
      * 
      * @return unit A
      */
-    public Unit getUnitA() {
+    public Engageable getUnitA() {
         return unitA;
     }
 
@@ -44,7 +44,7 @@ public abstract class Engagement {
      * 
      * @return unit B
      */
-    public Unit getUnitB() {
+    public Engageable getUnitB() {
         return unitB;
     }
 
@@ -52,14 +52,17 @@ public abstract class Engagement {
      * Determines the engagement type between a missile and melee unit
      * 
      * @param missile missile unit involved in engagement
-     * @param melee melee unit involved in engagement
+     * @param melee   melee unit involved in engagement
      * 
      * @return type of engagement
      */
-    public EngagementType determineMixedEngagement(Unit missile, Unit melee) {
-        int chanceMelee = 50 + 10 * (melee.getStat(Stats.Type.TACTICS) - missile.getStat(Stats.Type.TACTICS));
-        if (chanceMelee < 5) chanceMelee = 5;
-        else if (chanceMelee > 95) chanceMelee = 95;
+    public EngagementType determineMixedEngagement(Engageable missile, Engageable melee) {
+        int chanceMelee = 50 + 10 * (((Stats) melee).getStat(Stats.Type.TACTICS)
+                - ((Stats) missile).getStat(Stats.Type.TACTICS));
+        if (chanceMelee < 5)
+            chanceMelee = 5;
+        else if (chanceMelee > 95)
+            chanceMelee = 95;
         var d = Math.random() * 100;
         if (d < chanceMelee)
             return new MeleeEngagement();
@@ -70,20 +73,31 @@ public abstract class Engagement {
     /**
      * Determines the engagement type between an attacking and defending unit
      * 
-     * @param attackUnit attack unit involved in engagement
+     * @param attackUnit  attack unit involved in engagement
      * @param defenceUnit defence unit involved in engagement
      * 
      * @return type of engagement
      */
-    public EngagementType determineEngagementType(Unit a, Unit b) {
-        if (a is melee && b is melee) 
+    public EngagementType determineEngagementType(Engageable a, Engageable b) {
+
+        if (a.getEngageType() == Engageable.Type.Melee
+                && b.getEngageType() == Engageable.Type.Melee)
             return new MeleeEngagement();
-        if (a is missile && b is missile)
+
+        if (a.getEngageType() == Engageable.Type.Missile
+                && b.getEngageType() == Engageable.Type.Missile)
             return new MissileEngagement();
-        if (a is missile && b is melee)
+
+        if (a.getEngageType() == Engageable.Type.Missile
+                && b.getEngageType() == Engageable.Type.Melee)
             return determineMixedEngagement(a, b);
-        if (a is melee && b is missile)
+
+        if (a.getEngageType() == Engageable.Type.Melee
+                && b.getEngageType() == Engageable.Type.Missile)
             return determineMixedEngagement(b, a);
+
+        System.err.println("Invalid engagement combination");
+        return null;
     }
 
     /**
@@ -91,9 +105,11 @@ public abstract class Engagement {
      * 
      * @return unit size before engagement
      */
-    public int getInitialUnitSize(Unit unit) {
-        if (unit.equals(unitA)) return unitAInitialSize;
-        if (unit.equals(unitB)) return unitBInitialSize;
+    public int getInitialUnitSize(Engageable unit) {
+        if (unit.equals(unitA))
+            return unitAInitialSize;
+        if (unit.equals(unitB))
+            return unitBInitialSize;
         return 0;
     }
 
@@ -104,24 +120,26 @@ public abstract class Engagement {
      * 
      * @return casualties of unit
      */
-    public int getCasualties(Unit unit) {
-        if (unit.equals(unitA)) return unitACasualties;
-        if (unit.equals(unitB)) return unitBCasualties;
+    public int getCasualties(Engageable unit) {
+        if (unit.equals(unitA))
+            return unitACasualties;
+        if (unit.equals(unitB))
+            return unitBCasualties;
         return 0;
     }
 
     /**
-     * Limits casualties between 0 and size of unit 
+     * Limits casualties between 0 and size of unit
      * 
      * @param casualties calculated value of casualties
-     * @param intial initial size of unit
+     * @param intial     initial size of unit
      * 
      * @return modified casualties
      */
     public int limit(int casualties, int initial) {
-        if (casualties > initial) 
+        if (casualties > initial)
             return initial;
-        if (casualties < 0) 
+        if (casualties < 0)
             return 0;
         return casualties;
     }
@@ -132,18 +150,18 @@ public abstract class Engagement {
      * @param current current attacking unit
      * 
      */
-    public void inflictDamage(Unit current) {
+    public void inflictDamage(Engageable current) {
         int casualties;
         if (current.equals(unitA)) {
             casualties = type.calculateCasualties(unitA, unitB, unitBInitialSize);
             casualties = limit(casualties, unitBInitialSize);
             unitBCasualties = casualties;
-            unitB.addStat(Stats.Type.STRENGTH, -1 * casualties);
+            ((Stats) unitB).addStat(Stats.Type.STRENGTH, -1 * casualties);
         } else {
             casualties = type.calculateCasualties(unitB, unitA, unitAInitialSize);
             casualties = limit(casualties, unitAInitialSize);
             unitACasualties = casualties;
-            unitA.addStat(Stats.Type.STRENGTH, -1 * casualties);
+            ((Stats) unitA).addStat(Stats.Type.STRENGTH, -1 * casualties);
         }
     }
 
