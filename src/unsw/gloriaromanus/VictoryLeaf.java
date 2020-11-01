@@ -1,6 +1,6 @@
 package unsw.gloriaromanus;
 
-public abstract class Leaf implements VictoryCondition {
+public abstract class VictoryLeaf implements VictoryCondition {
 
     private Faction faction;
 
@@ -9,7 +9,7 @@ public abstract class Leaf implements VictoryCondition {
      * 
      * @param faction player's faction
      */
-    public Leaf(Faction faction) {
+    public VictoryLeaf(Faction faction) {
         this.faction = faction;
     }
 

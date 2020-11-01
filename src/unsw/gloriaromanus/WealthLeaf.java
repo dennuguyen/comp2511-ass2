@@ -1,20 +1,21 @@
 package unsw.gloriaromanus;
 
-public class WealthLeaf extends Leaf  {
+public class WealthLeaf extends VictoryLeaf {
 
     /**
      * Constructs wealth victory condition
      * 
      * @param f player's faction
      */
-    public WealthLeaf(Faction f){
+    public WealthLeaf(Faction f) {
         super(f);
     }
 
     @Override
-    public Boolean evaluate(){
+    public Boolean evaluate() {
         Faction f = super.getFaction();
-        if (f.calculateWealth() >= 400000) return true;
+        if (f.calculateWealth() >= 400000)
+            return true;
         return false;
     }
 }
