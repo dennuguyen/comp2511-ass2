@@ -103,8 +103,8 @@ public class Unit implements Entity, Engageable, Locable, Moveable, Statable, Pu
     }
 
     @Override
-    public void multiplyStat(Stats.Type type, int change) {
-        this.stats.multiplyStat(type, change);
+    public void multiplyStat(Stats.Type type, int percentage) {
+        this.stats.multiplyStat(type, percentage);
     }
 
     @Override
