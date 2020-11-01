@@ -2,8 +2,11 @@ package unsw.gloriaromanus;
 
 public class WealthLeaf extends Leaf  {
 
-    World w;
-
+    /**
+     * Constructs wealth victory condition
+     * 
+     * @param f player's faction
+     */
     public WealthLeaf(Faction f){
         super(f);
     }

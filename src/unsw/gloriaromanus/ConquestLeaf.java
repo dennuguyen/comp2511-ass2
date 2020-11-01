@@ -2,8 +2,14 @@ package unsw.gloriaromanus;
 
 public class ConquestLeaf extends Leaf  {
 
-    World world; 
+    private World world; 
 
+    /**
+     * Constructs conquest victory condition
+     * 
+     * @param f player's faction
+     * @param world world in which game is set
+     */
     public ConquestLeaf(Faction f, World world){
         super(f);
         this.world = world;

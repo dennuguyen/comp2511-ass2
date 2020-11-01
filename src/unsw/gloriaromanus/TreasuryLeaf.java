@@ -2,6 +2,11 @@ package unsw.gloriaromanus;
 
 public class TreasuryLeaf extends Leaf  {
 
+    /**
+     * Constructs treasury victory condition
+     * 
+     * @param f player's faction
+     */
     public TreasuryLeaf(Faction f){
         super(f);
     }

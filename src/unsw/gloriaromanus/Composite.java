@@ -4,8 +4,12 @@ import java.util.ArrayList;
 
 public abstract class Composite implements Condition {
 
-    public ArrayList<Condition> children;
+    ArrayList<Condition> children;
 
+    /**
+    * Constructs composite victory condition
+    * 
+    */
     public Composite(){ 
         this.children = new ArrayList<Condition>(); 
     }

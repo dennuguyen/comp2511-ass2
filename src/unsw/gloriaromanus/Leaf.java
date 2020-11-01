@@ -4,10 +4,20 @@ public abstract class Leaf implements Condition {
     
     private Faction faction;
 
+    /**
+     * Constructs leaf victory condition
+     * 
+     * @param faction player's faction
+     */
     public Leaf(Faction faction){ 
         this.faction = faction;
     }
 
+    /**
+     * Returns player's faction
+     * 
+     * @return player's faction
+     */
     public Faction getFaction() {
         return faction;
     }
