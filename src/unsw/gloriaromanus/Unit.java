@@ -1,38 +1,139 @@
+/**
+ * Unit class
+ */
+
 package unsw.gloriaromanus;
 
-/**
- * Represents a basic unit of soldiers
- * 
- * incomplete - should have heavy infantry, skirmishers, spearmen, lancers, heavy cavalry, elephants, chariots, archers, slingers, horse-archers, onagers, ballista, etc...
- * higher classes include ranged infantry, cavalry, infantry, artillery
- * 
- * current version represents a heavy infantry unit (almost no range, decent armour and morale)
- */
-public class Unit {
-    private int numTroops;  // the number of troops in this unit (should reduce based on depletion)
-    private int range;  // range of the unit
-    private int armour;  // armour defense
-    private int morale;  // resistance to fleeing
-    private int speed;  // ability to disengage from disadvantageous battle
-    private int attack;  // can be either missile or melee attack to simplify. Could improve implementation by differentiating!
-    private int defenseSkill;  // skill to defend in battle. Does not protect from arrows!
-    private int shieldDefense; // a shield
+import unsw.gloriaromanus.component.Engageable;
+import unsw.gloriaromanus.component.Locable;
+import unsw.gloriaromanus.component.Locale;
+import unsw.gloriaromanus.component.Move;
+import unsw.gloriaromanus.component.Moveable;
+import unsw.gloriaromanus.component.Statable;
+import unsw.gloriaromanus.component.Stats;
+import unsw.gloriaromanus.util.Message;
+import unsw.gloriaromanus.util.PubSub;
+import unsw.gloriaromanus.util.PubSubable;
+import unsw.gloriaromanus.util.Topics;
 
-    public Unit(){
-        // TODO = obtain these values from the file for the unit
-        numTroops = 50;
-        range = 1;
-        armour = 5;
-        morale = 10;
-        speed = 10;
-        attack = 6;
-        defenseSkill = 10;
-        shieldDefense = 3;
+public class Unit implements Entity, Engageable, Locable, Moveable, Statable, PubSubable {
+
+    private static final long serialVersionUID = 466913578146928049L;
+    private String RECOVERY;
+    private String MORALE_DUE_TO_TAX;
+
+    private final Locale locale;
+    private final Move move;
+    private final Stats stats;
+    private final Engageable.Type engageType;
+
+    /**
+     * Unit constructor
+     * 
+     * @param spawn        Initial location
+     * @param movementType Unit's movement type
+     * @param stats        Base stats
+     */
+    public Unit(String spawn, Move.Type movementType, Engageable.Type engageType, Stats stats) {
+        this.locale = new Locale(spawn);
+        this.move = new Move(movementType);
+        this.engageType = engageType;
+        this.stats = new Stats(stats);
+
+        // Prepare topics
+        this.RECOVERY = spawn + Topics.CAMP;
+        this.MORALE_DUE_TO_TAX = spawn + Topics.MORALE;
+
+        // Subscribe to camped unit broadcast of spawnpoint
+        this.subscribe(this.RECOVERY);
+        this.subscribe(this.MORALE_DUE_TO_TAX);
     }
 
-    public int getNumTroops(){
-        return numTroops;
+    @Override
+    public Engageable.Type getEngageType() {
+        return this.engageType;
     }
 
-    
+    @Override
+    public String getLocation() {
+        return this.locale.getLocation();
+    }
+
+    @Override
+    public String setLocation(String location) {
+        this.locale.setLocation(location);
+        return location;
+    }
+
+    @Override
+    public String moveTo(String destination) {
+        // this.uncamp();
+        return this.locale.setLocation(this.move.moveTo(this.locale.getLocation(), destination));
+    }
+
+    // /**
+    // * Unit makes camp at a province therefore can recover manpower
+    // */
+    // public void camp() {
+    // this.RECOVERY = this.locale.getLocation() + Topics.CAMP;
+    // this.subscribe(this.RECOVERY);
+    // }
+
+    // /**
+    // * Unsubscribe from province camp topic
+    // */
+    // public void uncamp() {
+    // this.unsubscribe(this.RECOVERY);
+    // this.RECOVERY = null;
+    // }
+
+    @Override
+    public int getStat(Stats.Type type) {
+        return this.stats.getStat(type);
+    }
+
+    @Override
+    public void setStat(Stats.Type type, int value) {
+        this.stats.setStat(type, value);
+    }
+
+    @Override
+    public void addStat(Stats.Type type, int change) {
+        this.stats.addStat(type, change);
+    }
+
+    @Override
+    public void multiplyStat(Stats.Type type, int percentage) {
+        this.stats.multiplyStat(type, percentage);
+    }
+
+    @Override
+    public void publish(String topic, Message<Object> message) {
+        PubSub.getInstance().publish(topic, message);
+    }
+
+    @Override
+    public void listen(String topic, Message<Object> message) {
+
+        if (topic.equals(this.MORALE_DUE_TO_TAX)) {
+            if ((Boolean) message.getMessage() == true)
+                this.stats.addStat(Stats.Type.MORALE, -1);
+            else
+                this.stats.addStat(Stats.Type.MORALE, 1);
+        }
+
+        else if (topic.equals(this.RECOVERY)) {
+            this.addStat(Stats.Type.STRENGTH, (Integer) message.getMessage());
+        }
+    }
+
+    @Override
+    public void subscribe(String topic) {
+        PubSub.getInstance().subscribe(this, topic);
+    }
+
+    @Override
+    public void unsubscribe(String topic) {
+        PubSub.getInstance().unsubscribe(this, topic);
+    }
 }
