@@ -56,5 +56,4 @@ public class World {
     public Map<String, Map<String, Boolean>> getMap() {
         return this.matrix;
     }
-
 }
