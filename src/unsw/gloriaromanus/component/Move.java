@@ -4,24 +4,18 @@
 
 package unsw.gloriaromanus.component;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import unsw.gloriaromanus.Province;
 import unsw.gloriaromanus.World;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
 import unsw.gloriaromanus.util.Observer;
-import unsw.gloriaromanus.util.Pair;
 import unsw.gloriaromanus.util.Subject;
 
 public class Move implements Moveable, PubSubable, Observer {
@@ -54,11 +48,12 @@ public class Move implements Moveable, PubSubable, Observer {
     }
 
     /**
-     * Subtracts the number of moves left with move points spent
+     * Returns the number of move points appropriate to spend. Concurrently used to access the path
+     * array.
      * 
-     * @param exhaust Number of move points spent
+     * @param exhaust Number of move points to spend
      * 
-     * @return Overspent move points, negative if underspent
+     * @return Move points spent and path array accessor
      */
     private int exhaustMoves(int exhaust) {
         this.movesLeft -= exhaust;
@@ -130,7 +125,8 @@ public class Move implements Moveable, PubSubable, Observer {
      * @return
      */
     public String moveTo(String start, String destination) {
-        return null;
+        ArrayList<String> path = this.shortestPath(start, destination);
+        return path.get(this.exhaustMoves(path.size() - 1));
     }
 
     @Override
