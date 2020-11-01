@@ -15,12 +15,21 @@ public class Victory {
         this.world = world;
     }
 
-    public List<VictoryCondition> generateListLeaves() {
+    private List<VictoryCondition> generateListLeaves() {
         List<VictoryCondition> leaves = new ArrayList<VictoryCondition>();
         leaves.add(new ConquestLeaf(player, world));
         leaves.add(new TreasuryLeaf(player));
         leaves.add(new WealthLeaf(player));
         return leaves;
+    }
+
+    private VictoryCondition chooseComposite() {
+        Random rand = new Random();
+        int i = rand.nextInt(2);
+        if (i == 0)
+            return new AndComposite();
+        else
+            return new OrComposite();
     }
 
     public VictoryCondition getVictoryCondition() {
@@ -42,15 +51,6 @@ public class Victory {
         composite2.add(composite1);
 
         victoryCondition = composite2;
-    }
-
-    public VictoryCondition chooseComposite() {
-        Random rand = new Random();
-        int i = rand.nextInt(2);
-        if (i == 0)
-            return new AndComposite();
-        else
-            return new OrComposite();
     }
 
     public boolean getResult() {
