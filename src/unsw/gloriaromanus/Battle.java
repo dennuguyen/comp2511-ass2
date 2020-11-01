@@ -36,7 +36,11 @@ public class Battle {
      * @return random attacking unit
      */
     public Unit chooseAttackUnit() {
-        return attacker.getRandomUnit();
+        while(true){
+            Unit unit = attacker.getRandomUnit();
+            if (unit.getStat(Stats.Type.MORALE) > 0) return unit;
+            else continue;
+        }
     }
 
     /**
@@ -45,7 +49,11 @@ public class Battle {
      * @return random defending unit
      */
     public Unit chooseDefenceUnit() {
-        return defender.getRandomUnit();
+        while(true){
+            Unit unit = attacker.getRandomUnit();
+            if (unit.getStat(Stats.Type.MORALE) > 0) return unit;
+            else continue;
+        }
     }
 
     /**
@@ -104,7 +112,7 @@ public class Battle {
                 System.err.println("Unit not part of any army");
         } else if (!r.isRouted(router, pursuer)) {
             // remove router unit from battle
-
+            
         } else {
             Engagement e = new RoutingEngagement(router, pursuer);
         }

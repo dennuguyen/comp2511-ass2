@@ -2,13 +2,24 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import unsw.gloriaromanus.Faction;
+import unsw.gloriaromanus.OrComposite;
+import unsw.gloriaromanus.Province;
+import unsw.gloriaromanus.TreasuryLeaf;
+import unsw.gloriaromanus.Victory;
+import unsw.gloriaromanus.WealthLeaf;
 import unsw.gloriaromanus.World;
+import unsw.gloriaromanus.AndComposite;
+import unsw.gloriaromanus.Condition;
+import unsw.gloriaromanus.ConquestLeaf;
 
-public class WorldTest {
+public class VictoryTest {
     World world;
 
     @Before
@@ -18,16 +29,74 @@ public class WorldTest {
         world = World.getInstance();
     }
 
-    @After
-    public void tearDown() {
+    @Test
+    public void victoryConditionShouldGenerate() {
+        Faction player = new Faction("player");
+        Victory victory = new Victory(player, world);
+        victory.generateVictoryCondition();
+        assertEquals(false, victory.getResult());
+        player.addTreasury(100000);
+        Province britannia = world.getProvince("Britannia");
+        britannia.addWealth(100000);
+        for (String key : world.getMap().keySet()) {
+            player.addProvince(world.getProvince(key));
+        }
+        assertEquals(true, victory.getResult());
     }
 
     @Test
-    public void provincesShouldBeCreatedForEveryWorldStringEntry() {
+    public void victoryConditionShouldSucceed2() {
+        Faction player = new Faction("player");
+        Condition CONQUEST = new ConquestLeaf(player, world);
+        Condition TREASURY = new TreasuryLeaf(player);
+        Condition WEALTH = new WealthLeaf(player);
+        Condition AND = new AndComposite();
+        Condition OR = new OrComposite();
+        AND.add(TREASURY);
+        AND.add(CONQUEST);
+        OR.add(AND);
+        OR.add(WEALTH);
+        player.addTreasury(100000);
+        Province britannia = world.getProvince("Britannia");
+        britannia.addWealth(100000);
+        for (String key : world.getMap().keySet()) {
+            player.addProvince(world.getProvince(key));
+        }
+        assertEquals(true, OR.evaluate());
+        player.addTreasury(-1);
+        assertEquals(false, OR.evaluate());
+        britannia.addWealth(300000);
+        assertEquals(true, OR.evaluate());
     }
 
-    @Test 
-    public void worldShouldHave52Provinces() {
-        assertEquals(53, world.getMap().size());
+    @Test
+    public void victoryConditionShouldSucceed3() {
+        Faction player = new Faction("player");
+        Condition CONQUEST = new ConquestLeaf(player, world);
+        Condition TREASURY = new TreasuryLeaf(player);
+        Condition WEALTH = new WealthLeaf(player);
+        Condition AND = new AndComposite();
+        Condition OR = new OrComposite();
+        OR.add(WEALTH);
+        OR.add(TREASURY);
+        AND.add(OR);
+        AND.add(CONQUEST);
+        assertEquals(false, AND.evaluate());
+        player.addTreasury(100001);
+        assertEquals(false, AND.evaluate());
+        Province britannia = world.getProvince("Britannia");
+        assertEquals(0, britannia.getWealth());
+        britannia.addWealth(100000);
+        assertEquals(false, AND.evaluate());
+        for (String key : world.getMap().keySet()) {
+            player.addProvince(world.getProvince(key));
+        }
+        assertEquals(true, AND.evaluate());
+        player.addTreasury(-100001);
+        assertEquals(false, AND.evaluate());
+        britannia.addWealth(300001);
+        assertEquals(true, AND.evaluate());
     }
+
+    
 }
