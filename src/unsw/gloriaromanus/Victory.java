@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Victory {
+public class Victory implements Entity {
 
+    private static final long serialVersionUID = -3200195314475452735L;
     private Faction player;
     private World world;
     private VictoryCondition victoryCondition;
