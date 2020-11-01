@@ -89,6 +89,7 @@ public abstract class Stat {
      * @param percentage Stat multiplier percentage
      */
     public void multiplyStat(int percentage) {
-        this.modifiedValue = limit((int) (this.modifiedValue + this.modifiedValue * percentage / 100));
+        this.modifiedValue =
+                limit((int) (this.modifiedValue + this.modifiedValue * percentage / 100));
     }
 }
