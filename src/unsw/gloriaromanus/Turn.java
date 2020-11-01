@@ -60,18 +60,12 @@ public class Turn implements Entity, Subject {
         this.observers.add(observer);
     }
 
-    /**
-     * Detach an observer from the subject's observer list
-     * 
-     * @param observer Observer object to detach
-     */
+    @Override
     public void detach(Observer observer) {
         this.observers.remove(observer);
     }
 
-    /**
-     * Notify all of the subject's observers of an event
-     */
+    @Override
     public void tell() {
         for (Observer observer : observers)
             observer.update(this);
