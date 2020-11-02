@@ -25,4 +25,4 @@ else
 fi
 
 # Remove class files
-# rm $test*.class $gloria*.class $component*.class $util*.class
+rm $test*.class $gloria*.class $component*.class $util*.class
