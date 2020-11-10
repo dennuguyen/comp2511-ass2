@@ -4,11 +4,11 @@ import java.util.Objects;
 
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
-import unsw.gloriaromanus.component.LowTax;
+import unsw.gloriaromanus.component.Populable;
+import unsw.gloriaromanus.component.Population;
 import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
-import unsw.gloriaromanus.component.VeryHighTax;
 import unsw.gloriaromanus.component.Wealthable;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.Observer;
@@ -19,7 +19,7 @@ import unsw.gloriaromanus.util.Topics;
 import unsw.gloriaromanus.component.Wealth;
 
 public class Province
-        implements Entity, Locable, Levyable, Taxable, Wealthable, PubSubable, Observer {
+        implements Entity, Locable, Levyable, Taxable, Wealthable, PubSubable, Observer, Populable {
 
     private static final long serialVersionUID = 6055239351776908023L;
     private final String WEALTH_GROWTH_DUE_TO_TAX;
@@ -31,6 +31,7 @@ public class Province
     private final Tax tax;
     private final Wealth wealth;
     private final Camp camp;
+    private final Population population;
 
     /**
      * Base constructor for province
@@ -42,6 +43,7 @@ public class Province
         this.wealth = new Wealth();
         this.tax = new Tax();
         this.camp = new Camp();
+        this.population = new Population();
 
         // Prepare topics
         this.WEALTH_GROWTH_DUE_TO_TAX = name + Topics.WEALTH_GROWTH;
@@ -57,7 +59,7 @@ public class Province
         Turn.getInstance().attach(this);
 
         // Set tax level
-        this.setTaxLevel(new LowTax());
+        this.setTaxLevel(TaxLevel.LOW_TAX);
     }
 
     @Override
@@ -87,12 +89,12 @@ public class Province
             return;
 
         // Change to very high tax
-        if (taxLevel instanceof VeryHighTax)
+        if (taxLevel == TaxLevel.VERY_HIGH_TAX)
             this.publish(this.MORALE_DUE_TO_TAX, Message.of(true)); // -1 morale change
 
         // Change from very high tax
-        else if ((this.tax.getTaxLevel() instanceof VeryHighTax)
-                && !(taxLevel instanceof VeryHighTax))
+        else if ((this.tax.getTaxLevel() == TaxLevel.VERY_HIGH_TAX)
+                && !(taxLevel == TaxLevel.VERY_HIGH_TAX))
             this.publish(this.MORALE_DUE_TO_TAX, Message.of(false)); // 0 morale change
 
         // Wealth growth event
@@ -159,6 +161,7 @@ public class Province
     public void update(Subject subject) {
         this.addWealth(this.getWealthGrowth()); // Wealth naturally grows
         this.camp.recruit(); // Recruit some troops
+        this.addPopulation(100); // Population naturally grows
     }
 
     private int calculateTax() {
@@ -167,5 +170,20 @@ public class Province
 
     public void collectTax() {
         this.publish(this.COLLECT_TAX_FROM_WEALTH, Message.of(this.calculateTax()));
+    }
+
+    @Override
+    public int getPopulation() {
+        return this.population.getPopulation();
+    }
+
+    @Override
+    public void setPopulation(int population) {
+        this.population.setPopulation(population);
+    }
+
+    @Override
+    public void addPopulation(int change) {
+        this.population.addPopulation(change);
     }
 }
