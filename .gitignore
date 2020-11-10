@@ -8,3 +8,6 @@ hs_err_pid*
 /resources/
 /jniLibs/
 .vscode
+jacoco.exec
+/log/
+/sounds/
