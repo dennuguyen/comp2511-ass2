@@ -11,7 +11,7 @@ import unsw.gloriaromanus.Province;
 import unsw.gloriaromanus.RomanLegionary;
 import unsw.gloriaromanus.Turn;
 import unsw.gloriaromanus.component.Stats;
-import unsw.gloriaromanus.component.VeryHighTax;
+import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.Levyable;
 
 public class ProvinceTest {
@@ -37,7 +37,7 @@ public class ProvinceTest {
         int initialMorale = roman1.getStat(Stats.Type.MORALE);
         int initialWealthGrowth = noricum.getWealthGrowth();
 
-        noricum.setTaxLevel(new VeryHighTax());
+        noricum.setTaxLevel(TaxLevel.VERY_HIGH_TAX);
 
         assertNotEquals(initialMorale, roman1.getStat(Stats.Type.MORALE));
         assertNotEquals(initialWealthGrowth, noricum.getWealthGrowth());
