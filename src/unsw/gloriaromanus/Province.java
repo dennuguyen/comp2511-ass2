@@ -2,9 +2,14 @@ package unsw.gloriaromanus;
 
 import java.util.Objects;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import unsw.gloriaromanus.component.HighTax;
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
 import unsw.gloriaromanus.component.LowTax;
+import unsw.gloriaromanus.component.NormalTax;
 import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
@@ -167,5 +172,24 @@ public class Province
 
     public void collectTax() {
         this.publish(this.COLLECT_TAX_FROM_WEALTH, Message.of(this.calculateTax()));
+    }
+
+    public static Province deserialize(World world, JSONObject json) {
+        String name = json.getString("name");
+        Province province = world.getProvince(name);
+        switch(json.getString("taxLevel")) {
+            case "low": province.setTaxLevel(new LowTax()); break;
+            case "normal": province.setTaxLevel(new NormalTax()); break;
+            case "high": province.setTaxLevel(new HighTax()); break;
+            case "veryHigh": province.setTaxLevel(new VeryHighTax()); break;
+        }
+        int wealth = Integer.parseInt(json.getString("wealth"));
+        province.addWealth(wealth);
+        JSONArray units = json.getJSONArray("provinces");
+        for (int i = 0; i < units.length(); i++) {
+            JSONObject j = units.getJSONObject(i);
+            //province.enlist(j.deserialize(j));
+        }
+        return province; 
     }
 }
