@@ -43,8 +43,6 @@ public class GloriaRomanusApplication extends Application {
      * @param args arguments passed to this application
      */
     public static void main(String[] args) {
-        // RomanLegionary roman = new RomanLegionary();
-        // System.out.println(roman.getMoves());
         Application.launch(args);
     }
 }
