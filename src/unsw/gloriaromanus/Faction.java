@@ -144,7 +144,7 @@ public class Faction implements Entity, PubSubable {
     public static Faction deserialize(World world, JSONObject json) {
         String name = json.getString("name");
         Faction faction = new Faction(name);
-        int treasury = Integer.parseInt(json.getString("treasury"));
+        int treasury = json.getInt("treasury");
         faction.addTreasury(treasury);
         JSONArray provinces = json.getJSONArray("provinces");
         for (int i = 0; i < provinces.length(); i++) {

@@ -53,24 +53,28 @@ public class PersistanceFactory {
     }
 
     public static void main(String[] args) {
-        Victory v = new Victory();
+        // //Victory v = new Victory();
+        // // World.init("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json");
+        // // World world = World.getInstance();
+        // List<Faction> f = new ArrayList<Faction>();
+        // Faction romans = new Faction("Romans");
+        // f.add(romans);
+        // Province britannia = world.getProvince("Britannia");
+        // britannia.setTaxLevel(new HighTax());
+        // britannia.addWealth(20000);
+        // Province numidia = world.getProvince("Numidia");
+        // numidia.setTaxLevel(new LowTax());
+        // numidia.addWealth(50000);
+        // romans.addProvince(britannia);
+        // romans.addProvince(numidia);
+        // romans.addTreasury(10000);
+        // PersistanceFactory pf = new PersistanceFactory();
+        // pf.writeToFile(v, f);
         World.init("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json");
         World world = World.getInstance();
-        List<Faction> f = new ArrayList<Faction>();
-        Faction romans = new Faction("Romans");
-        f.add(romans);
-        Province britannia = world.getProvince("Britannia");
-        britannia.setTaxLevel(new HighTax());
-        britannia.addWealth(20000);
-        Province numidia = world.getProvince("Numidia");
-        numidia.setTaxLevel(new LowTax());
-        numidia.addWealth(50000);
-        romans.addProvince(britannia);
-        romans.addProvince(numidia);
-        romans.addTreasury(10000);
-        PersistanceFactory pf = new PersistanceFactory();
-        pf.writeToFile(v, f);
         JSONObject save = Util.parseJsonFile("save.json"); 
+        PersistanceFactory pf = new PersistanceFactory();
         pf.deserializeVictory(save);
+        pf.deserializePlayers(world, save);
     }
 }
