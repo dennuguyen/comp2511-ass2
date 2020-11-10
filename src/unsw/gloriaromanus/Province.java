@@ -204,9 +204,9 @@ public class Province
             case "high": province.setTaxLevel(new HighTax()); break;
             case "veryHigh": province.setTaxLevel(new VeryHighTax()); break;
         }
-        int wealth = Integer.parseInt(json.getString("wealth"));
+        int wealth = json.getInt("wealth");
         province.addWealth(wealth);
-        JSONArray units = json.getJSONArray("provinces");
+        JSONArray units = json.getJSONArray("units");
         for (int i = 0; i < units.length(); i++) {
             JSONObject j = units.getJSONObject(i);
             //province.enlist(j.deserialize(j));
