@@ -128,6 +128,19 @@ public class Faction implements Entity, PubSubable {
         PubSub.getInstance().unsubscribe(this, topic);
     }
 
+    public JSONObject serialize() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("treasury", treasury);
+        JSONArray provinces = new JSONArray();
+        for (Province p : territories) {
+            provinces.put(p.serialize());
+        }
+        json.put("provinces", provinces);
+        return json;
+    }
+
+
     public static Faction deserialize(World world, JSONObject json) {
         String name = json.getString("name");
         Faction faction = new Faction(name);
