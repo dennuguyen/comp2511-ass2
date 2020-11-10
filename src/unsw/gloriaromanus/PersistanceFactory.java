@@ -2,7 +2,10 @@ package unsw.gloriaromanus;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import unsw.gloriaromanus.component.VictoryComposite;
@@ -17,6 +20,16 @@ public class PersistanceFactory {
         JSONObject victoryCondition = json.getJSONObject("victoryConditions");
         VictoryCondition vc =  VictoryComposite.deserialize(victoryCondition);
         return new Victory(vc);
+    }
+
+    public List<Faction> deserializePlayers(World world, JSONObject json) {
+        List<Faction> factions = new ArrayList<Faction>();
+        JSONArray players = json.getJSONArray("players");
+        for (int i = 0; i < players.length(); i++) {
+            JSONObject j = players.getJSONObject(i);
+            factions.add(Faction.deserialize(world, j));
+        }
+        return factions;
     }
     
     public void writeToFile(Victory v) {
