@@ -174,6 +174,27 @@ public class Province
         this.publish(this.COLLECT_TAX_FROM_WEALTH, Message.of(this.calculateTax()));
     }
 
+    public JSONObject serialize() {
+        JSONObject json = new JSONObject();
+        json.put("name", locale.getLocation());
+        if (tax.getTaxLevel() instanceof LowTax) {
+            json.put("taxLevel", "low");
+        }
+        else if (tax.getTaxLevel() instanceof NormalTax) {
+            json.put("taxLevel", "normal");
+        }
+        else if (tax.getTaxLevel() instanceof HighTax) {
+            json.put("taxLevel", "high");
+        }
+        else if (tax.getTaxLevel() instanceof VeryHighTax) {
+            json.put("taxLevel", "veryHigh");
+        }
+        json.put("wealth", getWealth());
+        JSONArray units = new JSONArray();
+        json.put("units", units);
+        return json;
+    }
+
     public static Province deserialize(World world, JSONObject json) {
         String name = json.getString("name");
         Province province = world.getProvince(name);
