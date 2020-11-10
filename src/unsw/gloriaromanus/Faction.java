@@ -3,10 +3,10 @@ package unsw.gloriaromanus;
 import java.util.ArrayList;
 import java.util.List;
 
+import unsw.gloriaromanus.event.Topics;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
-import unsw.gloriaromanus.util.Topics;
 
 public class Faction implements Entity, PubSubable {
 

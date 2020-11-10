@@ -2,7 +2,7 @@
  * Topics class containing common topics for the publisher-subscribe pattern
  */
 
-package unsw.gloriaromanus.util;
+package unsw.gloriaromanus.event;
 
 public class Topics {
     public static final String MORALE = "/MORALE";

@@ -11,10 +11,10 @@ import unsw.gloriaromanus.component.Move;
 import unsw.gloriaromanus.component.Moveable;
 import unsw.gloriaromanus.component.Statable;
 import unsw.gloriaromanus.component.Stats;
+import unsw.gloriaromanus.event.Topics;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
-import unsw.gloriaromanus.util.Topics;
 
 public class Unit implements Entity, Engageable, Locable, Moveable, Statable, PubSubable {
 
@@ -41,7 +41,7 @@ public class Unit implements Entity, Engageable, Locable, Moveable, Statable, Pu
         this.stats = new Stats(stats);
 
         // Prepare topics
-        this.RECOVERY = spawn + Topics.CAMP;
+        this.RECOVERY = spawn + Topics.SEND_MANPOWER;
         this.MORALE_DUE_TO_TAX = spawn + Topics.MORALE;
 
         // Subscribe to camped unit broadcast of spawnpoint

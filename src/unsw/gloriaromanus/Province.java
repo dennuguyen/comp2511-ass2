@@ -1,7 +1,6 @@
 package unsw.gloriaromanus;
 
 import java.util.Objects;
-import com.esri.arcgisruntime.layers.RasterLayer;
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
 import unsw.gloriaromanus.component.Populable;
@@ -10,12 +9,12 @@ import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
 import unsw.gloriaromanus.component.Wealthable;
+import unsw.gloriaromanus.event.Topics;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.Observer;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
 import unsw.gloriaromanus.util.Subject;
-import unsw.gloriaromanus.util.Topics;
 import unsw.gloriaromanus.component.Wealth;
 
 public class Province
