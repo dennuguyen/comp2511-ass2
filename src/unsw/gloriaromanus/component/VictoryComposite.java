@@ -1,6 +1,10 @@
 package unsw.gloriaromanus.component;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import unsw.gloriaromanus.Faction;
+import unsw.gloriaromanus.World;
 
 public abstract class VictoryComposite implements VictoryCondition {
 
@@ -20,7 +24,7 @@ public abstract class VictoryComposite implements VictoryCondition {
     }
 
     @Override
-    public abstract Boolean evaluate();
+    public abstract Boolean evaluate(Faction player, World world);
 
     @Override
     public String nameString() {
@@ -30,6 +34,11 @@ public abstract class VictoryComposite implements VictoryCondition {
         }
         answer = answer + "]";
         return answer;
+    }
+
+    @Override 
+    public List<VictoryCondition> getChildren() {
+        return children;
     }
 
 }
