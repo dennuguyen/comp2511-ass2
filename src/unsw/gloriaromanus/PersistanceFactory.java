@@ -8,6 +8,8 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import unsw.gloriaromanus.component.HighTax;
+import unsw.gloriaromanus.component.LowTax;
 import unsw.gloriaromanus.component.VictoryComposite;
 import unsw.gloriaromanus.component.VictoryCondition;
 import unsw.gloriaromanus.util.Util;
@@ -32,11 +34,16 @@ public class PersistanceFactory {
         return factions;
     }
     
-    public void writeToFile(Victory v) {
+    public void writeToFile(Victory v, List<Faction> f) {
         try {
             file = new FileWriter("save.json");
             JSONObject json = new JSONObject();
             json.put("victoryConditions", v.serialize(v.getVictoryCondition()));
+            JSONArray players = new JSONArray();
+            for (Faction faction : f) {
+                players.put(faction.serialize());
+            }
+            json.put("players", players);
             file.write(json.toString(4));
             file.close();
             System.out.println("Successfully written to file");
@@ -47,8 +54,22 @@ public class PersistanceFactory {
 
     public static void main(String[] args) {
         Victory v = new Victory();
+        World.init("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json");
+        World world = World.getInstance();
+        List<Faction> f = new ArrayList<Faction>();
+        Faction romans = new Faction("Romans");
+        f.add(romans);
+        Province britannia = world.getProvince("Britannia");
+        britannia.setTaxLevel(new HighTax());
+        britannia.addWealth(20000);
+        Province numidia = world.getProvince("Numidia");
+        numidia.setTaxLevel(new LowTax());
+        numidia.addWealth(50000);
+        romans.addProvince(britannia);
+        romans.addProvince(numidia);
+        romans.addTreasury(10000);
         PersistanceFactory pf = new PersistanceFactory();
-        pf.writeToFile(v);
+        pf.writeToFile(v, f);
         JSONObject save = Util.parseJsonFile("save.json"); 
         pf.deserializeVictory(save);
     }
