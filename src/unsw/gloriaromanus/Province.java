@@ -25,7 +25,8 @@ public class Province
     private final String WEALTH_GROWTH_DUE_TO_TAX;
     private final String MORALE_DUE_TO_TAX;
     private final String COLLECT_TAX_FROM_WEALTH;
-    private final String CAMPED_UNITS;
+    private final String SEND_MANPOWER;
+    private final String LOSE_MANPOWER;
 
     private final Locale locale;
     private final Tax tax;
@@ -49,11 +50,13 @@ public class Province
         this.WEALTH_GROWTH_DUE_TO_TAX = name + Topics.WEALTH_GROWTH;
         this.MORALE_DUE_TO_TAX = name + Topics.MORALE;
         this.COLLECT_TAX_FROM_WEALTH = name + Topics.TAX_COLLECT;
-        this.CAMPED_UNITS = name + Topics.CAMP;
+        this.SEND_MANPOWER = name + Topics.SEND_MANPOWER;
+        this.LOSE_MANPOWER = name + Topics.LOSE_MANPOWER;
 
         // Publish-subscribe wealth growth change event due to tax changes
         this.subscribe(this.WEALTH_GROWTH_DUE_TO_TAX);
         this.subscribe(this.COLLECT_TAX_FROM_WEALTH);
+        this.subscribe(this.LOSE_MANPOWER);
 
         // Attach to turn events
         Turn.getInstance().attach(this);
@@ -142,8 +145,12 @@ public class Province
         }
 
         else if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {
-            System.out.println("MESSAGE: " + (Integer) message.getMessage());
             this.addWealth(-1 * (Integer) (message.getMessage()));
+        }
+
+        else if (topic.equals(this.LOSE_MANPOWER)) {
+            this.addPopulation(-1 * (Integer) (message.getMessage()));
+            this.publish(this.SEND_MANPOWER, message);
         }
     }
 
