@@ -1,35 +1,17 @@
 package unsw.gloriaromanus.component;
 
 import unsw.gloriaromanus.Faction;
+import unsw.gloriaromanus.World;
 
 public abstract class VictoryLeaf implements VictoryCondition {
 
-    private Faction faction;
-
-    /**
-     * Constructs leaf victory condition
-     * 
-     * @param faction player's faction
-     */
-    public VictoryLeaf(Faction faction) {
-        this.faction = faction;
-    }
-
-    /**
-     * Returns player's faction
-     * 
-     * @return player's faction
-     */
-    public Faction getFaction() {
-        return faction;
-    }
-
     @Override
     public void add(VictoryCondition e) {
+        return;
     }
 
     @Override
-    public abstract Boolean evaluate();
+    public abstract Boolean evaluate(Faction player, World world);
 
     @Override
     public String nameString() {
