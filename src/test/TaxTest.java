@@ -7,15 +7,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import unsw.gloriaromanus.Province;
-import unsw.gloriaromanus.component.HighTax;
 import unsw.gloriaromanus.component.LowTax;
-import unsw.gloriaromanus.component.NormalTax;
-import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.VeryHighTax;
 
 public class TaxTest {
 
     Province britannia;
+
     @Before
     public void setUp() {
         britannia = new Province("Britannia");
