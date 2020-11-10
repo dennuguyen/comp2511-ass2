@@ -1,7 +1,7 @@
 package unsw.gloriaromanus;
 
 import java.util.Objects;
-
+import com.esri.arcgisruntime.layers.RasterLayer;
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
 import unsw.gloriaromanus.component.Populable;
@@ -161,7 +161,7 @@ public class Province
     public void update(Subject subject) {
         this.addWealth(this.getWealthGrowth()); // Wealth naturally grows
         this.camp.recruit(); // Recruit some troops
-        this.addPopulation(100); // Population naturally grows
+        this.addPopulation(this.getPopulationGrowth()); // Population naturally grows
     }
 
     private int calculateTax() {
@@ -178,12 +178,32 @@ public class Province
     }
 
     @Override
+    public int getPopulationGrowth() {
+        return this.population.getPopulationGrowth();
+    }
+
+    @Override
     public void setPopulation(int population) {
         this.population.setPopulation(population);
     }
 
     @Override
+    public void setPopulationGrowth(int rate) {
+        this.population.setPopulationGrowth(rate);
+    }
+
+    @Override
     public void addPopulation(int change) {
         this.population.addPopulation(change);
+    }
+
+    @Override
+    public void addPopulationGrowth(int change) {
+        this.population.addPopulation(change);
+    }
+
+    @Override
+    public void multiplyPopulationGrowth(int percentage) {
+        this.population.multiplyPopulationGrowth(percentage);
     }
 }
