@@ -2,14 +2,12 @@ package unsw.gloriaromanus.component;
 
 public enum TaxLevel {
 
-    LOW_TAX(10, 10), NORMAL_TAX(15, 0), HIGH_TAX(20, -10), VERY_HIGH_TAX(25, -30);
+    LOW_TAX(10), NORMAL_TAX(15), HIGH_TAX(20), VERY_HIGH_TAX(25);
 
     private int taxRate;
-    private int growthChange;
 
-    private TaxLevel(int taxRate, int growthChange) {
+    private TaxLevel(int taxRate) {
         this.taxRate = taxRate;
-        this.growthChange = growthChange;
     }
 
     /**
@@ -27,6 +25,10 @@ public enum TaxLevel {
      * @return wealth growth rate change
      */
     public int getWealthGrowthChange() {
-        return this.growthChange;
+        if (this.taxRate >= 10)
+            return (int) (-0.0133 * Math.pow(taxRate, 3) + 0.6 * Math.pow(taxRate, 2)
+                    - 10.6667 * taxRate + 70);
+
+        return (int) (0.5 * taxRate + 15); // this.taxRate < 10
     }
 }
