@@ -10,10 +10,11 @@ import unsw.gloriaromanus.component.Population;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import unsw.gloriaromanus.component.Tax;
-import unsw.gloriaromanus.component.TaxLevel;
-import unsw.gloriaromanus.component.Taxable;
-import unsw.gloriaromanus.component.Wealthable;
+import unsw.gloriaromanus.economy.Tax;
+import unsw.gloriaromanus.economy.TaxLevel;
+import unsw.gloriaromanus.economy.Taxable;
+import unsw.gloriaromanus.economy.Wealth;
+import unsw.gloriaromanus.economy.Wealthable;
 import unsw.gloriaromanus.event.Topics;
 import unsw.gloriaromanus.unit.Levyable;
 import unsw.gloriaromanus.unit.UnitLeaf;
@@ -22,7 +23,6 @@ import unsw.gloriaromanus.util.Observer;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
 import unsw.gloriaromanus.util.Subject;
-import unsw.gloriaromanus.component.Wealth;
 
 public class Province
         implements Entity, Locable, Levyable, Taxable, Wealthable, PubSubable, Observer, Populable {
@@ -98,12 +98,12 @@ public class Province
             return;
 
         // Change to very high tax
-        if (taxLevel == TaxLevel.VERY_HIGH_TAX)
+        if (taxLevel.getTaxRate() >= TaxLevel.VERY_HIGH_TAX.getTaxRate())
             this.publish(this.MORALE_DUE_TO_TAX, Message.of(true)); // -1 morale change
 
         // Change from very high tax
-        else if ((this.tax.getTaxLevel() == TaxLevel.VERY_HIGH_TAX)
-                && !(taxLevel == TaxLevel.VERY_HIGH_TAX))
+        else if ((this.tax.getTaxRate() >= TaxLevel.VERY_HIGH_TAX.getTaxRate())
+                && !(taxLevel.getTaxRate() >= TaxLevel.VERY_HIGH_TAX.getTaxRate()))
             this.publish(this.MORALE_DUE_TO_TAX, Message.of(false)); // 0 morale change
 
         // Wealth growth event

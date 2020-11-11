@@ -2,8 +2,8 @@ package unsw.gloriaromanus;
 
 import java.util.ArrayList;
 import java.util.List;
-import unsw.gloriaromanus.component.Treasurial;
-import unsw.gloriaromanus.component.Treasury;
+import unsw.gloriaromanus.economy.Treasurial;
+import unsw.gloriaromanus.economy.Treasury;
 import unsw.gloriaromanus.event.Topics;
 import unsw.gloriaromanus.unit.UnitComponent;
 
