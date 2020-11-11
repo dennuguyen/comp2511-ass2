@@ -2,8 +2,9 @@
  * Unit class
  */
 
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.unit;
 
+import unsw.gloriaromanus.Entity;
 import unsw.gloriaromanus.component.Engageable;
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
@@ -16,10 +17,14 @@ import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
 
-public class Unit implements Entity, Engageable, Locable, Moveable, Statable, PubSubable {
+public class UnitLeaf
+        implements Entity, Engageable, Locable, Moveable, Statable, PubSubable, UnitComponent {
 
     private static final long serialVersionUID = 466913578146928049L;
+
+    // Topics
     private String RECOVERY;
+    private String INFLICT_CASUALTIES;
     private String MORALE_DUE_TO_TAX;
 
     private final Locale locale;
@@ -34,7 +39,7 @@ public class Unit implements Entity, Engageable, Locable, Moveable, Statable, Pu
      * @param movementType Unit's movement type
      * @param stats        Base stats
      */
-    public Unit(String spawn, Move.Type movementType, Engageable.Type engageType, Stats stats) {
+    public UnitLeaf(String spawn, Move.Type movementType, Engageable.Type engageType, Stats stats) {
         this.locale = new Locale(spawn);
         this.move = new Move(movementType);
         this.engageType = engageType;
@@ -42,11 +47,13 @@ public class Unit implements Entity, Engageable, Locable, Moveable, Statable, Pu
 
         // Prepare topics
         this.RECOVERY = spawn + Topics.SEND_MANPOWER;
+        this.INFLICT_CASUALTIES = spawn + Topics.INFLICT_CASUALTIES;
         this.MORALE_DUE_TO_TAX = spawn + Topics.MORALE;
 
         // Subscribe to camped unit broadcast of spawnpoint
         this.subscribe(this.RECOVERY);
         this.subscribe(this.MORALE_DUE_TO_TAX);
+        this.subscribe(this.INFLICT_CASUALTIES);
     }
 
     @Override
@@ -124,6 +131,11 @@ public class Unit implements Entity, Engageable, Locable, Moveable, Statable, Pu
 
         else if (topic.equals(this.RECOVERY)) {
             this.addStat(Stats.Type.STRENGTH, (Integer) message.getMessage());
+            this.addStat(Stats.Type.MORALE, (Integer) message.getMessage());
+        }
+
+        else if (topic.equals(this.INFLICT_CASUALTIES)) {
+            this.addStat(Stats.Type.STRENGTH, -1 * (Integer) message.getMessage());
         }
     }
 

@@ -2,13 +2,13 @@
  * Roman legionary is a type of unit
  */
 
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.unit;
 
 import unsw.gloriaromanus.component.Stats;
 import unsw.gloriaromanus.component.Engageable;
 import unsw.gloriaromanus.component.Move;
 
-public class Hoplite extends Unit {
+public class Hoplite extends UnitLeaf {
 
     private static final long serialVersionUID = -8275752041064187854L;
 
