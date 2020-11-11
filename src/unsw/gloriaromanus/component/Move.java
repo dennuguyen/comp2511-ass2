@@ -96,7 +96,7 @@ public class Move implements Moveable, PubSubable, Observer {
                     String b = end;
                     for (int i = wnode - 2; i >= 0; i--)
                         path[i] = b = breadcrumbs.get(b);
-                    return new ArrayList(Arrays.asList(path));
+                    return new ArrayList<String>(Arrays.asList(path));
                 }
 
                 // Add connected children provinces
