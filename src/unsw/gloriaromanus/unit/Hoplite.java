@@ -17,6 +17,6 @@ public class Hoplite extends UnitLeaf {
      */
     public Hoplite(String spawn) {
         super(spawn, Move.Type.INFANTRY, Engageable.Type.Melee,
-                new Stats(4, 8, 10, 6, 50, 10, 0, 5));
+                new Stats(3, 6, 10, 1, 50, 7, 0, 4));
     }
 }
