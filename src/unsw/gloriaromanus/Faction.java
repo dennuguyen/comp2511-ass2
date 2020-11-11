@@ -3,6 +3,9 @@ package unsw.gloriaromanus;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
@@ -123,5 +126,31 @@ public class Faction implements Entity, PubSubable {
     @Override
     public void unsubscribe(String topic) {
         PubSub.getInstance().unsubscribe(this, topic);
+    }
+
+    public JSONObject serialize() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("treasury", treasury);
+        JSONArray provinces = new JSONArray();
+        for (Province p : territories) {
+            provinces.put(p.serialize());
+        }
+        json.put("provinces", provinces);
+        return json;
+    }
+
+
+    public static Faction deserialize(World world, JSONObject json) {
+        String name = json.getString("name");
+        Faction faction = new Faction(name);
+        int treasury = json.getInt("treasury");
+        faction.addTreasury(treasury);
+        JSONArray provinces = json.getJSONArray("provinces");
+        for (int i = 0; i < provinces.length(); i++) {
+            JSONObject j = provinces.getJSONObject(i);
+            faction.addProvince(Province.deserialize(world, j));
+        }
+        return faction;
     }
 }

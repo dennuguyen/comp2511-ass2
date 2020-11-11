@@ -1,23 +1,21 @@
 package unsw.gloriaromanus.component;
 
+import java.util.List;
+
 import unsw.gloriaromanus.Faction;
+import unsw.gloriaromanus.World;
 
 public class TreasuryLeaf extends VictoryLeaf {
 
-    /**
-     * Constructs treasury victory condition
-     * 
-     * @param f player's faction
-     */
-    public TreasuryLeaf(Faction f) {
-        super(f);
-    }
-
     @Override
-    public Boolean evaluate() {
-        Faction f = super.getFaction();
-        if (f.getTreasury() >= 100000)
+    public Boolean evaluate(Faction player, World world) {
+        if (player.getTreasury() >= 100000)
             return true;
         return false;
+    }
+
+    @Override 
+    public List<VictoryCondition> getChildren() {
+        return null;
     }
 }

@@ -1,0 +1,27 @@
+{
+    "players": [{
+        "provinces": [
+            {
+                "wealth": 20000,
+                "taxLevel": "high",
+                "name": "Britannia",
+                "units": []
+            },
+            {
+                "wealth": 50000,
+                "taxLevel": "low",
+                "name": "Numidia",
+                "units": []
+            }
+        ],
+        "treasury": 10000,
+        "name": "Romans"
+    }],
+    "victoryConditions": {
+        "args": [
+            {"type": "CONQUEST"},
+            {"type": "WEALTH"}
+        ],
+        "type": "OR"
+    }
+}
