@@ -78,22 +78,6 @@ public class UnitLeaf
         return this.locale.setLocation(this.move.moveTo(this.locale.getLocation(), destination));
     }
 
-    // /**
-    // * Unit makes camp at a province therefore can recover manpower
-    // */
-    // public void camp() {
-    // this.RECOVERY = this.locale.getLocation() + Topics.CAMP;
-    // this.subscribe(this.RECOVERY);
-    // }
-
-    // /**
-    // * Unsubscribe from province camp topic
-    // */
-    // public void uncamp() {
-    // this.unsubscribe(this.RECOVERY);
-    // this.RECOVERY = null;
-    // }
-
     @Override
     public int getStat(Stats.Type type) {
         return this.stats.getStat(type);
