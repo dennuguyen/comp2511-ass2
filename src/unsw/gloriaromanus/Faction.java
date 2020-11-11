@@ -2,19 +2,25 @@ package unsw.gloriaromanus;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import unsw.gloriaromanus.component.Treasurial;
+import unsw.gloriaromanus.component.Treasury;
 import unsw.gloriaromanus.event.Topics;
+import unsw.gloriaromanus.unit.UnitComponent;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
 
-public class Faction implements Entity, PubSubable {
+public class Faction implements Entity, PubSubable, Treasurial {
 
     private static final long serialVersionUID = -2460947940289328286L;
-    String name;
-    List<Province> territories;
-    int treasury;
-    int wealth;
+
+    // Topics
+    private String TAX_COLLECT;
+
+    private String name; // Name of faction
+    private List<Province> territories;
+    private Treasury treasury;
+    private List<UnitComponent> units;
 
     /**
      * Constructs a faction given only a name
@@ -24,8 +30,7 @@ public class Faction implements Entity, PubSubable {
     public Faction(String name) {
         this.name = name;
         territories = new ArrayList<Province>();
-        treasury = 0;
-        wealth = 0;
+        this.treasury = new Treasury();
     }
 
     /**
@@ -41,7 +46,6 @@ public class Faction implements Entity, PubSubable {
             territories.add(p);
         }
         treasury = 0;
-        wealth = calculateWealth();
     }
 
     /**
@@ -73,13 +77,14 @@ public class Faction implements Entity, PubSubable {
         return territories.size();
     }
 
-    /**
-     * Returns amount in treasury
-     * 
-     * @return amount in treasury
-     */
+    @Override
     public int getTreasury() {
-        return treasury;
+        return treasury.getTreasury();
+    }
+
+    @Override
+    public void addTreasury(int amount) {
+        this.treasury.addTreasury(amount);
     }
 
     /**
@@ -95,15 +100,6 @@ public class Faction implements Entity, PubSubable {
         return total;
     }
 
-    /**
-     * Adds amount to treasury
-     * 
-     * @param int amount to be added
-     */
-    public void addTreasury(int amount) {
-        treasury += amount;
-    }
-
     @Override
     public void publish(String topic, Message<Object> message) {
         PubSub.getInstance().publish(topic, message);
@@ -111,8 +107,9 @@ public class Faction implements Entity, PubSubable {
 
     @Override
     public void listen(String topic, Message<Object> message) {
-        if (topic.contains("TAX_COLLECT"))
+        if (topic.contains("TAX_COLLECT")) {
             this.addTreasury((Integer) message.getMessage());
+        }
     }
 
     @Override
