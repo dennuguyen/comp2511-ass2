@@ -1,20 +1,20 @@
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.victory;
 
 import java.util.List;
 
 import unsw.gloriaromanus.Faction;
 import unsw.gloriaromanus.World;
 
-public class TreasuryLeaf extends VictoryLeaf {
+public class WealthLeaf extends VictoryLeaf {
 
     @Override
     public Boolean evaluate(Faction player, World world) {
-        if (player.getTreasury() >= 100000)
+        if (player.calculateWealth() >= 400000)
             return true;
         return false;
     }
 
-    @Override 
+    @Override
     public List<VictoryCondition> getChildren() {
         return null;
     }

@@ -1,4 +1,4 @@
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.victory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public abstract class VictoryComposite implements VictoryCondition {
         return answer;
     }
 
-    @Override 
+    @Override
     public List<VictoryCondition> getChildren() {
         return children;
     }
@@ -47,18 +47,32 @@ public abstract class VictoryComposite implements VictoryCondition {
     public static VictoryCondition deserialize(JSONObject json) {
         VictoryCondition vc = null;
         switch (json.getString("type")) {
-            case "AND": vc = new AndComposite(); break;
-            case "OR": vc = new OrComposite(); break;
+            case "AND":
+                vc = new AndComposite();
+                break;
+            case "OR":
+                vc = new OrComposite();
+                break;
         }
         JSONArray array = json.getJSONArray("args");
         for (int i = 0; i < array.length(); i++) {
             JSONObject j = array.getJSONObject(i);
             switch (j.getString("type")) {
-                case "AND": vc.add(VictoryComposite.deserialize(j)); break;
-                case "OR": vc.add(VictoryComposite.deserialize(j)); break;
-                case "TREASURY": vc.add(VictoryLeaf.deserialize(j)); break;
-                case "WEALTH": vc.add(VictoryLeaf.deserialize(j)); break;
-                case "CONQUEST": vc.add(VictoryLeaf.deserialize(j)); break;
+                case "AND":
+                    vc.add(VictoryComposite.deserialize(j));
+                    break;
+                case "OR":
+                    vc.add(VictoryComposite.deserialize(j));
+                    break;
+                case "TREASURY":
+                    vc.add(VictoryLeaf.deserialize(j));
+                    break;
+                case "WEALTH":
+                    vc.add(VictoryLeaf.deserialize(j));
+                    break;
+                case "CONQUEST":
+                    vc.add(VictoryLeaf.deserialize(j));
+                    break;
             }
         }
         return vc;

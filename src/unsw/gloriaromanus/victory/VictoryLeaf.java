@@ -1,4 +1,4 @@
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.victory;
 
 import org.json.JSONObject;
 
@@ -22,10 +22,14 @@ public abstract class VictoryLeaf implements VictoryCondition {
 
     public static VictoryCondition deserialize(JSONObject json) {
         switch (json.getString("type")) {
-            case "WEALTH": return new WealthLeaf();
-            case "TREASURY": return new TreasuryLeaf();
-            case "CONQUEST": return new ConquestLeaf();
-            default: return null;
+            case "WEALTH":
+                return new WealthLeaf();
+            case "TREASURY":
+                return new TreasuryLeaf();
+            case "CONQUEST":
+                return new ConquestLeaf();
+            default:
+                return null;
         }
     }
 }

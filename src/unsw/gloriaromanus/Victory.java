@@ -7,12 +7,12 @@ import java.util.Random;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import unsw.gloriaromanus.component.AndComposite;
-import unsw.gloriaromanus.component.ConquestLeaf;
-import unsw.gloriaromanus.component.OrComposite;
-import unsw.gloriaromanus.component.TreasuryLeaf;
-import unsw.gloriaromanus.component.VictoryCondition;
-import unsw.gloriaromanus.component.WealthLeaf;
+import unsw.gloriaromanus.victory.AndComposite;
+import unsw.gloriaromanus.victory.ConquestLeaf;
+import unsw.gloriaromanus.victory.OrComposite;
+import unsw.gloriaromanus.victory.TreasuryLeaf;
+import unsw.gloriaromanus.victory.VictoryCondition;
+import unsw.gloriaromanus.victory.WealthLeaf;
 
 public class Victory implements Entity {
 
@@ -89,22 +89,18 @@ public class Victory implements Entity {
                 array.put(serialize(v));
             }
             json.put("args", array);
-        }
-        else if (vc instanceof OrComposite) {
+        } else if (vc instanceof OrComposite) {
             json.put("type", "OR");
             JSONArray array = new JSONArray();
             for (VictoryCondition v : vc.getChildren()) {
                 array.put(serialize(v));
             }
             json.put("args", array);
-        } 
-        else if (vc instanceof ConquestLeaf) {
+        } else if (vc instanceof ConquestLeaf) {
             json.put("type", "CONQUEST");
-        }
-        else if (vc instanceof TreasuryLeaf) {
+        } else if (vc instanceof TreasuryLeaf) {
             json.put("type", "TREASURY");
-        }
-        else if (vc instanceof WealthLeaf) {
+        } else if (vc instanceof WealthLeaf) {
             json.put("type", "WEALTH");
         }
         return json;

@@ -1,4 +1,4 @@
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.victory;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import unsw.gloriaromanus.World;
 
 public interface VictoryCondition {
     public String nameString();
+
     /**
      * Adds a condition to condition
      * 
