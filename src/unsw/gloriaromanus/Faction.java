@@ -6,6 +6,10 @@ import unsw.gloriaromanus.component.Treasurial;
 import unsw.gloriaromanus.component.Treasury;
 import unsw.gloriaromanus.event.Topics;
 import unsw.gloriaromanus.unit.UnitComponent;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
@@ -17,7 +21,7 @@ public class Faction implements Entity, PubSubable, Treasurial {
     // Topics
     private String TAX_COLLECT;
 
-    private String name; // Name of faction
+    private String faction; // Name of faction
     private List<Province> territories;
     private Treasury treasury;
     private List<UnitComponent> units;
@@ -25,27 +29,23 @@ public class Faction implements Entity, PubSubable, Treasurial {
     /**
      * Constructs a faction given only a name
      * 
-     * @param name name of faction
+     * @param faction name of faction
      */
-    public Faction(String name) {
-        this.name = name;
-        territories = new ArrayList<Province>();
-        this.treasury = new Treasury();
+    public Faction(String faction) {
+        this(faction, new ArrayList<Province>());
     }
 
     /**
      * Constructs a faction given name and list of factions
      * 
-     * @param name      name of faction
+     * @param faction   name of faction
      * @param provinces provinces belonging to faction
      */
-    public Faction(String name, List<Province> provinces) {
-        this.name = name;
-        territories = new ArrayList<Province>();
-        for (Province p : provinces) {
-            territories.add(p);
-        }
-        treasury = 0;
+    public Faction(String faction, List<Province> provinces) {
+        this.faction = faction;
+        this.territories = new ArrayList<Province>(provinces);
+        this.treasury = new Treasury();
+        this.units = new ArrayList<UnitComponent>();
     }
 
     /**
@@ -120,5 +120,30 @@ public class Faction implements Entity, PubSubable, Treasurial {
     @Override
     public void unsubscribe(String topic) {
         PubSub.getInstance().unsubscribe(this, topic);
+    }
+
+    public JSONObject serialize() {
+        JSONObject json = new JSONObject();
+        json.put("faction", faction);
+        json.put("treasury", treasury);
+        JSONArray provinces = new JSONArray();
+        for (Province p : territories) {
+            provinces.put(p.serialize());
+        }
+        json.put("provinces", provinces);
+        return json;
+    }
+
+    public static Faction deserialize(World world, JSONObject json) {
+        String name = json.getString("name");
+        Faction faction = new Faction(name);
+        int treasury = json.getInt("treasury");
+        faction.addTreasury(treasury);
+        JSONArray provinces = json.getJSONArray("provinces");
+        for (int i = 0; i < provinces.length(); i++) {
+            JSONObject j = provinces.getJSONObject(i);
+            faction.addProvince(Province.deserialize(world, j));
+        }
+        return faction;
     }
 }

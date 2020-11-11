@@ -1,15 +1,22 @@
 package unsw.gloriaromanus;
 
 import java.util.Objects;
+import unsw.gloriaromanus.building.Camp;
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
 import unsw.gloriaromanus.component.Populable;
 import unsw.gloriaromanus.component.Population;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import unsw.gloriaromanus.component.Tax;
 import unsw.gloriaromanus.component.TaxLevel;
 import unsw.gloriaromanus.component.Taxable;
 import unsw.gloriaromanus.component.Wealthable;
 import unsw.gloriaromanus.event.Topics;
+import unsw.gloriaromanus.unit.Levyable;
+import unsw.gloriaromanus.unit.UnitLeaf;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.Observer;
 import unsw.gloriaromanus.util.PubSub;
@@ -75,8 +82,8 @@ public class Province
     }
 
     @Override
-    public Unit enlist(Levyable.Type unitType) {
-        return this.camp.enlist(unitType, this.getLocation());
+    public UnitLeaf enlist(Levyable.Type unitType) {
+        return (UnitLeaf) this.camp.enlist(unitType, this.getLocation());
     }
 
     @Override
@@ -211,5 +218,30 @@ public class Province
     @Override
     public void multiplyPopulationGrowth(int percentage) {
         this.population.multiplyPopulationGrowth(percentage);
+    }
+
+    public JSONObject serialize() {
+        JSONObject json = new JSONObject();
+        json.put("name", locale.getLocation());
+        json.put("taxLevel", this.tax.getTaxRate());
+        json.put("wealth", getWealth());
+        JSONArray units = new JSONArray();
+        json.put("units", units);
+        return json;
+    }
+
+    public static Province deserialize(World world, JSONObject json) {
+        // String name = json.getString("name");
+        // Province province = world.getProvince(name);
+        // Tax tax = json.getString("taxLevel");
+        // int wealth = json.getInt("wealth");
+        // province.addWealth(wealth);
+        // JSONArray units = json.getJSONArray("units");
+        // for (int i = 0; i < units.length(); i++) {
+        // JSONObject j = units.getJSONObject(i);
+        // // province.enlist(j.deserialize(j));
+        // }
+        // return province;
+        return null;
     }
 }

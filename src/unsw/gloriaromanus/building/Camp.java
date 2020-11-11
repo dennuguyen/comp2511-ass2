@@ -2,27 +2,30 @@
  * Troop production building
  */
 
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.building;
 
 import java.util.ArrayList;
 
 import unsw.gloriaromanus.component.Stats;
+import unsw.gloriaromanus.unit.Levyable;
+import unsw.gloriaromanus.unit.RomanLegionary;
+import unsw.gloriaromanus.unit.UnitLeaf;
 
 public class Camp implements Levyable {
 
-    private ArrayList<Unit> recruits;
+    private ArrayList<UnitLeaf> recruits;
 
     public Camp() {
-        this.recruits = new ArrayList<Unit>();
+        this.recruits = new ArrayList<UnitLeaf>();
     }
 
     @Override
-    public Unit enlist(Levyable.Type unitType) {
+    public UnitLeaf enlist(Levyable.Type unitType) {
         return null;
     }
 
-    public Unit enlist(Levyable.Type unitType, String locale) {
-        Unit unit = null;
+    public UnitLeaf enlist(Levyable.Type unitType, String locale) {
+        UnitLeaf unit = null;
         switch (unitType) {
             case RomanLegionary:
                 unit = new RomanLegionary(locale);

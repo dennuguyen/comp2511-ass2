@@ -1,13 +1,12 @@
 package unsw.gloriaromanus.component;
 
-public interface VictoryCondition {
-    /**
-     * Returns string containing name of condition
-     * 
-     * @return condition name
-     */
-    public String nameString();
+import java.util.List;
 
+import unsw.gloriaromanus.Faction;
+import unsw.gloriaromanus.World;
+
+public interface VictoryCondition {
+    public String nameString();
     /**
      * Adds a condition to condition
      * 
@@ -20,5 +19,7 @@ public interface VictoryCondition {
      * 
      * @return if condition if true
      */
-    public Boolean evaluate();
+    public Boolean evaluate(Faction player, World world);
+
+    public List<VictoryCondition> getChildren();
 }

@@ -56,6 +56,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.util.Pair;
+import unsw.gloriaromanus.util.Util;
 
 public class GloriaRomanusController {
 
@@ -352,7 +353,7 @@ public class GloriaRomanusController {
     String content =
         Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
     JSONObject ownership = new JSONObject(content);
-    return ArrayUtil.convert(ownership.getJSONArray(humanFaction));
+    return Util.convert(ownership.getJSONArray(humanFaction));
   }
 
   /**
