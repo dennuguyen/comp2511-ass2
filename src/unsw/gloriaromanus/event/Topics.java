@@ -10,4 +10,5 @@ public class Topics {
     public static final String TAX_COLLECT = "/TAX_COLLECT";
     public static final String SEND_MANPOWER = "/SEND_MANPOWER";
     public static final String LOSE_MANPOWER = "/LOSE_MANPOWER";
+    public static final String INFLICT_CASUALTIES = "/INFLICT_CASUALTIES";
 }
