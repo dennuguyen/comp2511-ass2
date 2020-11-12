@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Background?>
+<?import javafx.scene.layout.BackgroundFill?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxWidth="250" prefHeight="217.0" prefWidth="219.0" spacing="10" styleClass="panel-region" stylesheets="/unsw/gloriaromanus/style.css" StackPane.alignment="TOP_LEFT" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="unsw.gloriaromanus.SideMenuController">
+    <padding>
+        <Insets topRightBottomLeft="10" />
+    </padding>
+    <background>
+        <Background>
+            <fills>
+                <BackgroundFill>
+                    <fill>
+                        <Color opacity="0.3" />
+                    </fill>
+                </BackgroundFill>
+            </fills>
+        </Background>
+    </background>
+   <Label text="Current Year" />
+   <Label fx:id="currentYear" text="Label">
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Label>
+   <Label text="Current Faction" />
+   <Label fx:id="currentFaction" text="Label">
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Label>
+   <Button mnemonicParsing="false" onAction="#clickedEndTurn" text="End Turn" />
+   <Button mnemonicParsing="false" onAction="#clickedSaveGame" text="Save Game" />
+    <Button onAction="#clickedSwitchMenu" text="Switch Menus" />
+</VBox>
