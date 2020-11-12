@@ -1,4 +1,4 @@
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.terrain;
 
 public class Population implements Populable {
 

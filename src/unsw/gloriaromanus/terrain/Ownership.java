@@ -2,7 +2,7 @@
  * Labels a province as ownable by a faction
  */
 
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.terrain;
 
 public class Ownership implements Ownable {
 

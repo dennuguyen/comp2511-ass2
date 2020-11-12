@@ -1,21 +1,20 @@
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.terrain;
 
 import java.util.Objects;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import unsw.gloriaromanus.building.Camp;
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
-import unsw.gloriaromanus.component.Populable;
-import unsw.gloriaromanus.component.Population;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import unsw.gloriaromanus.economy.Tax;
 import unsw.gloriaromanus.economy.TaxLevel;
 import unsw.gloriaromanus.economy.Taxable;
 import unsw.gloriaromanus.economy.Wealth;
 import unsw.gloriaromanus.economy.Wealthable;
+import unsw.gloriaromanus.entity.Entity;
 import unsw.gloriaromanus.event.Topics;
+import unsw.gloriaromanus.system.Turn;
+import unsw.gloriaromanus.system.World;
 import unsw.gloriaromanus.unit.Levyable;
 import unsw.gloriaromanus.unit.UnitLeaf;
 import unsw.gloriaromanus.util.Message;
