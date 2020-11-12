@@ -57,6 +57,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.util.Pair;
+import unsw.gloriaromanus.component.VictoryCondition;
 import unsw.gloriaromanus.util.Util;
 
 public class GloriaRomanusController {
@@ -78,12 +79,12 @@ public class GloriaRomanusController {
 
   // GAME STATE
   private String humanFaction;
+  private int currentPlayer;
   private String initMode;
   private World world;
   private Victory victory;
   private List<Faction> players;
-  private Faction currentPlayer;
-  private int currentYear;
+  private Turn turn;
 
   private Feature currentlySelectedHumanProvince;
   private Feature currentlySelectedEnemyProvince;
@@ -103,6 +104,7 @@ public class GloriaRomanusController {
     this.world = world;
     this.victory = victory;
     this.players = players;
+    this.turn = Turn.getInstance();
 
      // TODO = you should rely on an object oriented design to determine ownership
      provinceToOwningFactionMap = getProvinceToOwningFactionMap();
@@ -116,21 +118,23 @@ public class GloriaRomanusController {
      // TODO = load this from a configuration file you create (user should be able to
      // select in loading screen)
      humanFaction = "Rome";
-     currentPlayer = players.get(0);
- 
+     currentPlayer = 0;
      currentlySelectedHumanProvince = null;
      currentlySelectedEnemyProvince = null;
  
      String[] menus = {"invasion_menu.fxml", "side_menu.fxml"};
      controllerParentPairs = new ArrayList<Pair<MenuController, VBox>>();
      for (String fxmlName : menus) {
-       System.out.println(fxmlName);
-       FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
-       VBox root = (VBox) loader.load();
-       MenuController menuController = (MenuController) loader.getController();
-       menuController.setParent(this);
-       controllerParentPairs.add(new Pair<MenuController, VBox>(menuController, root));
-     }
+        System.out.println(fxmlName);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
+        VBox root = (VBox) loader.load();
+        MenuController menuController = (MenuController) loader.getController();
+        menuController.setParent(this);
+        controllerParentPairs.add(new Pair<MenuController, VBox>(menuController, root));
+        if (fxmlName.equals("side_menu.fxml")) {
+          ((SideMenuController)menuController).initData();
+        }
+      }
  
      stackPaneMain.getChildren().add(controllerParentPairs.get(0).getValue());
  
@@ -471,7 +475,39 @@ public class GloriaRomanusController {
 
   public void clickedEndTurn(ActionEvent e) throws IOException {
     System.out.println("ending turn");
+    if (currentPlayer == players.size() - 1) {
+      turn.incrementTurn();
+      changeCurrentYearOnScreen();
+      currentPlayer = 0;
+    }
+    else {
+      currentPlayer++;
+    }
+    changeCurrentPlayerOnScreen();
   }
 
-  
+  private void changeCurrentYearOnScreen() throws IOException {
+    if (controllerParentPairs.get(0).getKey() instanceof SideMenuController) {
+      ((SideMenuController) controllerParentPairs.get(0).getKey()).setCurrentYear(turn.getTurn());
+    }
+  }
+
+  private void changeCurrentPlayerOnScreen() throws IOException {
+    if (controllerParentPairs.get(0).getKey() instanceof SideMenuController) {
+      String faction = players.get(currentPlayer).name;
+      ((SideMenuController) controllerParentPairs.get(0).getKey()).setCurrentFaction(faction);
+    }
+  }
+
+  public VictoryCondition getVictoryCondition() {
+    return victory.getVictoryCondition();
+  }
+
+  public int getTurnNum() {
+    return turn.getTurn();
+  }
+
+  public String getCurrentFaction() {
+    return players.get(currentPlayer).name;
+  }
 }
