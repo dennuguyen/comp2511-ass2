@@ -2,7 +2,7 @@
  * Statable interface
  */
 
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.stats;
 
 public interface Statable {
 

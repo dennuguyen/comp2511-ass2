@@ -1,4 +1,4 @@
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.stats;
 
 public class Fire extends Stat {
 

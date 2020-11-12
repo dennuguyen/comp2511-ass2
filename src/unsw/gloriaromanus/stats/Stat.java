@@ -2,7 +2,7 @@
  * Stat abstract class
  */
 
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.stats;
 
 public abstract class Stat {
 
