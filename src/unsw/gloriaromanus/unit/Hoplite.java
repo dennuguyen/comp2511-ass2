@@ -4,9 +4,9 @@
 
 package unsw.gloriaromanus.unit;
 
-import unsw.gloriaromanus.component.Stats;
-import unsw.gloriaromanus.component.Engageable;
-import unsw.gloriaromanus.component.Move;
+import unsw.gloriaromanus.movement.Move;
+import unsw.gloriaromanus.warfare.Engageable;
+import unsw.gloriaromanus.stats.Stats;
 
 public class Hoplite extends UnitLeaf {
 

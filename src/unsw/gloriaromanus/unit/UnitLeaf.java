@@ -4,18 +4,18 @@
 
 package unsw.gloriaromanus.unit;
 
-import unsw.gloriaromanus.Entity;
-import unsw.gloriaromanus.component.Engageable;
 import unsw.gloriaromanus.component.Locable;
 import unsw.gloriaromanus.component.Locale;
-import unsw.gloriaromanus.component.Move;
-import unsw.gloriaromanus.component.Moveable;
-import unsw.gloriaromanus.component.Statable;
-import unsw.gloriaromanus.component.Stats;
+import unsw.gloriaromanus.entity.Entity;
+import unsw.gloriaromanus.movement.Move;
+import unsw.gloriaromanus.movement.Moveable;
+import unsw.gloriaromanus.stats.Statable;
+import unsw.gloriaromanus.stats.Stats;
 import unsw.gloriaromanus.event.Topics;
 import unsw.gloriaromanus.util.Message;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
+import unsw.gloriaromanus.warfare.Engageable;
 
 public class UnitLeaf
         implements Entity, Engageable, Locable, Moveable, Statable, PubSubable, UnitComponent {

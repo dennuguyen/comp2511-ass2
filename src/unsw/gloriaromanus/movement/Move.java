@@ -10,12 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
-
-import unsw.gloriaromanus.World;
+import unsw.gloriaromanus.system.World;
 import unsw.gloriaromanus.util.Message;
+import unsw.gloriaromanus.util.Observer;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
-import unsw.gloriaromanus.util.Observer;
 import unsw.gloriaromanus.util.Subject;
 
 public class Move implements Moveable, PubSubable, Observer {

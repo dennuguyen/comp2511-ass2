@@ -2,7 +2,7 @@ package unsw.gloriaromanus.unit;
 
 import java.util.ArrayList;
 import java.util.Random;
-import unsw.gloriaromanus.Entity;
+import unsw.gloriaromanus.entity.Entity;
 
 public class UnitComposite implements Entity, UnitComponent {
 

@@ -3,8 +3,9 @@
  * 
  * Turn is a singleton
  */
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.system;
 
+import unsw.gloriaromanus.entity.Entity;
 import unsw.gloriaromanus.util.Observer;
 import unsw.gloriaromanus.util.Subject;
 
