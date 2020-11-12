@@ -33,8 +33,15 @@ public class PersistanceFactory {
         }
         return factions;
     }
+
+    public boolean deserializeWinner(JSONObject json) {
+        if (json.has("winner")) {
+            return true;
+        } 
+        return false;
+    }
     
-    public static void writeToFile(Victory v, List<Faction> f) {
+    public static void writeToFile(Victory v, List<Faction> f, String winner) {
         try {
             file = new FileWriter("save.json");
             JSONObject json = new JSONObject();
@@ -44,6 +51,9 @@ public class PersistanceFactory {
                 players.put(faction.serialize());
             }
             json.put("players", players);
+            if (!winner.equals("")) {
+                json.put("winner", winner);
+            }
             file.write(json.toString(4));
             file.close();
             System.out.println("Successfully written to file");

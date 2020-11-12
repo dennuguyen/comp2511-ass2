@@ -46,6 +46,12 @@ public class SideMenuController extends MenuController{
     }
 
     @FXML
+    public void setVictoryMessage(String player) throws IOException {
+        victoryConditions.setStyle("-fx-control-inner-background:#c00000;-fx-text-fill: #ffffff; ");
+        victoryConditions.setText(player.toUpperCase() + " WON!");
+    }
+
+    @FXML
     public void setCurrentYear(int turn) throws IOException {
         currentYear.setText(Integer.toString(startYear - turn));
     }

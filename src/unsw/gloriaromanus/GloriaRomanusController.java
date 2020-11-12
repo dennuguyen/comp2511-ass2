@@ -85,6 +85,7 @@ public class GloriaRomanusController {
   private Victory victory;
   private List<Faction> players;
   private Turn turn;
+  private boolean isEnded;
 
   private Feature currentlySelectedHumanProvince;
   private Feature currentlySelectedEnemyProvince;
@@ -98,12 +99,13 @@ public class GloriaRomanusController {
   }
   
   @FXML
-  public void initData(String initMode, World world, Victory victory, List<Faction> players) 
+  public void initData(String initMode, boolean isEnded, World world, Victory victory, List<Faction> players) 
     throws JsonParseException, JsonMappingException, IOException, InterruptedException {
     this.initMode = initMode;
     this.world = world;
     this.victory = victory;
     this.players = players;
+    this.isEnded = isEnded;
     this.turn = Turn.getInstance();
 
      // TODO = you should rely on an object oriented design to determine ownership
@@ -470,7 +472,7 @@ public class GloriaRomanusController {
   }
 
   public void clickedSaveGame(ActionEvent e) throws IOException {
-    PersistanceFactory.writeToFile(victory, players);
+      PersistanceFactory.writeToFile(victory, players, "");
   }
 
   public void clickedEndTurn(ActionEvent e) throws IOException {
@@ -484,6 +486,28 @@ public class GloriaRomanusController {
       currentPlayer++;
     }
     changeCurrentPlayerOnScreen();
+    System.out.println(isEnded);
+    if (!isEnded) {checkWinner();}
+  }
+
+  public void checkWinner() throws IOException {
+    for (Faction f : players) {
+      if (isWinner(f)) {
+        PersistanceFactory.writeToFile(victory, players, f.name);
+        showVictoryMessageOnScreen(f.name);
+      }
+    }
+  }
+
+  public boolean isWinner(Faction player) {
+    return victory.getResult(player, world) ? true :false;
+  }
+
+  private void showVictoryMessageOnScreen(String player) throws IOException {
+    System.out.println("Attempting to show victory message");
+    if (controllerParentPairs.get(0).getKey() instanceof SideMenuController) {
+      ((SideMenuController) controllerParentPairs.get(0).getKey()).setVictoryMessage(player);
+    }
   }
 
   private void changeCurrentYearOnScreen() throws IOException {
