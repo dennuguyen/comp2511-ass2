@@ -1,4 +1,4 @@
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.entity;
 
 import java.io.Serializable;
 

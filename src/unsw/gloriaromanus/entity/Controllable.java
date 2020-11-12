@@ -2,7 +2,7 @@
  * Controllable interface
  */
 
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.entity;
 
 public interface Controllable {
 
