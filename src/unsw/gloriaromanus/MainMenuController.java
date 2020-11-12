@@ -3,14 +3,11 @@ package unsw.gloriaromanus;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.animation.PauseTransition;
@@ -18,15 +15,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
+
 import javafx.util.Duration;
 import unsw.gloriaromanus.util.Util;
 
@@ -37,6 +29,7 @@ public class MainMenuController implements Initializable{
     private World world;
     private List<Faction> players;
     private Victory victory;
+    private boolean isEnded;
 
     @FXML
     private Button newGameButton;
@@ -73,6 +66,7 @@ public class MainMenuController implements Initializable{
         players = new ArrayList<Faction>();
         World.init("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json");
         world = World.getInstance();
+        isEnded = false;
     }
 
     @FXML
@@ -157,6 +151,7 @@ public class MainMenuController implements Initializable{
         if (save == null) return;
         victory = pf.deserializeVictory(save);
         players = pf.deserializePlayers(world, save);
+        isEnded = pf.deserializeWinner(save);
         initMode = "load";
         changeToGameScreen(event);
     }
@@ -167,7 +162,7 @@ public class MainMenuController implements Initializable{
 
     public void changeToGameScreen(ActionEvent event) throws IOException, InterruptedException {
         GloriaRomanusController controller = gloriaRomanusScreen.getController();
-        controller.initData(initMode, world, victory, players);
+        controller.initData(initMode, isEnded, world, victory, players);
         gloriaRomanusScreen.start();
     }
 }
