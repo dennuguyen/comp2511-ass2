@@ -58,6 +58,10 @@ public class World implements Entity {
         return this.provinces.get(name);
     }
 
+    public Map<String, Province> getProvinces() {
+        return this.provinces;
+    }
+
     public Map<String, Map<String, Boolean>> getMap() {
         return this.matrix;
     }
