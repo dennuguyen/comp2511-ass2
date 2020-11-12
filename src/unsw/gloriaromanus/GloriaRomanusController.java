@@ -75,7 +75,14 @@ public class GloriaRomanusController {
 
   private Map<String, Integer> provinceToNumberTroopsMap;
 
+  // GAME STATE
   private String humanFaction;
+  private String initMode;
+  private World world;
+  private Victory victory;
+  private List<Faction> players;
+  private Faction currentPlayer;
+  private int currentYear;
 
   private Feature currentlySelectedHumanProvince;
   private Feature currentlySelectedEnemyProvince;
@@ -85,38 +92,51 @@ public class GloriaRomanusController {
   @FXML
   private void initialize()
       throws JsonParseException, JsonMappingException, IOException, InterruptedException {
-    // TODO = you should rely on an object oriented design to determine ownership
-    provinceToOwningFactionMap = getProvinceToOwningFactionMap();
-
-    provinceToNumberTroopsMap = new HashMap<String, Integer>();
-    Random r = new Random();
-    for (String provinceName : provinceToOwningFactionMap.keySet()) {
-      provinceToNumberTroopsMap.put(provinceName, r.nextInt(500));
-    }
-
-    // TODO = load this from a configuration file you create (user should be able to
-    // select in loading screen)
-    humanFaction = "Rome";
-
-    currentlySelectedHumanProvince = null;
-    currentlySelectedEnemyProvince = null;
-
-    String[] menus = {"invasion_menu.fxml", "basic_menu.fxml"};
-    controllerParentPairs = new ArrayList<Pair<MenuController, VBox>>();
-    for (String fxmlName : menus) {
-      System.out.println(fxmlName);
-      FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
-      VBox root = (VBox) loader.load();
-      MenuController menuController = (MenuController) loader.getController();
-      menuController.setParent(this);
-      controllerParentPairs.add(new Pair<MenuController, VBox>(menuController, root));
-    }
-
-    stackPaneMain.getChildren().add(controllerParentPairs.get(0).getValue());
-
-    initializeProvinceLayers();
 
   }
+  
+  @FXML
+  public void initData(String initMode, World world, Victory victory, List<Faction> players) 
+    throws JsonParseException, JsonMappingException, IOException, InterruptedException {
+    this.initMode = initMode;
+    this.world = world;
+    this.victory = victory;
+    this.players = players;
+
+     // TODO = you should rely on an object oriented design to determine ownership
+     provinceToOwningFactionMap = getProvinceToOwningFactionMap();
+
+     provinceToNumberTroopsMap = new HashMap<String, Integer>();
+     Random r = new Random();
+     for (String provinceName : provinceToOwningFactionMap.keySet()) {
+       provinceToNumberTroopsMap.put(provinceName, r.nextInt(500));
+     }
+ 
+     // TODO = load this from a configuration file you create (user should be able to
+     // select in loading screen)
+     humanFaction = "Rome";
+     currentPlayer = players.get(0);
+ 
+     currentlySelectedHumanProvince = null;
+     currentlySelectedEnemyProvince = null;
+ 
+     String[] menus = {"invasion_menu.fxml", "side_menu.fxml"};
+     controllerParentPairs = new ArrayList<Pair<MenuController, VBox>>();
+     for (String fxmlName : menus) {
+       System.out.println(fxmlName);
+       FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
+       VBox root = (VBox) loader.load();
+       MenuController menuController = (MenuController) loader.getController();
+       menuController.setParent(this);
+       controllerParentPairs.add(new Pair<MenuController, VBox>(menuController, root));
+     }
+ 
+     stackPaneMain.getChildren().add(controllerParentPairs.get(0).getValue());
+ 
+     initializeProvinceLayers();
+  }
+
+  
 
   public void clickedInvadeButton(ActionEvent e) throws IOException {
     if (currentlySelectedHumanProvince != null && currentlySelectedEnemyProvince != null) {
@@ -331,18 +351,29 @@ public class GloriaRomanusController {
   }
 
   private Map<String, String> getProvinceToOwningFactionMap() throws IOException {
-    String content =
-        Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
-    JSONObject ownership = new JSONObject(content);
     Map<String, String> m = new HashMap<String, String>();
-    for (String key : ownership.keySet()) {
-      // key will be the faction name
-      JSONArray ja = ownership.getJSONArray(key);
-      // value is province name
-      for (int i = 0; i < ja.length(); i++) {
-        String value = ja.getString(i);
-        m.put(value, key);
-      }
+    switch (initMode) {
+      case "new":
+        String content =
+        Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
+        JSONObject ownership = new JSONObject(content);
+        for (String key : ownership.keySet()) {
+          // key will be the faction name
+          JSONArray ja = ownership.getJSONArray(key);
+          // value is province name
+          for (int i = 0; i < ja.length(); i++) {
+            String value = ja.getString(i);
+            m.put(value, key);
+          }
+        }
+        break;
+      case "load":
+        for (Faction f : players) {
+          for (Province p : f.territories) {
+            m.put(p.getLocation(), f.name);
+          }
+        }
+        break;
     }
     return m;
   }
@@ -353,7 +384,7 @@ public class GloriaRomanusController {
     String content =
         Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
     JSONObject ownership = new JSONObject(content);
-    return Util.convert(ownership.getJSONArray(humanFaction));
+    return ArrayUtil.convert(ownership.getJSONArray(humanFaction));
   }
 
   /**
@@ -409,5 +440,9 @@ public class GloriaRomanusController {
     stackPaneMain.getChildren().remove(controllerParentPairs.get(0).getValue());
     Collections.reverse(controllerParentPairs);
     stackPaneMain.getChildren().add(controllerParentPairs.get(0).getValue());
+  }
+
+  public void clickedSaveButton(ActionEvent e) throws IOException {
+
   }
 }
