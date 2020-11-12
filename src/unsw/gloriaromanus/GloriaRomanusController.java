@@ -57,6 +57,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.util.Pair;
+import unsw.gloriaromanus.component.HighTax;
+import unsw.gloriaromanus.component.LowTax;
+import unsw.gloriaromanus.component.NormalTax;
+import unsw.gloriaromanus.component.TaxLevel;
+import unsw.gloriaromanus.component.VeryHighTax;
 import unsw.gloriaromanus.component.VictoryCondition;
 import unsw.gloriaromanus.util.Util;
 
@@ -107,7 +112,9 @@ public class GloriaRomanusController {
     this.players = players;
     this.isEnded = isEnded;
     this.turn = Turn.getInstance();
-
+    for (Map.Entry<String, Province> entry : world.getProvinces().entrySet()) { 
+      this.turn.attach(entry.getValue());
+    }
      // TODO = you should rely on an object oriented design to determine ownership
      provinceToOwningFactionMap = getProvinceToOwningFactionMap();
 
@@ -124,7 +131,7 @@ public class GloriaRomanusController {
      currentlySelectedHumanProvince = null;
      currentlySelectedEnemyProvince = null;
  
-     String[] menus = {"invasion_menu.fxml", "side_menu.fxml"};
+     String[] menus = {"side_menu.fxml", "invasion_menu.fxml", "province_menu.fxml"};
      controllerParentPairs = new ArrayList<Pair<MenuController, VBox>>();
      for (String fxmlName : menus) {
         System.out.println(fxmlName);
@@ -160,7 +167,7 @@ public class GloriaRomanusController {
           provinceToNumberTroopsMap.put(enemyProvince, numTroopsToTransfer);
           provinceToNumberTroopsMap.put(humanProvince,
               provinceToNumberTroopsMap.get(humanProvince) - numTroopsToTransfer);
-          provinceToOwningFactionMap.put(enemyProvince, humanFaction);
+          provinceToOwningFactionMap.put(enemyProvince, players.get(currentPlayer).name);
           printMessageToTerminal("Won battle!");
         } else {
           // enemy won. Human loses 60% of soldiers in the province
@@ -329,7 +336,7 @@ public class GloriaRomanusController {
                 Feature f = features.get(0);
                 String province = (String) f.getAttributes().get("name");
 
-                if (provinceToOwningFactionMap.get(province).equals(humanFaction)) {
+                if (provinceToOwningFactionMap.get(province).equals(players.get(currentPlayer).name)) {
                   // province owned by human
                   if (currentlySelectedHumanProvince != null) {
                     featureLayer.unselectFeature(currentlySelectedHumanProvince);
@@ -339,7 +346,10 @@ public class GloriaRomanusController {
                     ((InvasionMenuController) controllerParentPairs.get(0).getKey())
                         .setInvadingProvince(province);
                   }
-
+                  if (controllerParentPairs.get(0).getKey() instanceof ProvinceMenuController) {
+                    ((ProvinceMenuController) controllerParentPairs.get(0).getKey())
+                        .setProvince(provinceToOwningFactionMap.get(province), world.getProvince(province), true);
+                  }
                 } else {
                   if (currentlySelectedEnemyProvince != null) {
                     featureLayer.unselectFeature(currentlySelectedEnemyProvince);
@@ -349,14 +359,18 @@ public class GloriaRomanusController {
                     ((InvasionMenuController) controllerParentPairs.get(0).getKey())
                         .setOpponentProvince(province);
                   }
-                }
+                  if (controllerParentPairs.get(0).getKey() instanceof ProvinceMenuController) {
+                    ((ProvinceMenuController) controllerParentPairs.get(0).getKey())
+                        .setProvince(provinceToOwningFactionMap.get(province), world.getProvince(province), false);
+                  }
 
+                }
                 featureLayer.selectFeature(f);
               }
 
 
             }
-          } catch (InterruptedException | ExecutionException ex) {
+          } catch (InterruptedException | ExecutionException | IOException ex) {
             // ... must deal with checked exceptions thrown from the async identify
             // operation
             System.out.println("InterruptedException occurred");
@@ -413,7 +427,7 @@ public class GloriaRomanusController {
     String content =
         Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
     JSONObject ownership = new JSONObject(content);
-    return ArrayUtil.convert(ownership.getJSONArray(humanFaction));
+    return ArrayUtil.convert(ownership.getJSONArray(players.get(currentPlayer).name));
   }
 
   /**
@@ -467,7 +481,7 @@ public class GloriaRomanusController {
   public void switchMenu() throws JsonParseException, JsonMappingException, IOException {
     System.out.println("trying to switch menu");
     stackPaneMain.getChildren().remove(controllerParentPairs.get(0).getValue());
-    Collections.reverse(controllerParentPairs);
+    Collections.rotate(controllerParentPairs, 1);
     stackPaneMain.getChildren().add(controllerParentPairs.get(0).getValue());
   }
 
@@ -477,6 +491,14 @@ public class GloriaRomanusController {
 
   public void clickedEndTurn(ActionEvent e) throws IOException {
     System.out.println("ending turn");
+    for (int i = 0; i < controllerParentPairs.size(); i++) {
+      if (controllerParentPairs.get(i).getKey() instanceof ProvinceMenuController) {
+        TaxLevel taxLevel = ((ProvinceMenuController) controllerParentPairs.get(i).getKey())
+        .getTaxSetting();
+        setTaxLevel(taxLevel);
+        break;
+      }
+    }
     if (currentPlayer == players.size() - 1) {
       turn.incrementTurn();
       changeCurrentYearOnScreen();
@@ -486,7 +508,6 @@ public class GloriaRomanusController {
       currentPlayer++;
     }
     changeCurrentPlayerOnScreen();
-    System.out.println(isEnded);
     if (!isEnded) {checkWinner();}
   }
 
@@ -504,7 +525,6 @@ public class GloriaRomanusController {
   }
 
   private void showVictoryMessageOnScreen(String player) throws IOException {
-    System.out.println("Attempting to show victory message");
     if (controllerParentPairs.get(0).getKey() instanceof SideMenuController) {
       ((SideMenuController) controllerParentPairs.get(0).getKey()).setVictoryMessage(player);
     }
@@ -533,5 +553,17 @@ public class GloriaRomanusController {
 
   public String getCurrentFaction() {
     return players.get(currentPlayer).name;
+  }
+
+  public void setTaxLevel(TaxLevel taxLevel) throws IOException {
+    Feature f = currentlySelectedHumanProvince;
+    String province = (String) f.getAttributes().get("name");
+    if (provinceToOwningFactionMap.get(province).equals(players.get(currentPlayer).name)) {
+      (world.getProvince(province)).setTaxLevel(taxLevel);
+    }
+    if (controllerParentPairs.get(0).getKey() instanceof ProvinceMenuController) {
+      ((ProvinceMenuController) controllerParentPairs.get(0).getKey())
+          .setProvince(provinceToOwningFactionMap.get(province), world.getProvince(province), true);
+    }
   }
 }
