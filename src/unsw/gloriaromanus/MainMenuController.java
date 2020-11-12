@@ -77,8 +77,16 @@ public class MainMenuController implements Initializable{
 
     @FXML
     public void handleNewGame(ActionEvent event) throws IOException, InterruptedException {
-        if (isEmpty()){
-            newGameButton.setText("All fields must be entered");
+        if  (isEmpty() || isDuplicates() || isNone()) {
+            if (isEmpty()){
+                newGameButton.setText("All fields must be entered");
+            }
+            else if (isNone()){
+                newGameButton.setText("Must have at least 2 players");
+            }
+            else if (isDuplicates()) {
+                newGameButton.setText("Players must be different factions");
+            } 
             newGameButton.setStyle("-fx-base: red");
             PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
             pause.setOnFinished(e -> {
@@ -86,20 +94,11 @@ public class MainMenuController implements Initializable{
                 newGameButton.setText("Start a new game");});
             pause.play(); 
         }
-        else if (isDuplicates()) {
-            newGameButton.setText("Players must be different factions");
-            newGameButton.setStyle("-fx-base: red");
-            PauseTransition pause = new PauseTransition(Duration.seconds(1));
-            pause.setOnFinished(e -> {
-                newGameButton.setStyle(null);
-                newGameButton.setText("Start a new game");});
-            pause.play();  
-        }
         else {
-            generateFaction(player1ChoiceBox.getValue());
-            generateFaction(player2ChoiceBox.getValue());
-            generateFaction(player3ChoiceBox.getValue());
-            generateFaction(player4ChoiceBox.getValue());
+            generateFaction(player1ChoiceBox.getValue().toString());
+            generateFaction(player2ChoiceBox.getValue().toString());
+            generateFaction(player3ChoiceBox.getValue().toString());
+            generateFaction(player4ChoiceBox.getValue().toString());
             victory = new Victory();
             initMode = "new";
             changeToGameScreen(event);
@@ -108,13 +107,13 @@ public class MainMenuController implements Initializable{
 
     private boolean isDuplicates() {
         List<String> list = new ArrayList<String>();
-        list.add(player1ChoiceBox.getValue());
-        list.add(player2ChoiceBox.getValue());
-        list.add(player3ChoiceBox.getValue());
-        list.add(player4ChoiceBox.getValue());
+        list.add(player1ChoiceBox.getValue().toString());
+        list.add(player2ChoiceBox.getValue().toString());
+        list.add(player3ChoiceBox.getValue().toString());
+        list.add(player4ChoiceBox.getValue().toString());
         Set<String> set1 = new HashSet<>();
         for(String str : list) {
-            if (str != "None" && !set1.add(str)) return true;
+            if (!str.equals("None") && !set1.add(str)) return true;
         }
         return false;        
     }
@@ -125,6 +124,15 @@ public class MainMenuController implements Initializable{
                 player2ChoiceBox.getValue() == null ||
                 player3ChoiceBox.getValue() == null ||
                 player4ChoiceBox.getValue() == null;
+    }
+
+    private boolean isNone() {
+        int count = 0;
+        if (!player1ChoiceBox.getValue().toString().equals("None")) count++;
+        if (!player2ChoiceBox.getValue().toString().equals("None")) count++;
+        if (!player3ChoiceBox.getValue().toString().equals("None")) count++;
+        if (!player4ChoiceBox.getValue().toString().equals("None")) count++;
+        return count < 2;
     }
 
     private void generateFaction(String value) {
