@@ -2,12 +2,10 @@ package unsw.gloriaromanus.victory;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import unsw.gloriaromanus.Faction;
-import unsw.gloriaromanus.World;
+import unsw.gloriaromanus.faction.Faction;
+import unsw.gloriaromanus.system.World;
 
 public abstract class VictoryComposite implements VictoryCondition {
 

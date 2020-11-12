@@ -1,7 +1,7 @@
 package unsw.gloriaromanus.victory;
 
-import unsw.gloriaromanus.Faction;
-import unsw.gloriaromanus.World;
+import unsw.gloriaromanus.faction.Faction;
+import unsw.gloriaromanus.system.World;
 
 public class AndComposite extends VictoryComposite {
 

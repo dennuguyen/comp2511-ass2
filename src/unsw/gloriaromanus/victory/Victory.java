@@ -1,4 +1,4 @@
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.victory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,13 +6,17 @@ import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import unsw.gloriaromanus.Entity;
+import unsw.gloriaromanus.faction.Faction;
+import unsw.gloriaromanus.system.World;
 import unsw.gloriaromanus.victory.AndComposite;
 import unsw.gloriaromanus.victory.ConquestLeaf;
 import unsw.gloriaromanus.victory.OrComposite;
 import unsw.gloriaromanus.victory.TreasuryLeaf;
 import unsw.gloriaromanus.victory.VictoryCondition;
 import unsw.gloriaromanus.victory.WealthLeaf;
+
+
 
 public class Victory implements Entity {
 
