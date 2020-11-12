@@ -8,19 +8,32 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.json.JSONObject;
+
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import unsw.gloriaromanus.util.Util;
 
 public class MainMenuController implements Initializable{
 
-    GloriaRomanusScreen gloriaRomanusScreen;
+    private GloriaRomanusScreen gloriaRomanusScreen;
+    private String initMode;
+    private World world;
+    private List<Faction> players;
+    private Victory victory;
 
     @FXML
     private Button newGameButton;
@@ -54,10 +67,13 @@ public class MainMenuController implements Initializable{
         player2ChoiceBox.setItems(factions);
         player3ChoiceBox.setItems(factions);
         player4ChoiceBox.setItems(factions);
+        players = new ArrayList<Faction>();
+        World.init("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json");
+        world = World.getInstance();
     }
 
     @FXML
-    public void handleNewGame(ActionEvent event) {
+    public void handleNewGame(ActionEvent event) throws IOException, InterruptedException {
         if (isEmpty()){
             newGameButton.setText("All fields must be entered");
             newGameButton.setStyle("-fx-base: red");
@@ -81,7 +97,9 @@ public class MainMenuController implements Initializable{
             generateFaction(player2ChoiceBox.getValue());
             generateFaction(player3ChoiceBox.getValue());
             generateFaction(player4ChoiceBox.getValue());
-            gloriaRomanusScreen.start();
+            victory = new Victory();
+            initMode = "new";
+            changeToGameScreen(event);
         }
     }
 
@@ -106,29 +124,39 @@ public class MainMenuController implements Initializable{
                 player4ChoiceBox.getValue() == null;
     }
 
-    private Faction generateFaction(String value) {
+    private void generateFaction(String value) {
         switch (value) {
             case "Romans":
-                return new Faction("Romans");
+                players.add(new Faction("Romans")); break;
             case "Gauls":
-                return new Faction("Gauls");
+                players.add(new Faction("Gauls")); break;
             case "Spanish":
-                return new Faction("Spanish");
+                players.add(new Faction("Spanish")); break;
             case "Egyptians":
-                return new Faction("Egyptians");
+                players.add(new Faction("Egyptians")); break;
             default:
-                return null;
+                return;
         }
     }
 
     @FXML
-    public void handleLoadGame(ActionEvent event) {
-        gloriaRomanusScreen.start();
+    public void handleLoadGame(ActionEvent event) throws IOException, InterruptedException {
+        PersistanceFactory pf = new PersistanceFactory();
+        JSONObject save = Util.parseJsonFile("save.json");
+        if (save == null) return;
+        victory = pf.deserializeVictory(save);
+        players = pf.deserializePlayers(world, save);
+        initMode = "load";
+        changeToGameScreen(event);
     }
 
     public void setGloriaRomanusScreen(GloriaRomanusScreen gloriaRomanusScreen) {
         this.gloriaRomanusScreen = gloriaRomanusScreen;
     }
 
-    
+    public void changeToGameScreen(ActionEvent event) throws IOException, InterruptedException {
+        GloriaRomanusController controller = gloriaRomanusScreen.getController();
+        controller.initData(initMode, world, victory, players);
+        gloriaRomanusScreen.start();
+    }
 }
