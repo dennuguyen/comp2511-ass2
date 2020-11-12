@@ -3,14 +3,14 @@
  * Engagement , Breaking , Routing.
  */
 
-package unsw.gloriaromanus;
+package unsw.gloriaromanus.warfare;
 
 import unsw.gloriaromanus.component.Breaking;
 import unsw.gloriaromanus.component.Engagement;
 import unsw.gloriaromanus.component.NormalEngagement;
 import unsw.gloriaromanus.component.Routing;
 import unsw.gloriaromanus.component.RoutingEngagement;
-import unsw.gloriaromanus.component.Stats;
+import unsw.gloriaromanus.stats.Stats;
 
 public class Battle {
 
