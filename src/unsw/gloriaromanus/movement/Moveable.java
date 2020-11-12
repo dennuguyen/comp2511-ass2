@@ -2,7 +2,7 @@
  * Moveable interface
  */
 
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.movement;
 
 public interface Moveable {
 
