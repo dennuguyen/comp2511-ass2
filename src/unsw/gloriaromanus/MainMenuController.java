@@ -3,11 +3,14 @@ package unsw.gloriaromanus;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javafx.animation.PauseTransition;
@@ -62,7 +65,7 @@ public class MainMenuController implements Initializable{
         ObservableList<String> factions = FXCollections.observableArrayList();
         battle.addAll("Basic Battle Resovler");
         battleResolverChoiceBox .setItems(battle);
-        factions.setAll("None", "Romans", "Gauls", "Spanish", "Egyptians");
+        factions.setAll("None", "Rome", "Gaul", "Spain", "Egypt");
         player1ChoiceBox.setItems(factions);
         player2ChoiceBox.setItems(factions);
         player3ChoiceBox.setItems(factions);
@@ -126,14 +129,14 @@ public class MainMenuController implements Initializable{
 
     private void generateFaction(String value) {
         switch (value) {
-            case "Romans":
-                players.add(new Faction("Romans")); break;
-            case "Gauls":
-                players.add(new Faction("Gauls")); break;
-            case "Spanish":
-                players.add(new Faction("Spanish")); break;
-            case "Egyptians":
-                players.add(new Faction("Egyptians")); break;
+            case "Rome":
+                players.add(new Faction("Rome")); break;
+            case "Gaul":
+                players.add(new Faction("Gaul")); break;
+            case "Spain":
+                players.add(new Faction("Spain")); break;
+            case "Egypt":
+                players.add(new Faction("Egypt")); break;
             default:
                 return;
         }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -244,6 +245,16 @@ public class GloriaRomanusController {
             // BufferedImage)
             s = new PictureMarkerSymbol("images/legionary.png");
             break;
+          case "Spain":
+            // you can also pass in a javafx Image to create a PictureMarkerSymbol (different to
+            // BufferedImage)
+            s = new PictureMarkerSymbol("images/legionary.png");
+            break;
+          case "Egypt":
+            // you can also pass in a javafx Image to create a PictureMarkerSymbol (different to
+            // BufferedImage)
+            s = new PictureMarkerSymbol("images/legionary.png");
+            break;
           // TODO = handle all faction names, and find a better structure...
         }
         t.setHaloColor(0xFFFFFFFF);
@@ -353,19 +364,31 @@ public class GloriaRomanusController {
   private Map<String, String> getProvinceToOwningFactionMap() throws IOException {
     Map<String, String> m = new HashMap<String, String>();
     switch (initMode) {
-      case "new":
-        String content =
-        Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
-        JSONObject ownership = new JSONObject(content);
-        for (String key : ownership.keySet()) {
-          // key will be the faction name
-          JSONArray ja = ownership.getJSONArray(key);
-          // value is province name
-          for (int i = 0; i < ja.length(); i++) {
-            String value = ja.getString(i);
-            m.put(value, key);
-          }
+      case "new": 
+        List <Province> provinces = new ArrayList<Province>();
+        for (Map.Entry<String, Province> entry : world.getProvinces().entrySet()) {
+          provinces.add(entry.getValue());
         }
+        Collections.shuffle(provinces);
+        Iterator<Province> iterator = provinces.iterator();
+        for(int i = 0; iterator.hasNext(); i++) {
+          Faction f = players.get(i % players.size());
+          Province p = iterator.next();
+          f.addProvince(p);
+          m.put(p.getLocation(), f.name);
+        }
+        // String content =
+        // Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
+        // JSONObject ownership = new JSONObject(content);
+        // for (String key : ownership.keySet()) {
+        //   // key will be the faction name
+        //   JSONArray ja = ownership.getJSONArray(key);
+        //   // value is province name
+        //   for (int i = 0; i < ja.length(); i++) {
+        //     String value = ja.getString(i);
+        //     m.put(value, key);
+        //   }
+        // }
         break;
       case "load":
         for (Faction f : players) {
