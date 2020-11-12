@@ -85,6 +85,10 @@ public class Province
         return this.tax.getTaxRate();
     }
 
+    public TaxLevel getTaxLevel() {
+        return tax.getTaxLevel();
+    }
+
     @Override
     public void setTaxLevel(TaxLevel taxLevel) {
 
@@ -164,6 +168,9 @@ public class Province
     public void update(Subject subject) {
         this.addWealth(this.getWealthGrowth()); // Wealth naturally grows
         this.camp.recruit(); // Recruit some troops
+        if (subject instanceof Turn) {
+            this.collectTax();
+        }
     }
 
     private int calculateTax() {
