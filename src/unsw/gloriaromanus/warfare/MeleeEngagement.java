@@ -1,6 +1,7 @@
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.warfare;
 
 import java.util.Random;
+import unsw.gloriaromanus.stats.Stats;
 
 public class MeleeEngagement implements EngagementType {
 

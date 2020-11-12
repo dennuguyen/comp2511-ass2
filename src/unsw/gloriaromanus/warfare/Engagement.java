@@ -1,4 +1,6 @@
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.warfare;
+
+import unsw.gloriaromanus.stats.Stats;
 
 public abstract class Engagement {
 

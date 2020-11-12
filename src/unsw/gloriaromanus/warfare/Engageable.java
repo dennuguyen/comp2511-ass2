@@ -2,7 +2,7 @@
  * Engageable interface
  */
 
-package unsw.gloriaromanus.component;
+package unsw.gloriaromanus.warfare;
 
 public interface Engageable {
     public enum Type {
