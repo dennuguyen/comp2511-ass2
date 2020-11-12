@@ -6,7 +6,7 @@ package unsw.gloriaromanus.building;
 
 import java.util.ArrayList;
 
-import unsw.gloriaromanus.component.Stats;
+import unsw.gloriaromanus.stats.Stats;
 import unsw.gloriaromanus.unit.Levyable;
 import unsw.gloriaromanus.unit.RomanLegionary;
 import unsw.gloriaromanus.unit.UnitLeaf;
