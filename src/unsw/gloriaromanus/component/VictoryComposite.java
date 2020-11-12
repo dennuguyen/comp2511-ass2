@@ -11,7 +11,7 @@ import unsw.gloriaromanus.World;
 
 public abstract class VictoryComposite implements VictoryCondition {
 
-    ArrayList<VictoryCondition> children;
+    private ArrayList<VictoryCondition> children;
 
     /**
      * Constructs composite victory condition
@@ -29,20 +29,13 @@ public abstract class VictoryComposite implements VictoryCondition {
     @Override
     public abstract Boolean evaluate(Faction player, World world);
 
-    @Override
-    public String nameString() {
-        String answer = "[" + this.getClass() + " ";
-        for (VictoryCondition c : children) {
-            answer = answer + " " + c.nameString();
-        }
-        answer = answer + "]";
-        return answer;
-    }
-
     @Override 
     public List<VictoryCondition> getChildren() {
         return children;
     }
+
+    @Override
+    public abstract String nameString();
 
     public static VictoryCondition deserialize(JSONObject json) {
         VictoryCondition vc = null;

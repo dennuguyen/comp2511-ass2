@@ -16,10 +16,7 @@ public abstract class VictoryLeaf implements VictoryCondition {
     public abstract Boolean evaluate(Faction player, World world);
 
     @Override
-    public String nameString() {
-        return this.getClass().toString();
-    }
-
+    public abstract String nameString();
     public static VictoryCondition deserialize(JSONObject json) {
         switch (json.getString("type")) {
             case "WEALTH": return new WealthLeaf();

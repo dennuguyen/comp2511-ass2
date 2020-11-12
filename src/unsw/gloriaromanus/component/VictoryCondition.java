@@ -6,7 +6,13 @@ import unsw.gloriaromanus.Faction;
 import unsw.gloriaromanus.World;
 
 public interface VictoryCondition {
+
+    /**
+     * Gets name of node and its children
+     * @return name of node and childern
+     */
     public String nameString();
+
     /**
      * Adds a condition to condition
      * 
@@ -21,5 +27,8 @@ public interface VictoryCondition {
      */
     public Boolean evaluate(Faction player, World world);
 
+    /**
+     * Returns child victory conditions
+     */
     public List<VictoryCondition> getChildren();
 }
