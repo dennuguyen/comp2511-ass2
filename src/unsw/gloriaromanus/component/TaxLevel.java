@@ -3,6 +3,13 @@ package unsw.gloriaromanus.component;
 public interface TaxLevel {
 
     /**
+     * Returns name of tax level
+     * 
+     * @return tax rate
+     */
+    public String getName();
+
+    /**
      * Returns tax rate of corresponding tax level
      * 
      * @return tax rate
