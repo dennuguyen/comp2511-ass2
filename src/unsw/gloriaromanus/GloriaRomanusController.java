@@ -465,7 +465,13 @@ public class GloriaRomanusController {
     stackPaneMain.getChildren().add(controllerParentPairs.get(0).getValue());
   }
 
-  public void clickedSaveButton(ActionEvent e) throws IOException {
-
+  public void clickedSaveGame(ActionEvent e) throws IOException {
+    PersistanceFactory.writeToFile(victory, players);
   }
+
+  public void clickedEndTurn(ActionEvent e) throws IOException {
+    System.out.println("ending turn");
+  }
+
+  
 }
