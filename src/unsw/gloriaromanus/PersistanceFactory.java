@@ -2,11 +2,17 @@ package unsw.gloriaromanus;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;    
 
 import unsw.gloriaromanus.component.HighTax;
 import unsw.gloriaromanus.component.LowTax;
@@ -40,8 +46,12 @@ public class PersistanceFactory {
         } 
         return false;
     }
+
+    public int deserializeCurrentPlayer(JSONObject json) {
+        return json.getInt("currentPlayer");
+    }
     
-    public static void writeToFile(Victory v, List<Faction> f, String winner) {
+    public static void writeToFile(int currentPlayer, Victory v, List<Faction> f, String winner) {
         try {
             file = new FileWriter("save.json");
             JSONObject json = new JSONObject();
@@ -51,9 +61,10 @@ public class PersistanceFactory {
                 players.put(faction.serialize());
             }
             json.put("players", players);
-            if (!winner.equals("")) {
+            if (!winner.equals("NO")) {
                 json.put("winner", winner);
             }
+            json.put("currentPlayer", currentPlayer);
             file.write(json.toString(4));
             file.close();
             System.out.println("Successfully written to file");
@@ -63,27 +74,17 @@ public class PersistanceFactory {
     }
 
     // public static void main(String[] args) {
-    //     //Victory v = new Victory();
-    //     // World.init("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json");
-    //     // World world = World.getInstance();
-    //     List<Faction> f = new ArrayList<Faction>();
-    //     Faction romans = new Faction("Romans");
-    //     f.add(romans);
-    //     Province britannia = world.getProvince("Britannia");
-    //     britannia.setTaxLevel(new HighTax());
-    //     britannia.addWealth(20000);
-    //     Province numidia = world.getProvince("Numidia");
-    //     numidia.setTaxLevel(new LowTax());
-    //     numidia.addWealth(50000);
-    //     romans.addProvince(britannia);
-    //     romans.addProvince(numidia);
-    //     romans.addTreasury(10000);
-    //     PersistanceFactory pf = new PersistanceFactory();
-    //     pf.writeToFile(v, f);
+    //     Victory v = new Victory();
     //     World.init("src/unsw/gloriaromanus/province_adjacency_matrix_fully_connected.json");
     //     World world = World.getInstance();
-    //     JSONObject save = Util.parseJsonFile("save.json"); 
+    //     List<Faction> f = new ArrayList<Faction>();
+    //     Faction romans = new Faction("Rome");
+    //     f.add(romans);
+    //     for (Map.Entry<String, Province> entry : world.getProvinces().entrySet())  
+    //         romans.addProvince(entry.getValue());
     //     PersistanceFactory pf = new PersistanceFactory();
+    //     PersistanceFactory.writeToFile(v, f, "");
+    //     JSONObject save = Util.parseJsonFile("save.json"); 
     //     pf.deserializeVictory(save);
     //     pf.deserializePlayers(world, save);
     // }

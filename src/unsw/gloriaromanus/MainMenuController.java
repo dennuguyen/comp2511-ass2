@@ -30,6 +30,7 @@ public class MainMenuController implements Initializable{
     private List<Faction> players;
     private Victory victory;
     private boolean isEnded;
+    private int currentPlayer;
 
     @FXML
     private Button newGameButton;
@@ -95,6 +96,7 @@ public class MainMenuController implements Initializable{
             generateFaction(player4ChoiceBox.getValue().toString());
             victory = new Victory();
             initMode = "new";
+            currentPlayer = 0;
             changeToGameScreen(event);
         }
     }
@@ -152,6 +154,7 @@ public class MainMenuController implements Initializable{
         victory = pf.deserializeVictory(save);
         players = pf.deserializePlayers(world, save);
         isEnded = pf.deserializeWinner(save);
+        currentPlayer = pf.deserializeCurrentPlayer(save);
         initMode = "load";
         changeToGameScreen(event);
     }
@@ -162,7 +165,7 @@ public class MainMenuController implements Initializable{
 
     public void changeToGameScreen(ActionEvent event) throws IOException, InterruptedException {
         GloriaRomanusController controller = gloriaRomanusScreen.getController();
-        controller.initData(initMode, isEnded, world, victory, players);
+        controller.initData(initMode, currentPlayer, isEnded, world, victory, players);
         gloriaRomanusScreen.start();
     }
 }
