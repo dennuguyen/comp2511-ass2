@@ -7,11 +7,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import unsw.gloriaromanus.util.Message;
+import unsw.gloriaromanus.util.Observer;
 import unsw.gloriaromanus.util.PubSub;
 import unsw.gloriaromanus.util.PubSubable;
+import unsw.gloriaromanus.util.Subject;
 import unsw.gloriaromanus.util.Topics;
 
-public class Faction implements Entity, PubSubable {
+public class Faction implements Entity, PubSubable, Observer {
 
     private static final long serialVersionUID = -2460947940289328286L;
     String name;
@@ -107,6 +109,24 @@ public class Faction implements Entity, PubSubable {
         treasury += amount;
     }
 
+    /**
+     * Collects tax from every territory faction owns
+     */
+    public void collectTax() {
+        for (Province p : territories) {
+            p.collectTax();
+        }
+    }
+
+    /**
+     * Add wealth growth to wealth of every territory faction owns
+     */
+    public void growWealth() {
+        for (Province p : territories) {
+            p.growWealth();
+        }
+    }
+
     @Override
     public void publish(String topic, Message<Object> message) {
         PubSub.getInstance().publish(topic, message);
@@ -114,8 +134,10 @@ public class Faction implements Entity, PubSubable {
 
     @Override
     public void listen(String topic, Message<Object> message) {
-        if (topic.contains("TAX_COLLECT"))
-            this.addTreasury((Integer) message.getMessage());
+        if (topic.contains("TAX_COLLECT")) {
+            int msg = Math.round((Float) (message.getMessage()));
+            this.addTreasury(msg);
+        }
     }
 
     @Override
@@ -140,7 +162,6 @@ public class Faction implements Entity, PubSubable {
         return json;
     }
 
-
     public static Faction deserialize(World world, JSONObject json) {
         String name = json.getString("name");
         Faction faction = new Faction(name);
@@ -152,5 +173,14 @@ public class Faction implements Entity, PubSubable {
             faction.addProvince(Province.deserialize(world, j));
         }
         return faction;
+    }
+
+    @Override
+    public void update(Subject subject) {
+        if (subject instanceof Turn) {
+            growWealth();
+            collectTax();
+        }
+
     }
 }
