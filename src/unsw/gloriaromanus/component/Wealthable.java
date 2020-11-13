@@ -35,9 +35,9 @@ public interface Wealthable {
     public void addWealth(int amount);
 
     /**
-     * Add to wealth growth rate
+     * Add wealth growth rate to town wealth
      * 
-     * @param rate rate to add
      */
-    public void addWealthGrowth(int rate);
+    public void growWealth();
+
 }

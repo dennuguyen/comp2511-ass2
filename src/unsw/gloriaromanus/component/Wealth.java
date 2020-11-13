@@ -60,8 +60,8 @@ public class Wealth implements Wealthable {
     }
 
     @Override
-    public void addWealthGrowth(int rate) {
-        this.rate += rate;
-        this.rate = limit(this.rate);
+    public void growWealth() {
+        addWealth(rate);
     }
+
 }
