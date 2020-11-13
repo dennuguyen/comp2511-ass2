@@ -21,7 +21,7 @@ public interface TaxLevel {
      * 
      * @return wealth growth rate change
      */
-    public int getWealthGrowthChange();
+    public int getWealthGrowth();
 }
 
 // package unsw.gloriaromanus.component;

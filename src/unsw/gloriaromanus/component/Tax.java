@@ -8,9 +8,6 @@ public class Tax implements Taxable {
 
     private TaxLevel taxLevel;
 
-    public Tax() {
-    }
-
     /**
      * Gets the tax level
      * 
@@ -18,11 +15,6 @@ public class Tax implements Taxable {
      */
     public TaxLevel getTaxLevel() {
         return this.taxLevel;
-    }
-
-    @Override
-    public int getTaxRate() {
-        return this.taxLevel.getTaxRate();
     }
 
     @Override

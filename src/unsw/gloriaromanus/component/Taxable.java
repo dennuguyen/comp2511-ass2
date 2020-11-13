@@ -14,10 +14,4 @@ public interface Taxable {
      */
     public void setTaxLevel(TaxLevel taxLevel);
 
-    /**
-     * Gets the current tax rate
-     * 
-     * @return Tax rate
-     */
-    public int getTaxRate();
 }

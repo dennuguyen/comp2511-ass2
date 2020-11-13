@@ -13,7 +13,7 @@ public class VeryHighTax implements TaxLevel {
     }
 
     @Override
-    public int getWealthGrowthChange() {
+    public int getWealthGrowth() {
         return -30;
     }
 }

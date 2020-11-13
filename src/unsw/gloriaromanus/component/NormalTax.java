@@ -13,7 +13,7 @@ public class NormalTax implements TaxLevel {
     }
 
     @Override
-    public int getWealthGrowthChange() {
+    public int getWealthGrowth() {
         return 0;
     }
 }
