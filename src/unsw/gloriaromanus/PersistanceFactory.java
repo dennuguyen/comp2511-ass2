@@ -2,23 +2,17 @@ package unsw.gloriaromanus;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.time.format.DateTimeFormatter;  
-import java.time.LocalDateTime;    
-
-import unsw.gloriaromanus.component.HighTax;
-import unsw.gloriaromanus.component.LowTax;
-import unsw.gloriaromanus.component.VictoryComposite;
-import unsw.gloriaromanus.component.VictoryCondition;
-import unsw.gloriaromanus.util.Util;
+import unsw.gloriaromanus.victory.Victory;
+import unsw.gloriaromanus.victory.VictoryComposite;
+import unsw.gloriaromanus.victory.VictoryCondition;
+import unsw.gloriaromanus.faction.Faction;
+import unsw.gloriaromanus.system.World;
 
 public class PersistanceFactory {
 
@@ -26,7 +20,7 @@ public class PersistanceFactory {
 
     public Victory deserializeVictory(JSONObject json) {
         JSONObject victoryCondition = json.getJSONObject("victoryConditions");
-        VictoryCondition vc =  VictoryComposite.deserialize(victoryCondition);
+        VictoryCondition vc = VictoryComposite.deserialize(victoryCondition);
         return new Victory(vc);
     }
 

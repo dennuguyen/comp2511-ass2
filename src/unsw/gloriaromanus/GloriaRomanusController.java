@@ -57,7 +57,13 @@ import org.json.JSONObject;
 
 import javafx.util.Pair;
 import unsw.gloriaromanus.component.TaxLevel;
-import unsw.gloriaromanus.component.VictoryCondition;
+import unsw.gloriaromanus.faction.Faction;
+import unsw.gloriaromanus.system.Turn;
+import unsw.gloriaromanus.system.World;
+import unsw.gloriaromanus.victory.Victory;
+import unsw.gloriaromanus.victory.VictoryCondition;
+import unsw.gloriaromanus.terrain.Province;
+import unsw.gloriaromanus.util.Util;
 
 public class GloriaRomanusController {
 
@@ -162,7 +168,7 @@ public class GloriaRomanusController {
           provinceToNumberTroopsMap.put(enemyProvince, numTroopsToTransfer);
           provinceToNumberTroopsMap.put(humanProvince,
               provinceToNumberTroopsMap.get(humanProvince) - numTroopsToTransfer);
-          provinceToOwningFactionMap.put(enemyProvince, players.get(currentPlayer).name);
+          provinceToOwningFactionMap.put(enemyProvince, players.get(currentPlayer).getName());
           printMessageToTerminal("Won battle!");
         } else {
           // enemy won. Human loses 60% of soldiers in the province
@@ -329,7 +335,7 @@ public class GloriaRomanusController {
                 Feature f = features.get(0);
                 String province = (String) f.getAttributes().get("name");
 
-                if (provinceToOwningFactionMap.get(province).equals(players.get(currentPlayer).name)) {
+                if (provinceToOwningFactionMap.get(province).equals(players.get(currentPlayer).getName())) {
                   // province owned by human
                   if (currentlySelectedHumanProvince != null) {
                     featureLayer.unselectFeature(currentlySelectedHumanProvince);
@@ -385,7 +391,7 @@ public class GloriaRomanusController {
           Faction f = players.get(i % players.size());
           Province p = iterator.next();
           f.addProvince(p);
-          m.put(p.getLocation(), f.name);
+          m.put(p.getLocation(), f.getName());
         }
         // String content =
         // Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
@@ -402,8 +408,8 @@ public class GloriaRomanusController {
         break;
       case "load":
         for (Faction f : players) {
-          for (Province p : f.territories) {
-            m.put(p.getLocation(), f.name);
+          for (Province p : f.getTerritories()) {
+            m.put(p.getLocation(), f.getName());
           }
         }
         break;
@@ -416,7 +422,7 @@ public class GloriaRomanusController {
 
     String content = Files.readString(Paths.get("src/unsw/gloriaromanus/initial_province_ownership.json"));
     JSONObject ownership = new JSONObject(content);
-    return ArrayUtil.convert(ownership.getJSONArray(players.get(currentPlayer).name));
+    return Util.convert(ownership.getJSONArray(players.get(currentPlayer).getName()));
   }
 
   /**
@@ -500,7 +506,7 @@ public class GloriaRomanusController {
     for (Faction f : players) {
       if (isWinner(f)) {
         PersistanceFactory.writeToFile(currentPlayer, victory, players, "YES");
-        showVictoryMessageOnScreen(f.name);
+        showVictoryMessageOnScreen(f.getName());
       }
     }
   }
@@ -542,7 +548,7 @@ public class GloriaRomanusController {
   public void setTaxLevel(Province province, TaxLevel taxLevel) throws IOException {
     if (taxLevel == null)
       return;
-    if (provinceToOwningFactionMap.get(province.getLocation()).equals(players.get(currentPlayer).name)) {
+    if (provinceToOwningFactionMap.get(province.getLocation()).equals(players.get(currentPlayer).getName())) {
       province.setTaxLevel(taxLevel);
     }
     if (controllerParentPairs.get(0).getKey() instanceof ProvinceMenuController) {

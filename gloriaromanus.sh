@@ -16,10 +16,13 @@ if [ "$1" == "--test" ]; then
     echo ""
     echo "======== TEST MODE ========"
     main="test.GloriaRomanusTest"
+    jacoco="lib/jacocoagent.jar"
+    java -javaagent:$jacoco $modules -cp ./lib/*:src/ $main "$@"
+    java -jar lib/jacococli.jar report jacoco.exec --classfiles $gloria --sourcefiles src --html log
 else
     main="unsw.gloriaromanus.GloriaRomanusLauncher"
+    java $modules -cp ./lib/*:src/ $main "$@"
 fi
-java $modules -cp ./lib/*:src/ $main "$@"
 
 # Remove class files
 rm $test*.class $gloria*.class $component*.class $util*.class
