@@ -62,7 +62,7 @@ public class Province
         Turn.getInstance().attach(this);
 
         // Set tax level
-        this.setTaxLevel(new LowTax());
+        this.setTaxLevel(new NormalTax());
     }
 
     @Override
@@ -78,11 +78,6 @@ public class Province
     @Override
     public Unit enlist(Levyable.Type unitType) {
         return this.camp.enlist(unitType, this.getLocation());
-    }
-
-    @Override
-    public int getTaxRate() {
-        return this.tax.getTaxRate();
     }
 
     public TaxLevel getTaxLevel() {
@@ -105,7 +100,7 @@ public class Province
             this.publish(this.MORALE_DUE_TO_TAX, Message.of(false)); // 0 morale change
 
         // Wealth growth event
-        this.publish(this.WEALTH_GROWTH_DUE_TO_TAX, Message.of(taxLevel.getWealthGrowthChange()));
+        this.publish(this.WEALTH_GROWTH_DUE_TO_TAX, Message.of(taxLevel.getWealthGrowth()));
 
         // Set the tax level
         tax.setTaxLevel(taxLevel);
@@ -132,8 +127,16 @@ public class Province
     }
 
     @Override
-    public void addWealthGrowth(int rate) {
-        this.wealth.addWealthGrowth(rate);
+    public void growWealth() {
+        this.wealth.growWealth();
+    }
+
+    private float calculateTax() {
+        return ((float) getWealth() * (float) tax.getTaxLevel().getTaxRate() / 100);
+    }
+
+    public void collectTax() {
+        this.publish(this.COLLECT_TAX_FROM_WEALTH, Message.of(calculateTax()));
     }
 
     @Override
@@ -145,12 +148,12 @@ public class Province
     public void listen(String topic, Message<Object> message) {
 
         if (topic.equals(this.WEALTH_GROWTH_DUE_TO_TAX)) {
-            this.addWealthGrowth((Integer) message.getMessage());
+            this.setWealthGrowth((Integer)message.getMessage());
         }
 
         else if (topic.equals(this.COLLECT_TAX_FROM_WEALTH)) {
-            System.out.println("MESSAGE: " + (Integer) message.getMessage());
-            this.addWealth(-1 * (Integer) (message.getMessage()));
+            int msg = Math.round((Float) (message.getMessage()));
+            this.addWealth(-1 * msg);         
         }
     }
 
@@ -166,19 +169,7 @@ public class Province
 
     @Override
     public void update(Subject subject) {
-        this.addWealth(this.getWealthGrowth()); // Wealth naturally grows
         this.camp.recruit(); // Recruit some troops
-        if (subject instanceof Turn) {
-            this.collectTax();
-        }
-    }
-
-    private int calculateTax() {
-        return getWealth() * getTaxRate() / 100;
-    }
-
-    public void collectTax() {
-        this.publish(this.COLLECT_TAX_FROM_WEALTH, Message.of(this.calculateTax()));
     }
 
     public JSONObject serialize() {
