@@ -83,6 +83,20 @@ public class Faction implements Entity, PubSubable, Treasurial, Observer {
         return territories.size();
     }
 
+    /**
+     * Returns name of the faction
+     */
+    public String getName() {
+        return faction;
+    }
+
+    /**
+     * Returns list of territories
+     */
+    public List<Province> getTerritories() {
+        return territories;
+    }
+
     @Override
     public int getTreasury() {
         return treasury.getTreasury();

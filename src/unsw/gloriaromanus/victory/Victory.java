@@ -6,7 +6,7 @@ import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import unsw.gloriaromanus.Entity;
+import unsw.gloriaromanus.entity.Entity;
 import unsw.gloriaromanus.faction.Faction;
 import unsw.gloriaromanus.system.World;
 

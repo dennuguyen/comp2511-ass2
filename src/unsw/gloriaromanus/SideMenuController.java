@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import unsw.gloriaromanus.faction.Faction;
 
 public class SideMenuController extends MenuController{
 
@@ -67,8 +68,8 @@ public class SideMenuController extends MenuController{
 
     @FXML
     public void setCurrentFaction(Faction faction) throws IOException {
-        currentFaction.setText(faction.name);
-        territoriesField.setText(Integer.toString(faction.territories.size()));
+        currentFaction.setText(faction.getName());
+        territoriesField.setText(Integer.toString(faction.getTerritories().size()));
         wealthField.setText(Integer.toString(faction.calculateWealth()));
         treasuryField.setText(Integer.toString(faction.getTreasury()));
     }

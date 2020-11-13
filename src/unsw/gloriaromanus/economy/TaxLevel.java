@@ -24,7 +24,7 @@ public enum TaxLevel {
      *
      * @return wealth growth rate change
      */
-    public int getWealthGrowthChange() {
+    public int getWealthGrowth() {
         if (this.taxRate >= 10)
             return (int) (-0.0133 * Math.pow(taxRate, 3) + 0.6 * Math.pow(taxRate, 2)
                     - 10.6667 * taxRate + 70);

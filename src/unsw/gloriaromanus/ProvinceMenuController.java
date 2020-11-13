@@ -16,11 +16,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import unsw.gloriaromanus.component.HighTax;
-import unsw.gloriaromanus.component.LowTax;
-import unsw.gloriaromanus.component.NormalTax;
-import unsw.gloriaromanus.component.TaxLevel;
-import unsw.gloriaromanus.component.VeryHighTax;
+import unsw.gloriaromanus.economy.TaxLevel;
+import unsw.gloriaromanus.terrain.Province;
 
 public class ProvinceMenuController extends MenuController {
 
@@ -48,18 +45,13 @@ public class ProvinceMenuController extends MenuController {
 
     private Province currentProvince;
 
-    private TaxLevel low = new LowTax();
-    private TaxLevel normal = new NormalTax();
-    private TaxLevel high = new HighTax();
-    private TaxLevel veryHigh = new VeryHighTax();
-
     @FXML
     public void setProvince(String faction, Province province, Boolean isEdit) throws IOException {
         currentProvince = province;
         factionField.setText(faction);
         wealthField.setText(Integer.toString(province.getWealth()));
         wealthGrowthField.setText(Integer.toString(province.getWealthGrowth()));
-        taxField.setText(province.getTaxLevel().getName());
+        taxField.setText(province.getTaxLevel().name());
         soldierField.setText("0");
         if (isEdit) {
             changeTaxButton.setDisable(false);
@@ -73,19 +65,19 @@ public class ProvinceMenuController extends MenuController {
     public void clickedChangeTax(ActionEvent event) throws IOException {
         switch (taxField.getText().toString()) {
             case "Low":
-                getParent().setTaxLevel(currentProvince, normal);
+                getParent().setTaxLevel(currentProvince, TaxLevel.NORMAL_TAX);
                 //taxField.setText("Normal");
                 break;
             case "Normal":
-                getParent().setTaxLevel(currentProvince, high);
+                getParent().setTaxLevel(currentProvince, TaxLevel.HIGH_TAX);
                 //taxField.setText("High");
                 break;
             case "High":
-                getParent().setTaxLevel(currentProvince, veryHigh);
+                getParent().setTaxLevel(currentProvince, TaxLevel.VERY_HIGH_TAX);
                 //taxField.setText("Very High");
                 break;
             case "Very High":
-                getParent().setTaxLevel(currentProvince, low);
+                getParent().setTaxLevel(currentProvince, TaxLevel.LOW_TAX);
                 //taxField.setText("Low");
                 break;
             default:

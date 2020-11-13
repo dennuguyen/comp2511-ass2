@@ -56,7 +56,7 @@ import org.geojson.LngLatAlt;
 import org.json.JSONObject;
 
 import javafx.util.Pair;
-import unsw.gloriaromanus.component.TaxLevel;
+import unsw.gloriaromanus.economy.TaxLevel;
 import unsw.gloriaromanus.faction.Faction;
 import unsw.gloriaromanus.system.Turn;
 import unsw.gloriaromanus.system.World;
