@@ -26,18 +26,27 @@ public class SideMenuController extends MenuController{
     private TextField currentFaction;
 
     @FXML
+    private TextField territoriesField;
+
+    @FXML
+    private TextField wealthField;
+
+    @FXML
+    private TextField treasuryField;
+
+    @FXML
     public void initialize() {
         startYear = 700;
     }
 
     @FXML
-    public void initData() {
+    public void initData() throws IOException {
         GloriaRomanusController controller = getParent();
         String vc = controller.getVictoryCondition().nameString();
         System.out.println(vc);
         victoryConditions.setText(vc);
         currentYear.setText(Integer.toString(startYear) + " BC");
-        currentFaction.setText(controller.getCurrentFaction());
+        setCurrentFaction(controller.getCurrentFaction());
     }
 
     @FXML
@@ -57,8 +66,11 @@ public class SideMenuController extends MenuController{
     }
 
     @FXML
-    public void setCurrentFaction(String faction) throws IOException {
-        currentFaction.setText(faction);
+    public void setCurrentFaction(Faction faction) throws IOException {
+        currentFaction.setText(faction.name);
+        territoriesField.setText(Integer.toString(faction.territories.size()));
+        wealthField.setText(Integer.toString(faction.calculateWealth()));
+        treasuryField.setText(Integer.toString(faction.getTreasury()));
     }
 
     @FXML

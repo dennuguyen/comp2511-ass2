@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<VBox maxWidth="250" prefHeight="410.0" prefWidth="219.0" spacing="10" styleClass="panel-region" stylesheets="/unsw/gloriaromanus/style.css" StackPane.alignment="TOP_LEFT" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="unsw.gloriaromanus.SideMenuController">
+<VBox maxWidth="250" prefHeight="410.0" prefWidth="219.0" spacing="10" styleClass="panel-region" stylesheets="/unsw/gloriaromanus/style.css" StackPane.alignment="TOP_LEFT" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="unsw.gloriaromanus.SideMenuController">
     <padding>
         <Insets topRightBottomLeft="10" />
     </padding>
@@ -32,8 +32,15 @@
    <Separator prefWidth="200.0" />
    <Label text="Current Year" />
    <TextField fx:id="currentYear" editable="false" />
+   <Separator prefWidth="200.0" />
    <Label text="Current Faction" />
    <TextField fx:id="currentFaction" editable="false" />
+   <Label text="Territories" />
+   <TextField fx:id="territoriesField" editable="false" />
+   <Label text="Faction Wealth" />
+   <TextField fx:id="wealthField" editable="false" />
+   <Label text="Treasury Balance" />
+   <TextField fx:id="treasuryField" editable="false" />
    <Button mnemonicParsing="false" onAction="#clickedEndTurn" text="End Turn" />
    <Separator prefWidth="200.0" />
    <Button mnemonicParsing="false" onAction="#clickedSaveGame" text="Save Game" />
