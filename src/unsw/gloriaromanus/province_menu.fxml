@@ -27,6 +27,8 @@
     </background>
    <Label text="Faction" />
    <TextField fx:id="factionField" editable="false" />
+   <Label text="Wealth Growth Rate" />
+   <TextField fx:id="wealthGrowthField" editable="false" />
    <Label text="Wealth" />
    <TextField fx:id="wealthField" editable="false" />
    <Label text="Tax Level" />

@@ -32,6 +32,9 @@ public class ProvinceMenuController extends MenuController {
     private TextField factionField;
 
     @FXML
+    private TextField wealthGrowthField;
+
+    @FXML
     private TextField wealthField;
 
     @FXML
@@ -43,10 +46,19 @@ public class ProvinceMenuController extends MenuController {
     @FXML
     private Button changeTaxButton;
 
+    private Province currentProvince;
+
+    private TaxLevel low = new LowTax();
+    private TaxLevel normal = new NormalTax();
+    private TaxLevel high = new HighTax();
+    private TaxLevel veryHigh = new VeryHighTax();
+
     @FXML
     public void setProvince(String faction, Province province, Boolean isEdit) throws IOException {
+        currentProvince = province;
         factionField.setText(faction);
         wealthField.setText(Integer.toString(province.getWealth()));
+        wealthGrowthField.setText(Integer.toString(province.getWealthGrowth()));
         taxField.setText(province.getTaxLevel().getName());
         soldierField.setText("0");
         if (isEdit) {
@@ -61,35 +73,23 @@ public class ProvinceMenuController extends MenuController {
     public void clickedChangeTax(ActionEvent event) throws IOException {
         switch (taxField.getText().toString()) {
             case "Low":
-                taxField.setText("Normal");
+                getParent().setTaxLevel(currentProvince, normal);
+                //taxField.setText("Normal");
                 break;
             case "Normal":
-                taxField.setText("High");
+                getParent().setTaxLevel(currentProvince, high);
+                //taxField.setText("High");
                 break;
             case "High":
-                taxField.setText("Very High");
+                getParent().setTaxLevel(currentProvince, veryHigh);
+                //taxField.setText("Very High");
                 break;
             case "Very High":
-                taxField.setText("Low");
+                getParent().setTaxLevel(currentProvince, low);
+                //taxField.setText("Low");
                 break;
             default:
-                System.out.println("Invalid tax input");
-        }
-    }
-
-    public TaxLevel getTaxSetting() {
-        switch (taxField.getText().toString()) {
-            case "Low":
-                return new LowTax();
-            case "Normal":
-                return new NormalTax();
-            case "High":
-                return new HighTax();
-            case "Very High":
-                return new VeryHighTax();
-            default:
-                System.out.println("Invalid tax input");
-                return null;
+                System.out.println("No province selected. Do nothing.");
         }
     }
 }
