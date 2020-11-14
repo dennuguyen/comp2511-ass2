@@ -13,6 +13,10 @@ public class UnitComposite implements Entity, UnitComponent {
         this.units = new ArrayList<UnitComponent>();
     }
 
+    public int getNumUnits() {
+        return this.units.size();
+    }
+
     public void addUnit(UnitComponent component) {
         this.units.add(component);
         this.units.add((UnitComponent) (new RomanLegionary("s")));
