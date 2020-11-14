@@ -1,28 +1,17 @@
 # Dependencies
 jfx="javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.swing,javafx.web"
-modules="--module-path ./lib --add-modules=$jfx"
+lib="--module-path ./lib --add-modules=$jfx"
 
 # Directories
-test="src/test/"
 gloria="src/unsw/gloriaromanus/"
-component="src/unsw/gloriaromanus/component/"
-util="src/unsw/gloriaromanus/util/"
+modules="src/unsw/gloriaromanus/**/"
 
 # Compile java files
-javac $modules $test*.java $gloria*.java $component*.java $util*.java -cp "./lib/*"
+javac $lib $gloria*.java $modules*.java -cp "./lib/*"
 
 # Run java main
-if [ "$1" == "--test" ]; then
-    echo ""
-    echo "======== TEST MODE ========"
-    main="test.GloriaRomanusTest"
-    jacoco="lib/jacocoagent.jar"
-    java -javaagent:$jacoco $modules -cp ./lib/*:src/ $main "$@"
-    java -jar lib/jacococli.jar report jacoco.exec --classfiles $gloria --sourcefiles src --html log
-else
-    main="unsw.gloriaromanus.GloriaRomanusLauncher"
-    java $modules -cp ./lib/*:src/ $main "$@"
-fi
+main="unsw.gloriaromanus.GloriaRomanusLauncher"
+java $lib -cp ./lib/*:src/ $main "$@"
 
 # Remove class files
-rm $test*.class $gloria*.class $component*.class $util*.class
+rm $test*.class $gloria*.class $modules*.class
