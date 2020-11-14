@@ -1,6 +1,7 @@
 package unsw.gloriaromanus.warfare;
 
 import unsw.gloriaromanus.stats.Stats;
+import unsw.gloriaromanus.unit.UnitLeaf;
 
 public class Breaking {
 
@@ -28,11 +29,11 @@ public class Breaking {
      * 
      * @return chance of unit breaking
      */
-    public int calculateBreakChance(Engagement e, Engageable breaker, Engageable enemy) {
+    public int calculateBreakChance(Engagement e, UnitLeaf breaker, UnitLeaf enemy) {
         if (e.getCasualties(breaker) == 0)
             return 0;
 
-        int base = 100 - (((Stats) breaker).getStat(Stats.Type.MORALE) * 10);
+        int base = 100 - (breaker.getStat(Stats.Type.MORALE) * 10);
 
         int x = e.getCasualties(breaker) / e.getInitialUnitSize(breaker);
 
@@ -50,7 +51,7 @@ public class Breaking {
      * 
      * @return if breaker unit successfully breaks
      */
-    public boolean isBroken(Engagement e, Engageable breaker, Engageable enemy) {
+    public boolean isBroken(Engagement e, UnitLeaf breaker, UnitLeaf enemy) {
         var d = Math.random() * 100;
         if ((int) d < calculateBreakChance(e, breaker, enemy))
             return true;

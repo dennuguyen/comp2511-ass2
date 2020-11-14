@@ -6,12 +6,15 @@
 package unsw.gloriaromanus.warfare;
 
 import unsw.gloriaromanus.stats.Stats;
+import unsw.gloriaromanus.unit.UnitComponent;
+import unsw.gloriaromanus.unit.UnitComposite;
+import unsw.gloriaromanus.unit.UnitLeaf;
 
 public class Battle {
 
     private int numEngagements;
-    private Army attacker;
-    private Army defender;
+    private UnitComposite attacker;
+    private UnitComposite defender;
 
     /**
      * Constructs a battle resolver
@@ -19,7 +22,7 @@ public class Battle {
      * @param attacker army attacking the province
      * @param defender army defending the province
      */
-    public Battle(Army attacker, Army defender) {
+    public Battle(UnitComposite attacker, UnitComposite defender) {
         this.numEngagements = 0;
         this.attacker = attacker;
         this.defender = defender;
@@ -30,9 +33,9 @@ public class Battle {
      * 
      * @return random attacking unit
      */
-    private Unit chooseAttackUnit() {
+    private UnitLeaf chooseAttackUnit() {
         while (true) {
-            Unit unit = attacker.getRandomUnit();
+            UnitLeaf unit = (UnitLeaf) attacker.getRandomUnit();
             if (unit.getStat(Stats.Type.MORALE) > 0)
                 return unit;
             else
@@ -45,9 +48,9 @@ public class Battle {
      * 
      * @return random defending unit
      */
-    private Unit chooseDefenceUnit() {
+    private UnitLeaf chooseDefenceUnit() {
         while (true) {
-            Unit unit = attacker.getRandomUnit();
+            UnitLeaf unit = (UnitLeaf) attacker.getRandomUnit();
             if (unit.getStat(Stats.Type.MORALE) > 0)
                 return unit;
             else
@@ -62,7 +65,7 @@ public class Battle {
      * 
      * @return if unit was destroyed
      */
-    private boolean isDestroyed(Unit unit) {
+    private boolean isDestroyed(UnitLeaf unit) {
         if (unit.getStat(Stats.Type.STRENGTH) <= 0)
             return true;
         return false;
@@ -75,7 +78,7 @@ public class Battle {
      * @param a a unit involved in engagement
      * @param b opposing unit involved in engagement
      */
-    private void attemptBreak(Engagement e, Unit a, Unit b) {
+    private void attemptBreak(Engagement e, UnitLeaf a, UnitLeaf b) {
         Breaking breaking = new Breaking();
         boolean aBroken = breaking.isBroken(e, a, b);
         boolean bBroken = breaking.isBroken(e, b, a);
@@ -97,16 +100,16 @@ public class Battle {
      * @param router  routing unit
      * @param pursuer pursuing unit
      */
-    private void attemptFlee(Unit router, Unit pursuer) {
+    private void attemptFlee(UnitLeaf router, UnitLeaf pursuer) {
 
         Routing r = new Routing();
 
         if (isDestroyed(router)) {
             // remove router unit from game
             if (this.attacker.contains(router))
-                this.attacker.remove(router);
+                this.attacker.removeUnit(router);
             else if (this.defender.contains(router))
-                this.defender.remove(router);
+                this.defender.removeUnit(router);
             else
                 System.err.println("Unit not part of any army");
         } else if (!r.isRouted(router, pursuer)) {
@@ -119,8 +122,8 @@ public class Battle {
     }
 
     private void doEngagementSequence() {
-        Unit attackUnit = chooseAttackUnit();
-        Unit defenceUnit = chooseDefenceUnit();
+        UnitLeaf attackUnit = chooseAttackUnit();
+        UnitLeaf defenceUnit = chooseDefenceUnit();
         while (!isDestroyed(attackUnit) && !isDestroyed(defenceUnit)) {
             Engagement e = new NormalEngagement(attackUnit, defenceUnit);
             attemptBreak(e, attackUnit, defenceUnit);
